@@ -1,5 +1,6 @@
 import sqlite3
 from flask_restful import Resource, reqparse
+from flask_jwt import jwt_required
 
 from models.item import Item
 
@@ -31,6 +32,7 @@ class RItem(Resource):
             return item.json(), 200
         return {"message": "This item does not exist in the database!"}, 404
     
+    @jwt_required()
     def post(self, name):
         item = Item.find_by_name(name)
         if item:
@@ -50,6 +52,7 @@ class RItem(Resource):
         
         return item.json(), 201
     
+    @jwt_required()
     def put(self, name):
         data = self.parser.parse_args()
         item = Item.find_by_name(name)
@@ -67,6 +70,7 @@ class RItem(Resource):
         item.save_item()
         return item.json(), status_code
     
+    @jwt_required()
     def delete(self, name):
         item = Item.find_by_name(name)
 
