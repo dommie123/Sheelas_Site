@@ -2,6 +2,7 @@ import React from "react";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 
 import { Navbar } from "./navbar";
+import { RegisterModal } from "../feature/register/register-modal";
 
 const router = createBrowserRouter([
     {
@@ -14,7 +15,7 @@ const router = createBrowserRouter([
     },
     {
         path: "/register",
-        element: <div>Register</div>
+        element: <RegisterModal />
     },
     {
         path: "/login",
