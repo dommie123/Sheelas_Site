@@ -1,7 +1,7 @@
 const configs = {
-    "localUrl": "http://localhost:8000",
-    "devUrl": "http://localhost:8000",  // TODO choose different URL for dev
-    "prodUrl": "http://localhost:8000"  // TODO choose different URL for prod
+    "localUrl": "http://127.0.0.1:5000",
+    "devUrl": "http://127.0.0.1:5000",  // TODO choose different URL for dev
+    "prodUrl": "http://127.0.0.1:5000"  // TODO choose different URL for prod
 }
 
 const determineBackendURL = () => {

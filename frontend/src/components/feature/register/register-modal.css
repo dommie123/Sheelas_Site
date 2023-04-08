@@ -1,0 +1,41 @@
+/* Common Register Components */
+.register-text-field {
+    width: 95%;
+}
+
+.register-next-button {
+    height: 80%;
+    width: 95%;
+    position: relative;
+    left: 2.5%;
+    align-items: stretch;
+    border-radius: 25%;
+    font-size: 16pt;
+    font-family: "Roboto" sans-serif;
+}
+
+.register-header {
+    text-align: center;
+    font-size: 20pt;
+}
+
+.register-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.register-text {
+    font-size: 10pt;
+}
+
+/* Specific Register Components */
+.register-two-checkbox-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    position: relative;
+    left: 5px;
+    width: 95%;
+}
