@@ -120,3 +120,4 @@ dmypy.json
 .pyre/
 
 my_data.db
+configs.json

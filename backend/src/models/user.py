@@ -4,12 +4,16 @@ class User(db.Model):
     __tablename__ = "users"
     
     id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(80))
+    last_name = db.Column(db.String(80))
     username = db.Column(db.String(80))
     password = db.Column(db.String(80))
     email = db.Column(db.String(80))
     phone = db.Column(db.String(80))
 
-    def __init__(self, username, password, email, phone=""):
+    def __init__(self, first_name, last_name, username, password, email, phone=""):
+        self.first_name = first_name
+        self.last_name = last_name
         self.username = username
         self.password = password
         self.email = email
@@ -18,6 +22,8 @@ class User(db.Model):
     def json(self):
         return {
             'id': self.id,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
             'username': self.username,
             'email': self.email,
             'phone': self.phone,

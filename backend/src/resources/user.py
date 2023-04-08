@@ -8,6 +8,16 @@ from models.user import User
 
 class UserRegister(Resource):
     parser = reqparse.RequestParser()
+    parser.add_argument('first_name', 
+        type=str,
+        required=True,
+        help="This field cannot be blank!"
+    )
+    parser.add_argument('last_name', 
+        type=str,
+        required=True,
+        help="This field cannot be blank!"
+    )
     parser.add_argument('username', 
         type=str,
         required=True,
