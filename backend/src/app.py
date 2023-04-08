@@ -1,8 +1,8 @@
-from flask import Flask
+from flask import Flask, request
 from flask_restful import Api
 from flask_jwt import JWT
 
-from utils.security import authenticate, identity
+from utils.security import authenticate, identity, generate_verification_code, send_code_to_email
 from resources.user import RUser, UserRegister
 from resources.item import RItem, ItemList
 
@@ -18,3 +18,13 @@ api.add_resource(UserRegister, "/register")
 api.add_resource(RUser, "/user/<string:username>")
 api.add_resource(RItem, "/item/<string:name>")
 api.add_resource(ItemList, "/items")
+
+@app.route("/verify", methods=["POST"])
+def send_verification_code():
+    try:
+        verification_code = generate_verification_code()
+        print(request.json.get('email'))
+        send_code_to_email(request.json.get('email'), verification_code)
+        return { 'code': verification_code }, 200
+    except Exception as e:
+        return { 'message': f"An error occurred while sending out the verification code! Error: {str(e)}"}, 500
