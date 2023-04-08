@@ -1,3 +1,6 @@
+import os
+import json
+
 from flask import Flask, request
 from flask_restful import Api
 from flask_jwt import JWT
@@ -6,10 +9,13 @@ from utils.security import authenticate, identity, generate_verification_code, s
 from resources.user import RUser, UserRegister
 from resources.item import RItem, ItemList
 
+config_file = open(f'{os.getcwd()}\\backend\\src\\configs.json')
+configs = json.load(config_file)
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///my_data.db'
-app.secret_key = 'Ass'
+app.secret_key = configs["app_secret_key"]
 api = Api(app)
 
 jwt = JWT(app, authenticate, identity) # creates /auth endpoint
