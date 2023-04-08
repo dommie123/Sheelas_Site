@@ -4,6 +4,7 @@ import json
 from flask import Flask, request
 from flask_restful import Api
 from flask_jwt import JWT
+from flask_cors import CORS, cross_origin
 
 from utils.security import authenticate, identity, generate_verification_code, send_code_to_email
 from resources.user import RUser, UserRegister
@@ -18,6 +19,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///my_data.db'
 app.secret_key = configs["app_secret_key"]
 api = Api(app)
 
+cors = CORS(app, resources={r"/register": {"origins": "http://localhost:3000"}, r"/user/*": {"origins": "http://localhost:3000"}, r"/item/*": {"origins": "http://localhost:3000"}, r"/items": {"origins": "http://localhost:3000"}})
+
 jwt = JWT(app, authenticate, identity) # creates /auth endpoint
 
 api.add_resource(UserRegister, "/register")
@@ -26,6 +29,7 @@ api.add_resource(RItem, "/item/<string:name>")
 api.add_resource(ItemList, "/items")
 
 @app.route("/verify", methods=["POST"])
+@cross_origin(origins="http://localhost:3000")
 def send_verification_code():
     try:
         verification_code = generate_verification_code()
