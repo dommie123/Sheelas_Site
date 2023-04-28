@@ -3,6 +3,7 @@ import {createBrowserRouter, RouterProvider} from "react-router-dom";
 
 import { Navbar } from "./navbar";
 import { RegisterModal } from "../feature/register/register-modal";
+import { LoginModal } from "../feature/login/login-modal";
 
 const router = createBrowserRouter([
     {
@@ -19,7 +20,7 @@ const router = createBrowserRouter([
     },
     {
         path: "/login",
-        element: <div>Login</div>
+        element: <LoginModal />
     },
     {
         path: "/about",

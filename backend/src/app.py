@@ -19,7 +19,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///my_data.db'
 app.secret_key = configs["app_secret_key"]
 api = Api(app)
 
-cors = CORS(app, resources={r"/register": {"origins": "http://localhost:3000"}, r"/user/*": {"origins": "http://localhost:3000"}, r"/item/*": {"origins": "http://localhost:3000"}, r"/items": {"origins": "http://localhost:3000"}})
+cors = CORS(app, origins=["http://localhost:3000"])
 
 jwt = JWT(app, authenticate, identity) # creates /auth endpoint
 
