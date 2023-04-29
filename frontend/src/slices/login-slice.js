@@ -19,16 +19,63 @@ export const logInUser = createAsyncThunk(
     }
 );
 
+export const verifyUserExists = createAsyncThunk(
+    "login/verify",
+    async (data, thunkApi) => {
+        try {
+            const url = determineBackendURL();
+            const userData = await axios.get(`${url}/user/${data.username}`); 
+            return userData.data
+        } catch (e) {
+            thunkApi.rejectWithValue(e);
+        }
+    }
+)
+
+export const changePassword = createAsyncThunk(
+    "login/changePassword",
+    async (data, thunkApi) => {
+        try {
+            const url = determineBackendURL();
+            const modifiedUserData = await axios.put(`${url}/user/${data.username}`, {password: data.password});
+
+            return modifiedUserData.data;
+        } catch (e) {
+            thunkApi.rejectWithValue(e);
+        }
+    }
+)
+
 const loginSlice = createSlice({
     name: "login",
     initialState: {
         loggedInUser: {},
+        forgotPasswordStep: 1,
+        userExists: false,
     },
     reducers: {
         logOutUser: (state) => {
             return {
                 ...state,
                 loggedInUser: {}
+            }
+        },
+        incrementStep: (state) => {
+            return {
+                ...state, 
+                forgotPasswordStep: state.forgotPasswordStep + 1,
+            }
+        },
+        decrementStep: (state) => {
+            return {
+                ...state, 
+                forgotPasswordStep: state.forgotPasswordStep - 1,
+            }
+        }, 
+        resetStepCounter: (state) => {
+            return {
+                ...state,
+                forgotPasswordStep: 1
             }
         }
     },
@@ -46,8 +93,34 @@ const loginSlice = createSlice({
         builder.addCase(logInUser.rejected, (state, action) => {
             alert(action.payload);
         })
+        builder.addCase(changePassword.fulfilled, (state, action) => {
+            if (!action.payload) {
+                alert("Incorrect username or password! Please try again!");
+                return state;
+            }
+            return {
+                ...state, 
+                loggedInUser: action.payload
+            }
+        })
+        builder.addCase(changePassword.rejected, (state, action) => {
+            alert(action.payload);
+        })
+        builder.addCase(verifyUserExists.fulfilled, (state, action) => {
+            return {
+                ...state, 
+                userExists: Boolean(action.payload),
+                loggedInUser: action.payload
+            }
+        })
+        builder.addCase(verifyUserExists.rejected, (state) => {
+            return {
+                ...state, 
+                userExists: false,
+            }
+        })
     }
 })
 
-export const { logOutUser } = loginSlice.actions;
+export const { logOutUser, incrementStep, decrementStep, resetStepCounter } = loginSlice.actions;
 export default loginSlice.reducer;
