@@ -9,9 +9,9 @@
     position: relative;
     left: 2.5%;
     align-items: stretch;
-    border-radius: 25%;
+    /* border-radius: 25%;
     font-size: 16pt;
-    font-family: "Roboto" sans-serif;
+    font-family: 'Poppins', 'Outifit', sans-serif; */
 }
 
 .register-header {

@@ -30,6 +30,12 @@ export const RegisterModal = (props) => {
     const [userConfirmationCode, setUserConfirmationCode] = useState("");
     const [passConfirm, setPassConfirm] = useState("");
     const [signupDisabled, setSignupDisabled] = useState(false);
+
+    const nextButtonExtraStyles = { 
+        borderRadius: "15px", 
+        fontSize: "15pt", 
+        fontFamily: "'Poppins', 'Outifit', sans-serif"
+    };
     
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -123,7 +129,16 @@ export const RegisterModal = (props) => {
                             />
                         </div>
                     ),
-                    bottomContent: <Button className='register-next-button' variant="contained" disabled={!(firstNameValid && lastNameValid && emailValid)} onClick={nextStep}>Next</Button>
+                    bottomContent: (
+                        <Button 
+                            className='register-next-button' 
+                            variant="contained"                     
+                            sx={nextButtonExtraStyles}   
+                            disabled={!(firstNameValid && lastNameValid && emailValid)} onClick={nextStep}
+                        >
+                            Next
+                        </Button>
+                    )
                 }
             case 2: 
                 return {
@@ -146,7 +161,17 @@ export const RegisterModal = (props) => {
                             </div>
                         </div>
                     ),
-                    bottomContent: <Button className='register-next-button' variant="contained" disabled={!phoneValid || !disablePhoneCheck} onClick={nextStep}>Next</Button>
+                    bottomContent: (
+                        <Button 
+                            className='register-next-button' 
+                            variant="contained" 
+                            sx={nextButtonExtraStyles} 
+                            disabled={!phoneValid || !disablePhoneCheck} 
+                            onClick={nextStep}
+                        >
+                            Next
+                        </Button>
+                    )
                 }
             case 3: 
                 return {
@@ -164,7 +189,17 @@ export const RegisterModal = (props) => {
                             <Button variant='text' onClick={resendVerificationCode}>Didn't receive a code?</Button>
                         </div>
                     ),
-                    bottomContent: <Button className='register-next-button' variant="contained" disabled={Boolean(!userConfirmationCode)} onClick={nextStep}>Verify</Button>
+                    bottomContent: (
+                        <Button 
+                            className='register-next-button' 
+                            variant="contained" 
+                            sx={nextButtonExtraStyles} 
+                            disabled={Boolean(!userConfirmationCode)} 
+                            onClick={nextStep}
+                        >
+                            Verify
+                        </Button>
+                    )
                 }
             case 4: 
                 return {
@@ -202,7 +237,16 @@ export const RegisterModal = (props) => {
                             <br />
                         </div>
                     ),
-                    bottomContent: <Button className='register-next-button' variant="contained" disabled={signupDisabled} onClick={nextStep}>Sign Up</Button>
+                    bottomContent: (
+                        <Button 
+                            className='register-next-button' 
+                            variant="contained" 
+                            sx={nextButtonExtraStyles} 
+                            disabled={signupDisabled} onClick={nextStep}
+                        >
+                            Sign Up
+                        </Button>
+                    )
                 }
             default: 
                 return {

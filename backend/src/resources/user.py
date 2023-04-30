@@ -2,6 +2,7 @@ import sqlite3
 import re
 from flask_restful import Resource, reqparse
 from flask_jwt import jwt_required
+from db import db
 
 from utils.validators import validate_email, validate_phone
 from models.user import User
@@ -58,6 +59,13 @@ class UserRegister(Resource):
         return {'message': 'User created successfully!'}, 201
     
 class RUser(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument('password', 
+        type=str,
+        required=True,
+        help="This field cannot be blank!"
+    )
+
     @classmethod
     def get(cls, username):
         user = User.find_by_username(username)
@@ -65,6 +73,18 @@ class RUser(Resource):
             return {'message': 'User not found!'}, 404
         return user.json(), 200
     
+    @classmethod
+    def put(cls, username):
+        user = User.find_by_username(username)
+        if not user:
+            return {'message': 'User not found!'}, 404
+
+        data = RUser.parser.parse_args()
+        new_password = data['password']
+        user.password = new_password
+        db.session.commit()
+        
+        return user.json(), 200
 
     # Note* Have classmethod above jwt_required if I want to require authorization for a class method.
     @classmethod
