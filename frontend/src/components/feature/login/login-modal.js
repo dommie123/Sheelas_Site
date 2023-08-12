@@ -6,6 +6,8 @@ import { TextField, Button, } from "@mui/material";
 
 import { incrementStep, logInUser, verifyUserExists, resetStepCounter, changePassword } from "../../../slices/login-slice";
 import { retrieveVerificationCode } from "../../../slices/register-slice";
+import { addToMessageQueue } from "../../../slices/global-slice";
+import { showError } from "../../../utils/error";
 import { Modal } from "../../common/modal/modal";
 
 import "./login-modal.css";
@@ -38,7 +40,8 @@ export const LoginModal = () => {
 
     const resendVerificationCode = () => {
         dispatch(retrieveVerificationCode({email: user.email}))
-        alert("A new code was sent to your email.")
+        // alert("A new code was sent to your email.")
+        dispatch(addToMessageQueue({ severity: "info", message: "A new code was sent to your email." }))
     }
 
     const nextStep = useCallback(() => {
@@ -46,8 +49,8 @@ export const LoginModal = () => {
             case 1: 
                 dispatch(verifyUserExists({username: user.username}))
                 
-                if (!userExists) {
-                    alert(`User ${user.username} doesn't exist in our database. Please try again.`);
+                if (!userExists && user.username) {
+                    showError(`User ${user.username} doesn't exist in our database. Please try again.`);
                     return;
                 }
 
@@ -56,7 +59,7 @@ export const LoginModal = () => {
                 break;
             case 2: 
                 if (userConfirmationCode !== confirmationCode) {
-                    alert("That code doesn't match the one we sent you! Please try again.");
+                    showError("That code doesn't match the one we sent you! Please try again.");
                     return;
                 }
 
@@ -64,7 +67,7 @@ export const LoginModal = () => {
                 break;
             case 3: 
                 if (user.password !== confirmPass) {
-                    alert("The passwords don't match! Please try again.");
+                    showError("The passwords don't match! Please try again.");
                     return;
                 }
                 
@@ -190,8 +193,12 @@ export const LoginModal = () => {
     }
 
     useMemo(() => {
-        if (!userExists) {
-            alert(`User ${user.username} doesn't exist in our database. Please try again.`);
+        if (!userExists && user.username) {
+            showError(`User ${user.username} doesn't exist in our database. Please try again.`);
+            return;
+        }
+
+        else if (!user.username) {
             return;
         }
 
@@ -202,7 +209,8 @@ export const LoginModal = () => {
     useEffect(() => {
         // If the user is already logged in, send them home.
         if (loggedInUser && loggedInUser.accessToken) {
-            alert(`Welcome, ${loggedInUser.first_name}!`)
+            // alert(`Welcome, ${loggedInUser.first_name}!`)
+            dispatch(addToMessageQueue({ severity: "success", message: `Welcome, ${loggedInUser.first_name}!` }))
             navigate("/home");  
         }
     }, [loggedInUser])

@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 import { determineBackendURL } from "../AppConfig";
+import { showError } from "../utils/error";
 
 export const logInUser = createAsyncThunk(
     "login/auth",
@@ -49,6 +50,7 @@ export const changePassword = createAsyncThunk(
 const loginSlice = createSlice({
     name: "login",
     initialState: {
+        error: false,
         loggedInUser: {},
         forgotPasswordStep: 1,
         userExists: false,
@@ -77,13 +79,21 @@ const loginSlice = createSlice({
                 ...state,
                 forgotPasswordStep: 1
             }
+        },
+        resetErrorMessage: (state) => {
+            return {
+                ...state,
+                error: false
+            }
         }
     },
     extraReducers: (builder) => {
         builder.addCase(logInUser.fulfilled, (state, action) => {
             if (!action.payload) {
-                alert("Incorrect username or password! Please try again!");
-                return state;
+                return {
+                    ...state, 
+                    error: "Incorrect username or password. Please try again.",
+                }
             }
             return {
                 ...state, 
@@ -91,12 +101,14 @@ const loginSlice = createSlice({
             }
         })
         builder.addCase(logInUser.rejected, (state, action) => {
-            alert(action.payload);
+            showError(action.payload);
         })
         builder.addCase(changePassword.fulfilled, (state, action) => {
             if (!action.payload) {
-                alert("Incorrect username or password! Please try again!");
-                return state;
+                return {
+                    ...state, 
+                    error: "Incorrect username or password. Please try again.",
+                }
             }
             return {
                 ...state, 
@@ -104,7 +116,7 @@ const loginSlice = createSlice({
             }
         })
         builder.addCase(changePassword.rejected, (state, action) => {
-            alert(action.payload);
+            showError(action.payload);
         })
         builder.addCase(verifyUserExists.fulfilled, (state, action) => {
             return {
@@ -122,5 +134,5 @@ const loginSlice = createSlice({
     }
 })
 
-export const { logOutUser, incrementStep, decrementStep, resetStepCounter } = loginSlice.actions;
+export const { logOutUser, incrementStep, decrementStep, resetStepCounter, resetErrorMessage } = loginSlice.actions;
 export default loginSlice.reducer;
