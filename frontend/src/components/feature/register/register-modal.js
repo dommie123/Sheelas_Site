@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { TextField, Button, Checkbox } from "@mui/material";
 
 import { incrementStep, retrieveVerificationCode, resetVerificationCode, registerUser, resetStepCounter, validatePassword } from '../../../slices/register-slice';
+import { addToMessageQueue } from '../../../slices/global-slice';
+import { showError } from '../../../utils/error';
 import { Modal } from '../../common/modal/modal';
 
 import './register-modal.css';
@@ -42,7 +44,7 @@ export const RegisterModal = (props) => {
 
     const nextStep = (e) => {
         if (registerStep === 1 && (!user.first_name || !user.last_name || !user.email)) {
-            alert("Please fill out all of the required fields before proceeding!");
+            showError("Please fill out all of the required fields before proceeding!");
             setFirstNameValid(Boolean(user.first_name));
             setLastNameValid(Boolean(user.last_name));
             dispatch(validateEmail(user.email));
@@ -50,7 +52,7 @@ export const RegisterModal = (props) => {
         } else if (registerStep === 2) {
             dispatch(retrieveVerificationCode({email: user.email}))
         } else if (registerStep === 3 && systemConfirmationCode !== userConfirmationCode) {
-            alert("The code you entered doesn't match the code we sent! Please try again!");
+            showError("The code you entered doesn't match the code we sent! Please try again!");
             return;
         } else if (registerStep === 3 && systemConfirmationCode === userConfirmationCode) {
             dispatch(resetVerificationCode());
@@ -65,7 +67,7 @@ export const RegisterModal = (props) => {
 
     const resendVerificationCode = () => {
         dispatch(retrieveVerificationCode({email: user.email}))
-        alert("A new code was sent to your email.")
+        dispatch(addToMessageQueue({ severity: "info", message: "A new code was sent to your email." }))
     }
 
     useEffect(() => {

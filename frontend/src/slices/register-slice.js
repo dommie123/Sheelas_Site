@@ -2,6 +2,10 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from 'axios';
 
 import { determineBackendURL } from "../AppConfig";
+import { addToMessageQueue } from "./global-slice";
+import { showError } from "../utils/error";
+
+import store from "../lib/store";
 
 export const retrieveVerificationCode = createAsyncThunk(
     'register/verify',
@@ -54,49 +58,28 @@ const registerSlice = createSlice({
         validatePassword: (state, action) => {
             state.passwordValid = true; // TODO have better password validation checks
         },
-        // registerUser: (state, action) => {
-        //     axios.post(`${determineBackendURL()}/register`, JSON.stringify({
-        //         "first_name": action.payload.firstName,
-        //         "last_name": action.payload.lastName,
-        //         "email": action.payload.email,
-        //         "phone": action.payload.phone,
-        //         "username": action.payload.username,
-        //         "password": action.payload.password,
-        //     })).then(() => {
-        //         console.log("User created successfully!");      // TODO replace with snackbar system
-        //     }).catch(err => {
-        //         console.error(`An error occurred while registering this user! Error: ${err.message}`)   // TODO replace with snackbar system.
-        //     })
-        // },
-        // retrieveVerificationCode: (state, action) => {
-        //     axios.post(`${determineBackendURL()}/verify`, JSON.stringify({
-        //         "email": action.payload.email
-        //     }), { headers: { "Content-Type": "application/json" } }).then(response => {
-        //         console.log({code: response.data.code});
-        //         state.confirmationCode = response.data.code;
-        //     }).catch(err => {
-        //         alert(`An error occurred while retrieving the verification code! Error: ${err.message}`);
-        //     })
-        // },
         resetVerificationCode: (state) => {
             state.confirmationCode = "";
         }
     },
     extraReducers: (builder) => {
+        // const dispatch = store.dispatch;
+
         builder.addCase(retrieveVerificationCode.fulfilled, (state, action) => {
             state.confirmationCode = action.payload.code
         })
 
         builder.addCase(retrieveVerificationCode.rejected, (state, action) => {
-            alert("An error occurred while retrieving the verification code! Please refer to the network tab for details!");
+            showError("An error occurred while retrieving the verification code! Please refer to the network tab for details!");
         })
 
         builder.addCase(registerUser.fulfilled, (state, action) => {
-            alert("User created successfully!");
+            // dispatch(addToMessageQueue({ severity: "success", message: "User created successfully!" }));
+            alert("User created successfully!")
         })
 
         builder.addCase(registerUser.rejected, (state, action) => {
-            alert("An error occurred while registering this user! Please refer to the network tab for details!");
+            showError("An error occurred while registering this user! Please refer to the network tab for details!");
         })
 
     }
