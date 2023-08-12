@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { TextField, Button, Checkbox } from "@mui/material";
 
-import { incrementStep, retrieveVerificationCode, resetVerificationCode, registerUser, resetStepCounter, validatePassword } from '../../../slices/register-slice';
+import { incrementStep, retrieveVerificationCode, resetVerificationCode, registerUser, resetStepCounter, validatePassword, validatePhone } from '../../../slices/register-slice';
 import { addToMessageQueue } from '../../../slices/global-slice';
 import { showError } from '../../../utils/error';
 import { Modal } from '../../common/modal/modal';
@@ -67,7 +67,7 @@ export const RegisterModal = (props) => {
 
     const resendVerificationCode = () => {
         dispatch(retrieveVerificationCode({email: user.email}))
-        dispatch(addToMessageQueue({ severity: "info", message: "A new code was sent to your email." }))
+        dispatch(addToMessageQueue({ severity: "info", content: "A new code was sent to your email." }))
     }
 
     useEffect(() => {
@@ -82,6 +82,10 @@ export const RegisterModal = (props) => {
         
         if (user.email) {
             dispatch(validateEmail(user.email));
+        }
+
+        if (user.phone && !disablePhoneCheck) {
+            dispatch(validatePhone(user.phone));
         }
 
         if (user.username) {
@@ -110,6 +114,7 @@ export const RegisterModal = (props) => {
                                 label="First Name"
                                 onChange={(e) => setUser({...user, first_name: e.target.value})}
                                 className='register-text-field'
+                                value={user.first_name}
                             />
                             <br />
                             <TextField
@@ -119,6 +124,7 @@ export const RegisterModal = (props) => {
                                 label="Last Name"
                                 onChange={(e) => setUser({...user, last_name: e.target.value})}
                                 className='register-text-field'
+                                value={user.last_name}
                             />
                             <br />
                             <TextField
@@ -128,6 +134,7 @@ export const RegisterModal = (props) => {
                                 label="Email Address"
                                 onChange={(e) => setUser({...user, email: e.target.value})}
                                 className='register-text-field'
+                                value={user.email}
                             />
                         </div>
                     ),
@@ -155,6 +162,7 @@ export const RegisterModal = (props) => {
                                 onChange={(e) => setUser({...user, phone: e.target.value})}
                                 className='register-text-field'
                                 disabled={disablePhoneCheck}
+                                value={user.phone}
                             />
                             <br />
                             <div className='register-two-checkbox-wrapper'>
@@ -168,7 +176,7 @@ export const RegisterModal = (props) => {
                             className='register-next-button' 
                             variant="contained" 
                             sx={nextButtonExtraStyles} 
-                            disabled={!phoneValid || !disablePhoneCheck} 
+                            disabled={(!phoneValid || user.phone === "") && !disablePhoneCheck} 
                             onClick={nextStep}
                         >
                             Next
@@ -186,6 +194,7 @@ export const RegisterModal = (props) => {
                                 onChange={(e) => setUserConfirmationCode(e.target.value)}
                                 className='register-text-field'
                                 type='password'
+                                value={userConfirmationCode}
                             />
                             <br />
                             <Button variant='text' onClick={resendVerificationCode}>Didn't receive a code?</Button>
@@ -215,6 +224,7 @@ export const RegisterModal = (props) => {
                                 label="Username"
                                 onChange={(e) => setUser({...user, username: e.target.value})}
                                 className='register-text-field'
+                                value={user.username}
                             />
                             <br />
                             <TextField
@@ -225,6 +235,7 @@ export const RegisterModal = (props) => {
                                 onChange={(e) => setUser({...user, password: e.target.value})}
                                 className='register-text-field'
                                 type='password'
+                                value={user.password}
                             />
                             <br />
                             <TextField
@@ -235,6 +246,7 @@ export const RegisterModal = (props) => {
                                 onChange={(e) => setPassConfirm(e.target.value)}
                                 className='register-text-field'
                                 type='password'
+                                value={passConfirm}
                             />
                             <br />
                         </div>

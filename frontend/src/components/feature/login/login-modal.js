@@ -41,7 +41,7 @@ export const LoginModal = () => {
     const resendVerificationCode = () => {
         dispatch(retrieveVerificationCode({email: user.email}))
         // alert("A new code was sent to your email.")
-        dispatch(addToMessageQueue({ severity: "info", message: "A new code was sent to your email." }))
+        dispatch(addToMessageQueue({ severity: "info", content: "A new code was sent to your email." }))
     }
 
     const nextStep = useCallback(() => {
@@ -83,9 +83,9 @@ export const LoginModal = () => {
                 topContent: (<h2 className="login-header">Sign In Here!</h2>),
                 centerContent: (
                     <div className="login-wrapper">
-                        <TextField className="login-text-field" variant="outlined" label="Username" onChange={(e) => setUser({...user, username: e.target.value})} />
+                        <TextField className="login-text-field" variant="outlined" label="Username" onChange={(e) => setUser({...user, username: e.target.value})} value={user.username} />
                         <br />
-                        <TextField className="login-text-field" variant="outlined" label="Password" onChange={(e) => setUser({...user, password: e.target.value})} type="password" />
+                        <TextField className="login-text-field" variant="outlined" label="Password" onChange={(e) => setUser({...user, password: e.target.value})} type="password" value={user.password} />
                         <br />
                         <Button variant="text" onClick={() => setForgotPassword(true)}>Forgot Password?</Button>
                     </div>
@@ -107,7 +107,7 @@ export const LoginModal = () => {
                     topContent: (<h2 className="login-header">Recover your account</h2>),
                     centerContent: (
                         <div className="login-wrapper">
-                            <TextField className="login-text-field" variant="outlined" label="Username" onChange={(e) => setUser({...user, username: e.target.value})} />
+                            <TextField className="login-text-field" variant="outlined" label="Username" onChange={(e) => setUser({...user, username: e.target.value})} value={user.username} />
                         </div>
                     ),
                     bottomContent: (
@@ -132,6 +132,7 @@ export const LoginModal = () => {
                                 onChange={(e) => setUserConfirmationCode(e.target.value)}
                                 className='login-text-field'
                                 type='password'
+                                value={userConfirmationCode}
                             />
                             <br />
                             <Button variant='text' onClick={resendVerificationCode}>Didn't receive a code?</Button>
@@ -160,6 +161,7 @@ export const LoginModal = () => {
                                 onChange={(e) => setUser({...user, password: e.target.value})}
                                 className="login-text-field"
                                 type="password"
+                                value={user.password}
                             />
                             <br />
                             <TextField
@@ -168,6 +170,7 @@ export const LoginModal = () => {
                                 onChange={(e) => setConfirmPass(e.target.value)}
                                 className="login-text-field"
                                 type="password"
+                                value={confirmPass}
                             />
                         </div>
                     ),
