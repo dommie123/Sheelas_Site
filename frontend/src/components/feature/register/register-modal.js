@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { TextField, Button, Checkbox } from "@mui/material";
+import { TextField, Button, Checkbox, IconButton } from "@mui/material";
 
-import { incrementStep, retrieveVerificationCode, resetVerificationCode, registerUser, resetStepCounter, validatePassword, validatePhone } from '../../../slices/register-slice';
+import CloseIcon from "@mui/icons-material/Close";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+
+import { incrementStep, retrieveVerificationCode, resetVerificationCode, registerUser, resetStepCounter, validatePassword, validatePhone, validateEmail, decrementStep } from '../../../slices/register-slice';
 import { addToMessageQueue } from '../../../slices/global-slice';
 import { showError } from '../../../utils/error';
 import { Modal } from '../../common/modal/modal';
 
 import './register-modal.css';
-import { validateEmail } from '../../../slices/register-slice';
 
 export const RegisterModal = (props) => {
     const registerStep = useSelector(state => state.register.step);
@@ -65,6 +67,20 @@ export const RegisterModal = (props) => {
         dispatch(incrementStep());
     }
 
+    const previousStep = (e) => {
+        switch(registerStep) {
+            case 1: 
+                navigate("/");
+                break;
+            default: 
+                if (registerStep >= 2) {
+                    dispatch(decrementStep());
+                }
+                break;
+                
+        }
+    }
+
     const resendVerificationCode = () => {
         dispatch(retrieveVerificationCode({email: user.email}))
         dispatch(addToMessageQueue({ severity: "info", content: "A new code was sent to your email." }))
@@ -104,7 +120,16 @@ export const RegisterModal = (props) => {
         switch(registerStep) {
             case 1: 
                 return {
-                    topContent: <h2 className='register-header'>Create your account</h2>,
+                    topContent: (
+                        <>
+                            <IconButton className="register-modal-close-btn" onClick={previousStep}>
+                                <CloseIcon />
+                            </IconButton>
+                            <h2 className='register-header'>
+                                Create your account
+                            </h2>
+                        </>
+                    ),
                     centerContent: (
                         <div className='register-wrapper'>
                             <TextField
@@ -151,7 +176,16 @@ export const RegisterModal = (props) => {
                 }
             case 2: 
                 return {
-                    topContent: <h2 className='register-header'>Add a phone number?</h2>,
+                    topContent: (
+                        <>
+                            <IconButton className="register-modal-back-btn" onClick={previousStep}>
+                                <ArrowBackIcon />
+                            </IconButton>
+                            <h2 className='register-header'>
+                                Add a phone number?
+                            </h2>
+                        </>
+                    ),
                     centerContent: (
                         <div className='register-wrapper'>
                             <TextField
@@ -185,7 +219,16 @@ export const RegisterModal = (props) => {
                 }
             case 3: 
                 return {
-                    topContent: <h2 className='register-header'>We sent you a code!</h2>,
+                    topContent: (
+                        <>
+                            <IconButton className="register-modal-back-btn" onClick={previousStep}>
+                                <ArrowBackIcon />
+                            </IconButton>
+                            <h2 className='register-header'>
+                                We sent you a code!
+                            </h2>
+                        </>
+                    ),
                     centerContent: (
                         <div className='register-wrapper'>
                             <TextField
@@ -214,7 +257,16 @@ export const RegisterModal = (props) => {
                 }
             case 4: 
                 return {
-                    topContent: <h2 className='register-header'>You'll need a password</h2>,
+                    topContent: (
+                        <>
+                            <IconButton className="register-modal-back-btn" onClick={previousStep}>
+                                <ArrowBackIcon />
+                            </IconButton>
+                            <h2 className='register-header'>
+                                You'll need a password
+                            </h2>
+                        </>
+                    ),
                     centerContent: (
                         <div className='register-wrapper'>
                             <TextField

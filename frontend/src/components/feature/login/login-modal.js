@@ -2,9 +2,12 @@ import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import { TextField, Button, } from "@mui/material";
+import { TextField, Button, IconButton } from "@mui/material";
 
-import { incrementStep, logInUser, verifyUserExists, resetStepCounter, changePassword } from "../../../slices/login-slice";
+import CloseIcon from "@mui/icons-material/Close";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+
+import { incrementStep, decrementStep, logInUser, verifyUserExists, resetStepCounter, changePassword } from "../../../slices/login-slice";
 import { retrieveVerificationCode } from "../../../slices/register-slice";
 import { addToMessageQueue } from "../../../slices/global-slice";
 import { showError } from "../../../utils/error";
@@ -80,7 +83,16 @@ export const LoginModal = () => {
     const determineModalContent = () => {
         if (!forgotPassword) {
             return {
-                topContent: (<h2 className="login-header">Sign In Here!</h2>),
+                topContent: (
+                    <>
+                        <IconButton className="login-modal-close-btn" onClick={() => {navigate("/")}}>
+                            <CloseIcon />
+                        </IconButton>
+                        <h2 className="login-header">
+                            Sign In Here!
+                        </h2>
+                    </>
+                ),
                 centerContent: (
                     <div className="login-wrapper">
                         <TextField className="login-text-field" variant="outlined" label="Username" onChange={(e) => setUser({...user, username: e.target.value})} value={user.username} />
@@ -104,7 +116,16 @@ export const LoginModal = () => {
         switch(forgotPasswordStep) {
             case 1: 
                 return { 
-                    topContent: (<h2 className="login-header">Recover your account</h2>),
+                    topContent: (
+                        <>
+                            <IconButton className="login-modal-back-btn" onClick={() => {setForgotPassword(false)}}>
+                                <ArrowBackIcon />
+                            </IconButton>
+                            <h2 className="login-header">
+                                Recover your account
+                            </h2>
+                        </>
+                    ),
                     centerContent: (
                         <div className="login-wrapper">
                             <TextField className="login-text-field" variant="outlined" label="Username" onChange={(e) => setUser({...user, username: e.target.value})} value={user.username} />
@@ -123,7 +144,16 @@ export const LoginModal = () => {
                 }
             case 2: 
                 return {
-                    topContent: <h2 className='login-header'>We sent you a code!</h2>,
+                    topContent: (
+                        <>
+                            <IconButton className="login-modal-back-btn" onClick={() => {dispatch(decrementStep())}}>
+                                <ArrowBackIcon />
+                            </IconButton>
+                            <h2 className='login-header'>
+                                We sent you a code!
+                            </h2>
+                        </>
+                    ),
                     centerContent: (
                         <div className='login-wrapper'>
                             <TextField
@@ -152,7 +182,16 @@ export const LoginModal = () => {
                 }
             case 3: 
                 return {
-                    topContent: <h2 className="login-header">Change your password</h2>,
+                    topContent: (
+                        <>
+                            <IconButton className="login-modal-back-btn" onClick={() => {dispatch(decrementStep())}}>
+                                <ArrowBackIcon />
+                            </IconButton>
+                            <h2 className="login-header">
+                                Change your password
+                            </h2>
+                        </>
+                    ),
                     centerContent: (
                         <div className="login-wrapper">
                             <TextField

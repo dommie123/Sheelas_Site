@@ -44,6 +44,9 @@ const registerSlice = createSlice({
         incrementStep: (state) => {
             state.step++;
         },
+        decrementStep: (state) => {
+            state.step--;
+        },
         resetStepCounter: (state) => {
             state.step = 1;
         },
@@ -85,5 +88,5 @@ const registerSlice = createSlice({
     }
 })
 
-export const { incrementStep, resetStepCounter, validateEmail, validatePhone, validatePassword, resetVerificationCode } = registerSlice.actions;
+export const { incrementStep, decrementStep, resetStepCounter, validateEmail, validatePhone, validatePassword, resetVerificationCode } = registerSlice.actions;
 export default registerSlice.reducer;
