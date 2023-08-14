@@ -12,23 +12,48 @@ const router = createBrowserRouter([
     },
     {
         path: "/home",
-        element: <div>Home</div>
+        element: (
+            <>
+                <Navbar />
+                <div>Home</div>
+            </>
+        )
     },
     {
         path: "/register",
-        element: <RegisterModal />
+        element: (
+            <>
+                <Navbar />
+                <RegisterModal />
+            </>
+        )
     },
     {
         path: "/login",
-        element: <LoginModal />
+        element: (
+            <>
+                <Navbar />
+                <LoginModal />
+            </>
+        )
     },
     {
         path: "/about",
-        element: <div>About Us</div>
+        element: (
+            <>
+                <Navbar />
+                <div>About Us</div>
+            </>
+        )
     },
     {
         path: "/contact",
-        element: <div>Contact Us</div>
+        element: (
+            <>
+                <Navbar />
+                <div>Contact Us</div>
+            </>
+        )
     },
 ]);
 

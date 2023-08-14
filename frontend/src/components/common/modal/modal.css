@@ -1,8 +1,11 @@
 .modal-container {
     width: 100%;
-    height: 100%;
+    height: 101%;
     background-color: rgba(0, 0, 0, 0.5);
     align-content: center;
+    position: absolute;
+    top: 0;
+    bottom: 0;
 }
 
 .modal-content {
@@ -22,6 +25,9 @@
     height: 75px;
     width: 100%;
     margin-bottom: 10px;
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .modal-center-content {
