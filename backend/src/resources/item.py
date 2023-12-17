@@ -62,7 +62,7 @@ class RItem(Resource):
             item = Item(name, **data)
             status_code = 201
         else:
-            item.qunatity = data['quantity']
+            item.quantity = data['quantity']
             item.description = data['description']
             item.price = data['price']
             status_code = 200
