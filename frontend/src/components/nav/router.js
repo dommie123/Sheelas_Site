@@ -5,6 +5,7 @@ import { Navbar } from "./navbar";
 import { RegisterModal } from "../feature/register/register-modal";
 import { LoginModal } from "../feature/login/login-modal";
 import AboutPage from "../feature/about/about-us";
+import ContactUsPage from "../feature/contact-us/contact-us";
 
 const router = createBrowserRouter([
     {
@@ -52,7 +53,7 @@ const router = createBrowserRouter([
         element: (
             <>
                 <Navbar />
-                <div>Contact Us</div>
+                <ContactUsPage />
             </>
         )
     },
