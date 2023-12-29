@@ -8,6 +8,7 @@ export const Navbar = (props) => {
         <Header title="Hello World!">
             <NavLink to="/home">Home</NavLink>
             <NavLink to="/about">About</NavLink>
+            <NavLink to="/contact">Contact Us</NavLink>
             <NavLink to="/login">Log In</NavLink>
             <NavLink to="/register">Sign Up</NavLink>
         </Header>
