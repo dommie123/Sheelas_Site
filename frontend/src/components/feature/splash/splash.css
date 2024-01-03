@@ -1,0 +1,40 @@
+.splash-container {
+    padding-left: 45%;
+    padding-top: 20%;
+}
+
+h1 {
+    text-align: center;
+    width: 150px;
+}
+
+.buttons-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+    justify-content: space-around;
+    height: 135px;
+}
+
+.nav-button {
+    height: 80%;
+    width: 95%;
+    align-items: flex-start;
+    border-radius: 5em;
+    font-size: 16pt;
+    padding: 5px 10px;
+    font-family: 'Poppins', 'Outifit', sans-serif;
+    text-decoration: none;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+#login-nav-button {
+    background-color: #1876D2;
+    color: white;
+}
+
+#signup-nav-button {
+    color: #1876D2;
+    border: 1px solid #1876D2;
+}
