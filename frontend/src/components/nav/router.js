@@ -6,11 +6,12 @@ import { RegisterModal } from "../feature/register/register-modal";
 import { LoginModal } from "../feature/login/login-modal";
 import AboutPage from "../feature/about/about-us";
 import ContactUsPage from "../feature/contact-us/contact-us";
+import SplashPage from "../feature/splash/splash";
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <Navbar />
+        element: <SplashPage />
     },
     {
         path: "/home",
@@ -25,7 +26,6 @@ const router = createBrowserRouter([
         path: "/register",
         element: (
             <>
-                <Navbar />
                 <RegisterModal />
             </>
         )
@@ -34,7 +34,6 @@ const router = createBrowserRouter([
         path: "/login",
         element: (
             <>
-                <Navbar />
                 <LoginModal />
             </>
         )
