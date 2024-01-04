@@ -1,0 +1,32 @@
+.item-card-container {
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    justify-content: flex-start;
+    width: 65%;
+    height: fit-content;
+    margin-bottom: 10px;
+}
+
+.item-text-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    text-align: left;
+    margin-left: 5px;
+}
+
+.item-image {
+    width: 150px;
+    height: 150px;
+}
+
+.item-price {
+    font-weight: 550;
+}
+
+.item-low-quantity-messsage {
+    font-weight: 650;
+    color: orangered;
+    font-style: italic;
+}
