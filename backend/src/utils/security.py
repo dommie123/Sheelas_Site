@@ -34,6 +34,6 @@ def send_code_to_email(recipient_email, verification_code):
     server = smtplib.SMTP("smtp.gmail.com:587")
     server.starttls()
     # print(f"Username: sheelabot69420@gmail.com \nPassword: {configs['password']}")
-    server.login("dman9532@gmail.com", configs['password'])
+    server.login("sheelabot69420@gmail.com", configs['password'])
     server.send_message(msg)
     server.quit()
