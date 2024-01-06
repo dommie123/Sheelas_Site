@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-import { showError } from "../utils/error";
 import { determineBackendURL } from "../AppConfig";
 
 export const getItems = createAsyncThunk(
