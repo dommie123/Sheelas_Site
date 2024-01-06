@@ -18,27 +18,81 @@ export const getItems = createAsyncThunk(
     }
 );
 
+export const sellItem = createAsyncThunk(
+    'items/sell',
+    async (data, thunkApi) => {
+        try {
+            const url = determineBackendURL();
+            const accessToken = `jwt ${data.user.accessToken.access_token}`;
+            const res = await axios.post(
+                `${url}/item/${data.itemName}`,
+                data.item,
+                { 
+                    headers: {
+                        "Authorization": accessToken
+                    }
+                }
+            );
+
+            return res.data;
+
+        } catch (e) {
+            return thunkApi.rejectWithValue(e);
+        }
+    }
+)
+
 const itemSlice = createSlice({
     name: 'items',
     initialState: {
-        items: []
+        items: [],
+        selectedItem: {},
+        error: {}
     },
-    reducers: {},
+    reducers: {
+        setSelectedItem: (state, action) => {
+            return {
+                ...state, 
+                selectedItem: action.payload
+            }
+        },
+        clearSelectedItem: (state) => {
+            return {
+                ...state,
+                selectedItem: {}
+            }
+        }
+    },
     extraReducers: (builder) => {
         builder.addCase(getItems.fulfilled, (state, action) => {
             return {
                 ...state,
-                items: action.payload.items
+                items: action.payload.items,
+                error: {}
             }
         });
-        builder.addCase(getItems.rejected, (state) => {
-            showError('An error occurred while fetching the items!');
+        builder.addCase(getItems.rejected, (state, action) => {
             return {
                 ...state,
-                items: []
+                items: [],
+                error: action.error
             }
-        })
+        });
+        builder.addCase(sellItem.fulfilled, (state) => {
+            window.location.href = '/home';
+            return {
+                ...state,
+                error: {}
+            };
+        });
+        builder.addCase(sellItem.rejected, (state, action) => {
+            return {
+                ...state,
+                error: action.error
+            };
+        });
     }
 });
 
+export const { setSelectedItem, clearSelectedItem } = itemSlice.actions;
 export default itemSlice.reducer;

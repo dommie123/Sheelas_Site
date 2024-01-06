@@ -1,3 +1,10 @@
 .home-container {
     background-color: #F7FFFB;
+    height: 85vh;
+}
+
+.add-item-button {
+    position: fixed;
+    left: 93vw;
+    top: 40vh;
 }
