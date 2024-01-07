@@ -1,3 +1,13 @@
 .home-container {
     background-color: #F7FFFB;
 }
+
+.home-content {
+    height: 79vh;
+}
+
+.add-item-button {
+    position: fixed;
+    left: 93vw;
+    bottom: 50px;
+}

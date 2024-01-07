@@ -8,6 +8,7 @@ import HomePage from "../feature/home/home";
 import AboutPage from "../feature/about/about-us";
 import ContactUsPage from "../feature/contact-us/contact-us";
 import SplashPage from "../feature/splash/splash";
+import SellItemPage from "../feature/sell-item/sell-item-page";
 
 const router = createBrowserRouter([
     {
@@ -57,6 +58,15 @@ const router = createBrowserRouter([
             </>
         )
     },
+    {
+        path: '/sell',
+        element: (
+            <>
+                <Navbar />
+                <SellItemPage />
+            </>
+        )
+    }
 ]);
 
 export default function Router(props) {

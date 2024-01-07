@@ -1,0 +1,19 @@
+.sell-item-page-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 0 15px;
+    height: 85%;
+}
+
+.sell-item-header {
+    text-align: center;
+}
+
+.sell-item-submit-button {
+    width: 100px;
+}
+
+.sell-item-description > .MuiInputBase-root {
+    height: 150px;
+}
