@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -43,22 +43,13 @@ export const LoginModal = () => {
 
     const resendVerificationCode = () => {
         dispatch(retrieveVerificationCode({email: user.email}))
-        // alert("A new code was sent to your email.")
         dispatch(addToMessageQueue({ severity: "info", content: "A new code was sent to your email." }))
     }
 
     const nextStep = useCallback(() => {
         switch(forgotPasswordStep) {
             case 1: 
-                dispatch(verifyUserExists({username: user.username}))
-                
-                if (!userExists && user.username) {
-                    showError(`User ${user.username} doesn't exist in our database. Please try again.`);
-                    return;
-                }
-
-                dispatch(retrieveVerificationCode({email: loggedInUser.email}));
-                dispatch(incrementStep())
+                dispatch(verifyUserExists({username: user.username}));
                 break;
             case 2: 
                 if (userConfirmationCode !== confirmationCode) {
@@ -77,8 +68,23 @@ export const LoginModal = () => {
                 dispatch(changePassword(user));
                 dispatch(resetStepCounter());
                 setForgotPassword(false);
+                signInUser();
+                break;
+            default:
+                break;
         }
-    }, [forgotPasswordStep, loggedInUser, user, confirmPass, userExists])
+        // eslint-disable-next-line
+    }, [forgotPasswordStep, loggedInUser, user, confirmPass, userExists]);
+
+    useEffect(() => {
+        if ((!userExists && user.username) || !user.username) {
+            return;
+        }
+
+        dispatch(retrieveVerificationCode({email: loggedInUser.email}));
+        dispatch(incrementStep());
+        // eslint-disable-next-line
+    }, [userExists]);
 
     const determineModalContent = () => {
         if (!forgotPassword) {
@@ -99,7 +105,15 @@ export const LoginModal = () => {
                         <br />
                         <TextField className="login-text-field" variant="outlined" label="Password" onChange={(e) => setUser({...user, password: e.target.value})} type="password" value={user.password} />
                         <br />
-                        <Button variant="text" onClick={() => setForgotPassword(true)}>Forgot Password?</Button>
+                        <Button variant="text" onClick={() => {
+                            setUser({
+                                username: '',
+                                password: ''
+                            });
+                            setForgotPassword(true);
+                        }}>
+                            Forgot Password?
+                        </Button>
                     </div>
                 ),
                 bottomContent: (
@@ -234,28 +248,43 @@ export const LoginModal = () => {
         }
     }
 
-    useMemo(() => {
-        if (!userExists && user.username) {
-            showError(`User ${user.username} doesn't exist in our database. Please try again.`);
-            return;
-        }
+    // useEffect(() => {
+    //     if (!userExists && user.username) {
+    //         showError(`User ${user.username} doesn't exist in our database. Please try again.`);
+    //         return;
+    //     }
 
-        else if (!user.username) {
-            return;
-        }
+    //     if (!loggedInUser && !user.username) {
+    //         showError('Please enter a username!');
+    //         return;
+    //     }
 
-        dispatch(retrieveVerificationCode({email: loggedInUser.email}));
-        dispatch(incrementStep())
-    }, [userExists])
+    //     if (!sentCode) {
+    //         return;
+    //     }
+
+    //     dispatch(retrieveVerificationCode({email: loggedInUser.email}));
+    //     dispatch(incrementStep())
+    // }, [userExists, sentCode])
 
     useEffect(() => {
         // If the user is already logged in, send them home.
         if (loggedInUser && loggedInUser.accessToken) {
-            // alert(`Welcome, ${loggedInUser.first_name}!`)
-            dispatch(addToMessageQueue({ severity: "success", message: `Welcome, ${loggedInUser.first_name}!` }))
+            dispatch(addToMessageQueue({ severity: "success", content: `Welcome, ${loggedInUser.first_name}!` }))
             navigate("/home");  
         }
+        // eslint-disable-next-line
     }, [loggedInUser])
+
+    useEffect(() => {
+        if (forgotPassword && forgotPasswordStep === 1) {
+            setUser({
+                username: '',
+                password: ''
+            })
+        }
+        // eslint-disable-next-line
+    }, [forgotPassword])
 
     return (
         <Modal 

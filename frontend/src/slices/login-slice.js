@@ -119,6 +119,13 @@ const loginSlice = createSlice({
             showError(action.payload);
         })
         builder.addCase(verifyUserExists.fulfilled, (state, action) => {
+            if (!Boolean(action.payload)) {
+                return {
+                    ...state,
+                    error: `That user doesn't exist in our database. Please try again.`
+                };
+            }
+
             return {
                 ...state, 
                 userExists: Boolean(action.payload),
@@ -129,6 +136,7 @@ const loginSlice = createSlice({
             return {
                 ...state, 
                 userExists: false,
+                error: "That user doesn't exist in our database. Please try again."
             }
         })
     }
