@@ -6,7 +6,7 @@ export function Header(props) {
 
     return (
         <header>
-            <h1>{title}</h1>
+            <h1><a className="header-title-link" href="/home">{title}</a></h1>
             {props.children}
         </header>
     )

@@ -11,3 +11,8 @@ header > h1 {
     font-size: 16;
     font-weight: bold;
 }
+
+.header-title-link {
+    text-decoration: none;
+    color: black;
+}

@@ -1,16 +1,95 @@
-import React from "react";
-import {NavLink} from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { Autocomplete, Menu, MenuItem, IconButton, TextField, Button, InputAdornment } from "@mui/material";
 
+import AppsIcon from '@mui/icons-material/Apps';
+import ArrowDropdownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+
+import { logOutUser } from "../../slices/login-slice";
 import { Header } from "../common/header/header";
 
+import './navbar.css';
+
 export const Navbar = (props) => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const items = useSelector(state => state.items.items);
+    const user = useSelector(state => state.login.loggedInUser);
+
+    const [profAnchorEl, setProfAnchorEl] = useState(null);
+    const profOpen = Boolean(profAnchorEl);
+    const [appsAnchorEl, setAppsAnchorEl] = useState(null);
+    const appsOpen = Boolean(appsAnchorEl);
+
+    const handleProfClose = () => {
+        setProfAnchorEl(null);
+    }
+
+    const handleAppsClose = () => {
+        setAppsAnchorEl(null);
+    }
+
+    const handleLogout = () => {
+        dispatch(logOutUser());
+        handleProfClose();
+        navigate('/');
+    }
+
     return (
-        <Header title="Hello World!">
-            <NavLink to="/home">Home</NavLink>
-            <NavLink to="/about">About</NavLink>
-            <NavLink to="/contact">Contact Us</NavLink>
-            <NavLink to="/login">Log In</NavLink>
-            <NavLink to="/register">Sign Up</NavLink>
+        <Header title="SheBay">
+            <Autocomplete
+                className="product-search-bar"
+                options={items.map((item) => { return { label: item.name }})}
+                renderInput={(params) => (
+                    <TextField 
+                        {...params} 
+                        size="small" 
+                        label="Search" 
+                    />
+                )}
+            />
+            <div className="header-options-suite">
+                <Button 
+                    className="profile-menu-button"
+                    aria-controls={profOpen ? 'profile-menu' : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={profOpen ? 'true' : undefined}
+                    onClick={(event) => {
+                        setProfAnchorEl(event.currentTarget)
+                    }}
+                >
+                    {`Hi, ${user.first_name}`}
+                    {profOpen ? <ArrowDropUpIcon /> : <ArrowDropdownIcon />}
+                </Button>
+                <Menu
+                    className="profile-menu"
+                    anchorEl={profAnchorEl}
+                    open={profOpen}
+                    onClose={handleProfClose}
+                    MenuListProps={{
+                        'aria-labelledby': 'profile-menu-button',
+                    }}
+                >
+                    <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                </Menu>
+                <IconButton className="other-pages" title="Other Pages" onClick={(event) => { setAppsAnchorEl(event.currentTarget) }}>
+                    <AppsIcon />    
+                </IconButton>
+                <Menu
+                    className="apps-menu"
+                    anchorEl={appsAnchorEl}
+                    open={appsOpen}
+                    onClose={handleAppsClose}
+                    MenuListProps={{
+                        'aria-labelledby': 'apps-menu-button',
+                    }}
+                >
+                    <MenuItem onClick={() => { navigate("/about"); handleAppsClose(); }}>About</MenuItem>
+                    <MenuItem onClick={() => { navigate("/contact"); handleAppsClose(); }}>Contact Us</MenuItem>
+                </Menu>             
+            </div>
         </Header>
     )
 }
