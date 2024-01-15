@@ -3,7 +3,7 @@
 }
 
 .home-content {
-    height: 79vh;
+    height: calc(100vh - 155px);
 }
 
 .add-item-button {
