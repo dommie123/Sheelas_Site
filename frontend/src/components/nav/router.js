@@ -9,6 +9,7 @@ import AboutPage from "../feature/about/about-us";
 import ContactUsPage from "../feature/contact-us/contact-us";
 import SplashPage from "../feature/splash/splash";
 import SellItemPage from "../feature/sell-item/sell-item-page";
+import BuyItemPage from "../feature/buy-item/buy-item";
 
 const router = createBrowserRouter([
     {
@@ -64,6 +65,15 @@ const router = createBrowserRouter([
             <>
                 <Navbar />
                 <SellItemPage />
+            </>
+        )
+    },
+    {
+        path: '/buy',
+        element: (
+            <>
+                <Navbar />
+                <BuyItemPage />
             </>
         )
     }

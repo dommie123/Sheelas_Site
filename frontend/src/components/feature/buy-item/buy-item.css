@@ -1,0 +1,24 @@
+.buy-item-container {
+    margin-top: 20px;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.buy-item-top-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.buy-item-information {
+    margin-left: 15px;
+}
+
+.item-quantity {
+    width: 100px;
+}
+
+.item-price {
+    font-weight: 600;
+    font-size: 18pt;
+}

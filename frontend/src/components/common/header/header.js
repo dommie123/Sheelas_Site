@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./header.css";
 
 export function Header(props) {
@@ -6,7 +7,7 @@ export function Header(props) {
 
     return (
         <header>
-            <h1><a className="header-title-link" href="/home">{title}</a></h1>
+            <h1><Link className="header-title-link" to="/home">{title}</Link></h1>
             {props.children}
         </header>
     )

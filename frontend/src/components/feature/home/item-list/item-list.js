@@ -17,7 +17,7 @@ export default function ItemList() {
 
     return (
         <div className='item-list-container'>
-            {items.length > 0 ? items.map(item => <ItemCard name={item.name} description={item.description} price={`$${item.price}`} quantity={item.quantity} />) : <></>}
+            {items.length > 0 ? items.map(item => <ItemCard itemId={item.id} name={item.name} description={item.description} price={`$${Number.parseFloat(item.price).toFixed(2)}`} quantity={item.quantity} seller_id={item.seller_id} />) : <></>}
         </div>
     )
 }
