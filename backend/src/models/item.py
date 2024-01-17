@@ -26,6 +26,7 @@ class Item(db.Model):
             'description': self.description,
             'quantity': self.quantity,
             'price': self.price,
+            'seller_id': self.seller_id
         }
     
     def save_item(self):

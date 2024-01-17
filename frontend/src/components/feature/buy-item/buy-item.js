@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import { Button } from "@mui/material";
+
+import { addToMessageQueue } from "../../../slices/global-slice";
+import { authPutRequest } from "../../../utils/axios-helpers";
+import { showError } from '../../../utils/error';
 
 import BasicSelect from "../../common/select/select";
 
@@ -9,21 +14,26 @@ import './buy-item.css';
 
 export default function BuyItemPage() {
     const selectedItem = useSelector(state => state.items.selectedItem);
-    // const selectedItem = {
-    //     name: "Squidward's Trumpet 75890432758uikgfy9ryhtlgk fjdsyhuguy4383957 wejhfuidsa78i475u irhewfiuyu8 dosiuauyt8fgywirqy89dsyafsd hkfiuwa6y7849r5y32ui",
-    //     description: "Squidward used to play this all the time! That was before his hopes and dreams sadly passed away. Now this serves as a memento of what once was",
-    //     price: 19.99,
-    //     quantity: 10
-    // }
+    const user = useSelector(state => state.login.loggedInUser);
     const [quantitySelected, setQuantitySelected] = useState('1');
     const [quantityOptions, setQuantityOptions] = useState([]);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handleBuyNow = () => {
-        // TODO alter item quantity once user buys, or mark as sold out after user buys all of it
+        // TODO payment gateway stuff
+        const price = Number.parseFloat(selectedItem.price.split("$")[1]);
+        authPutRequest(`item/${selectedItem.name}`, { ...selectedItem, price, quantity: selectedItem.quantity - 1 }, user.accessToken)
+            .then(() => {
+                // TODO navigate to Thank you page instead of home page
+                dispatch(addToMessageQueue({ severity: "success", content: "Thank you for your purhcase!" }));
+                navigate("/home");
+            }).catch(err => {
+                showError(err.message);
+            })
     }
 
-    const  handleAddToCart = () => {
+    const handleAddToCart = () => {
         // TODO work on this after cart functionality is added
     }
 
@@ -56,13 +66,14 @@ export default function BuyItemPage() {
                         label="Quantity"
                         onChange={event => { setQuantitySelected(event.target.value) }}
                     />
-                    <h3 className="item-price">{selectedItem.price}</h3>
+                    <h3 className="item-price">{(selectedItem.quantity > 0) ? selectedItem.price : "Sold Out!"}</h3>
                     <div className="buy-item-button-suite">
                         <Button
                             className="buy-now-btn"
                             color="primary"
                             variant="contained"
                             onClick={handleBuyNow}
+                            disabled={selectedItem.quantity === 0}
                         >
                             Buy Now
                         </Button>

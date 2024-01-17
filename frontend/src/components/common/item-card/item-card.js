@@ -9,15 +9,15 @@ import { setSelectedItem } from '../../../slices/item-slice';
 import './item-card.css';
 
 export default function ItemCard(props) {
-    const {itemId, name, description, price, quantity} = props;
+    const {itemId, seller_id, name, description, price, quantity} = props;
     // TODO have custom images for each item (but save for later, since I struggle with custom image display)
     const placeholderImgUrl = `https://www.russorizio.com/wp-content/uploads/2016/07/ef3-placeholder-image.jpg`;
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const handleLinkClick = (event) => {
-        dispatch(setSelectedItem({ ...props, id: itemId, itemId: undefined }));
-        
+        dispatch(setSelectedItem({ ...props, seller_id, id: itemId, itemId: undefined }));
+
         navigate('/buy');
 
         event.preventDefault();
