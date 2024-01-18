@@ -26,8 +26,8 @@ export default function BuyItemPage() {
         authPutRequest(`item/${selectedItem.name}`, { ...selectedItem, price, quantity: selectedItem.quantity - 1 }, user.accessToken)
             .then(() => {
                 // TODO navigate to Thank you page instead of home page
-                dispatch(addToMessageQueue({ severity: "success", content: "Thank you for your purhcase!" }));
-                navigate("/home");
+                // dispatch(addToMessageQueue({ severity: "success", content: "Thank you for your purhcase!" }));
+                navigate("/thank-you");
             }).catch(err => {
                 showError(err.message);
             })
