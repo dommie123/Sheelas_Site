@@ -4,6 +4,8 @@ import { useSelector } from 'react-redux';
 
 import Button from '@mui/material/Button';
 
+import { toCurrencyFormat } from '../../../../utils/strings';
+
 import ItemCard from '../../../common/item-card/item-card';
 
 import { primaryButtonExtraStyles } from '../../../../styles/global-styles';
@@ -19,7 +21,7 @@ export default function ThankYouPage() {
             <p className='thank-you-additional-message'>
                 A confirmation email will be sent to your inbox confirming your purchase. We hope you enjoy!
             </p>
-            <ItemCard {...selectedItem} itemId={selectedItem.id} isOnThankYouPage />
+            <ItemCard {...selectedItem} price={toCurrencyFormat(selectedItem.price)} itemId={selectedItem.id} isOnThankYouPage />
             <Button variant="contained" className='go-home-button' sx={primaryButtonExtraStyles} onClick={() => { navigate('/home') }}>Go Home</Button>
         </div>
     )
