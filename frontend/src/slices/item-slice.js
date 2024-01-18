@@ -17,6 +17,20 @@ export const getItems = createAsyncThunk(
     }
 );
 
+export const getItemsByName = createAsyncThunk(
+    'items/getByName',
+    async (searchTerm, thunkApi) => {
+        try {
+            const url = determineBackendURL();
+            const items = await axios.get(`${url}/fitems/${searchTerm}`);
+
+            return items.data;
+        } catch (e) {
+            return thunkApi.rejectWithValue(e);
+        }
+    }
+)
+
 export const sellItem = createAsyncThunk(
     'items/sell',
     async (data, thunkApi) => {
@@ -44,7 +58,8 @@ export const sellItem = createAsyncThunk(
 const itemSlice = createSlice({
     name: 'items',
     initialState: {
-        items: [],
+        allItems: [],
+        items: [],      // list of items filtered by search term (if applicable)
         selectedItem: {},
         error: {}
     },
@@ -66,11 +81,27 @@ const itemSlice = createSlice({
         builder.addCase(getItems.fulfilled, (state, action) => {
             return {
                 ...state,
+                allItems: action.payload.items,
                 items: action.payload.items,
                 error: {}
             }
         });
         builder.addCase(getItems.rejected, (state, action) => {
+            return {
+                ...state,
+                allItems: [],
+                items: [],
+                error: action.error
+            }
+        });
+        builder.addCase(getItemsByName.fulfilled, (state, action) => {
+            return {
+                ...state,
+                items: action.payload.items,
+                error: {}
+            }
+        });
+        builder.addCase(getItemsByName.rejected, (state, action) => {
             return {
                 ...state,
                 items: [],
