@@ -8,7 +8,7 @@ from flask_cors import CORS, cross_origin
 
 from utils.security import authenticate, identity, generate_verification_code, send_code_to_email
 from resources.user import RUser, UserRegister
-from resources.item import RItem, ItemList
+from resources.item import RItem, ItemList, FilteredItemList
 from resources.ticket import RTicket, TicketList
 
 config_file = open(f'{os.getcwd()}\\backend\\src\\configs.json')
@@ -30,6 +30,7 @@ api.add_resource(RItem, "/item/<string:name>")
 api.add_resource(ItemList, "/items")
 api.add_resource(RTicket, "/ticket")
 api.add_resource(TicketList, "/tickets")
+api.add_resource(FilteredItemList, "/fitems/<string:search_term>")
 
 @app.route("/verify", methods=["POST"])
 @cross_origin(origins="http://localhost:3000")

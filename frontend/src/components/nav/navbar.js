@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { Autocomplete, Menu, MenuItem, IconButton, TextField, Button, InputAdornment } from "@mui/material";
+import { Autocomplete, Menu, MenuItem, IconButton, TextField, Button } from "@mui/material";
 
 import AppsIcon from '@mui/icons-material/Apps';
 import ArrowDropdownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 
+import { getItems } from "../../slices/item-slice";
+import { getItemsByName } from "../../slices/item-slice";
 import { logOutUser } from "../../slices/login-slice";
+
 import { Header } from "../common/header/header";
 
 import './navbar.css';
@@ -15,7 +18,7 @@ import './navbar.css';
 export const Navbar = (props) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const items = useSelector(state => state.items.items);
+    const items = useSelector(state => state.items.allItems);
     const user = useSelector(state => state.login.loggedInUser);
 
     const [profAnchorEl, setProfAnchorEl] = useState(null);
@@ -37,6 +40,27 @@ export const Navbar = (props) => {
         navigate('/');
     }
 
+    const determineSearchBarFunctionality = (event, newValue) => {
+        if (window.location.href === '/home') {
+            handleSearchItem(event, newValue);
+        }
+    }
+
+    const handleSearchItem = (_, newValue) => {
+        if (!newValue) {
+            dispatch(getItems());
+            return;
+        }
+
+        const searchTerm = newValue.label;
+
+        if (!searchTerm || searchTerm === '') {
+            dispatch(getItems());
+        } else {
+            dispatch(getItemsByName(searchTerm));
+        }
+    }
+
     return (
         <Header title="SheBay">
             <Autocomplete
@@ -49,6 +73,8 @@ export const Navbar = (props) => {
                         label="Search" 
                     />
                 )}
+                onChange={handleSearchItem}
+                includeInputInList
             />
             <div className="header-options-suite">
                 <Button 

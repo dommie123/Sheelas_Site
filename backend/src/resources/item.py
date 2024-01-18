@@ -82,3 +82,7 @@ class RItem(Resource):
 class ItemList(Resource):
     def get(self):
         return {"items": [item.json() for item in Item.query.all()]}, 200
+    
+class FilteredItemList(Resource):
+    def get(self, search_term):
+        return {"items": [item.json() for item in Item.query.all() if search_term.lower() in item.name.lower()]}, 200
