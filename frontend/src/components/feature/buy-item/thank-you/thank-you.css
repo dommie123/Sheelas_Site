@@ -1,0 +1,22 @@
+.thank-you-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    height: calc(100vh - 155px);
+}
+
+.thank-you-header {
+    font-size: 30pt;
+}
+
+.thank-you-additional-message {
+    font-size: 14pt;
+}
+
+.go-home-button {
+    height: 75px;
+    width: 35%;
+    position: relative;
+    /* left: 24.5%; */
+}

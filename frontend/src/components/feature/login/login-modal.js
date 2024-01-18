@@ -13,6 +13,7 @@ import { addToMessageQueue } from "../../../slices/global-slice";
 import { showError } from "../../../utils/error";
 import { Modal } from "../../common/modal/modal";
 
+import { primaryButtonExtraStyles } from "../../../styles/global-styles";
 import "./login-modal.css";
 
 export const LoginModal = () => {
@@ -26,13 +27,7 @@ export const LoginModal = () => {
     const [user, setUser] = useState({
         username: "",
         password: "",
-    })
-
-    const nextButtonExtraStyles = {
-        borderRadius: "15px",
-        fontSize: "15pt",
-        fontFamily: "'Poppins', 'Outifit', sans-serif"
-    }
+    });
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -120,7 +115,7 @@ export const LoginModal = () => {
                     <Button 
                         className="login-next-button" 
                         variant="contained" 
-                        sx={nextButtonExtraStyles}
+                        sx={primaryButtonExtraStyles}
                         onClick={signInUser}   
                     >Sign In</Button>
                 )
@@ -149,7 +144,7 @@ export const LoginModal = () => {
                         <Button 
                             className="login-next-button" 
                             variant="contained" 
-                            sx={nextButtonExtraStyles}
+                            sx={primaryButtonExtraStyles}
                             onClick={nextStep}   
                         >
                             Send me a code
@@ -186,7 +181,7 @@ export const LoginModal = () => {
                         <Button 
                             className='login-next-button' 
                             variant="contained" 
-                            sx={nextButtonExtraStyles} 
+                            sx={primaryButtonExtraStyles} 
                             disabled={Boolean(!userConfirmationCode)} 
                             onClick={nextStep}
                         >
@@ -231,7 +226,7 @@ export const LoginModal = () => {
                         <Button
                             className='login-next-button' 
                             variant="contained" 
-                            sx={nextButtonExtraStyles} 
+                            sx={primaryButtonExtraStyles} 
                             disabled={Boolean(!userConfirmationCode)} 
                             onClick={nextStep}
                         >

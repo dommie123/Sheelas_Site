@@ -9,7 +9,7 @@ import { setSelectedItem } from '../../../slices/item-slice';
 import './item-card.css';
 
 export default function ItemCard(props) {
-    const {itemId, seller_id, name, description, price, quantity} = props;
+    const {itemId, seller_id, name, description, price, quantity, isOnThankYouPage} = props;
     // TODO have custom images for each item (but save for later, since I struggle with custom image display)
     const placeholderImgUrl = `https://www.russorizio.com/wp-content/uploads/2016/07/ef3-placeholder-image.jpg`;
     const dispatch = useDispatch();
@@ -30,7 +30,7 @@ export default function ItemCard(props) {
                 <a onClick={handleLinkClick} href='/buy' className='select-item-link'><Typography variant='h5' component='h5' className='item-title'>{name}</Typography></a>
                 <a onClick={handleLinkClick} href='/buy' className='select-item-link'><Typography variant='p' component='p' className='item-decsription'>{description}</Typography></a>
                 <a onClick={handleLinkClick} href='/buy' className='select-item-link'><Typography variant='p' component='p' className='item-price'>{price}</Typography></a>
-                {(quantity < 10  && quantity > 0) && (<Typography variant='p' component='p' className='item-low-quantity-messsage'>Only {quantity} left! Order now!</Typography>)}
+                {((quantity < 10 && quantity > 0) && !isOnThankYouPage) && (<Typography variant='p' component='p' className='item-low-quantity-messsage'>Only {quantity} left! Order now!</Typography>)}
             </div>
         </Card>
     )
