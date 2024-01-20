@@ -3,7 +3,7 @@ header {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin: 5px 5px;
+    margin: 5px 10px;
 }
 
 header > h1 {
@@ -15,4 +15,9 @@ header > h1 {
 .header-title-link {
     text-decoration: none;
     color: black;
+}
+
+.header-title-text {
+    margin: 10px 15px;
+    margin-bottom: 15px;
 }

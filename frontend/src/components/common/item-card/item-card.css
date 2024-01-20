@@ -1,3 +1,4 @@
+/* Regular Item Card Styles */
 .item-card-container {
     display: flex;
     flex-direction: row;
@@ -35,4 +36,50 @@
     cursor: pointer;
     text-decoration: none;
     color: black;
+}
+
+/* Small Item Card Styles */
+.small-item-card-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 100%;
+    height: fit-content;
+    margin-bottom: 20px;
+}
+
+.small-item-text-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: left;
+    margin-left: 5px;
+    width: 100%;
+}
+
+.small-item-image {
+    width: 75px;
+    height: 75px;
+
+}
+
+.small-item-title {
+    font-weight: 300;
+    text-overflow: ellipsis;
+}
+
+.small-item-price {
+    font-weight: 600;
+    font-size: 12pt;
+}
+
+.small-item-quantity {
+    font-size: 10pt;
+}
+
+.small-item-delete-btn {
+    height: 50px;
+    width: 50px;
+    position: relative;
+    top: 0.5em;
 }
