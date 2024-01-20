@@ -64,9 +64,14 @@ export default function ShoppingCartDrawer(props) {
                 className={`${className}-drawer`}
             >
                 <Typography variant='h5' component='h5' className='shopping-cart-header'>Your Cart</Typography>
-                <Divider className='cart-header-separator' />
+                <Divider className='cart-header-separator' sx={{
+                    marginBottom: "10px",
+                    marginTop: "10px",
+                    marginLeft: "15px",
+                    marginRight: "15px",
+                }}/>
                 {list()}
-                <Button sx={primaryButtonExtraStyles} variant='contained' className='checkout-btn' onClick={() => {}}>Checkout ($2.98)</Button>
+                <Button sx={{ ...primaryButtonExtraStyles, marginTop: "auto" }} variant='contained' className='checkout-btn' onClick={() => {}}>Checkout ($2.98)</Button>
             </Drawer>
         </div>
     );
