@@ -16,7 +16,7 @@ export default function ItemCard(props) {
     const navigate = useNavigate();
 
     const handleLinkClick = (event) => {
-        dispatch(setSelectedItem({ ...props, seller_id, id: itemId, itemId: undefined }));
+        dispatch(setSelectedItem({ ...props, seller_id, id: itemId, itemId }));
 
         navigate('/buy');
 
