@@ -1,6 +1,6 @@
 import os
 import json
-# import logging
+import logging
 
 from flask import Flask, request
 from flask_restful import Api
@@ -14,7 +14,7 @@ from resources.ticket import RTicket, TicketList
 
 from models.item import Item
 
-# logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.DEBUG)
 
 config_file = open(f'{os.getcwd()}\\backend\\src\\configs.json')
 configs = json.load(config_file)
@@ -56,9 +56,11 @@ def checkout_items():
     try:
         items = request.json.get('items')
         db_items = [Item.find_by_id(item['id']) for item in items]
-
+        
         for index in range(len(items)):
-            db_items[index].quantity -= items[index]['quantity']
+            subtract_item_quantity = float(items[index]['quantity'])
+
+            db_items[index].quantity -= subtract_item_quantity
             db_items[index].save_item()
 
         return { 'message': "Thank you!" }, 200

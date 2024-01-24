@@ -46,7 +46,7 @@ export default function BuyItemPage() {
             dispatch(addToMessageQueue({ severity: "success", content: "Item added to cart!" }));
             navigate("/home");
         }
-    }, [itemInCart])
+    }, [itemInCart, quantitySelected])
 
     useEffect(() => {
         if (!Boolean(selectedItem)) {

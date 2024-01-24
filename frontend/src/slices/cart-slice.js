@@ -5,7 +5,7 @@ export const checkoutItems = createAsyncThunk(
     "cart/checkout",
     async (data, thunkApi) => {
         try {
-            const response = await authPostRequest("/checkout", data.items, data.accessToken);
+            const response = await authPostRequest("/checkout", { items: data.items }, data.accessToken);
 
             return response.data;
         } catch (e) {
@@ -17,7 +17,8 @@ export const checkoutItems = createAsyncThunk(
 const cartSlice = createSlice({
     name: "cart",
     initialState: {
-        items: []
+        items: [],
+        error: false
     },
     reducers: {
         addItem: (state, action) => {
@@ -50,13 +51,15 @@ const cartSlice = createSlice({
         builder.addCase(checkoutItems.fulfilled, (state) => {
             return {
                 ...state,
-                items: []
+                items: [],
+                error: false
             }
         });
         builder.addCase(checkoutItems.rejected, (state) => {
             return {
                 ...state,
-                items: []
+                items: [],
+                error: true
             }
         });
     }

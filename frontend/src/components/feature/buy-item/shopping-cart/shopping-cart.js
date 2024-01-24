@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 
 import {
     Drawer,
@@ -14,6 +15,8 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 import SmallItemCard from '../../../common/item-card/small-item-card';
 
+import { setUserCheckedOut } from '../../../../slices/login-slice';
+import { checkoutItems } from '../../../../slices/cart-slice';
 import { toCurrencyFormat, fromCurrencyFormat } from '../../../../utils/strings';
 
 import { primaryButtonExtraStyles } from '../../../../styles/global-styles';
@@ -24,6 +27,9 @@ export default function ShoppingCartDrawer(props) {
     const [open, setOpen] = useState(false);
     const [cartTotal, setCartTotal] = useState(0);
     const items = useSelector(state => state.cart.items);
+    const accessToken = useSelector(state => state.login.loggedInUser.accessToken);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     // const items = [ 
     //     {
     //         id: 1,
@@ -43,6 +49,13 @@ export default function ShoppingCartDrawer(props) {
     //     },
     // ];
 
+    const handleCheckout = () => {
+        setOpen(false);
+        dispatch(checkoutItems({ items, accessToken }));
+        dispatch(setUserCheckedOut(true));
+        navigate('/thank-you')
+    }
+
     const calculateTotal = () => {
         let newTotal = 0;
 
@@ -59,8 +72,6 @@ export default function ShoppingCartDrawer(props) {
                 className={`${className}-list-container`}
                 sx={{ width: 400 }}
                 role="presentation"
-                onClick={() => { setOpen(false) }}
-                onKeyDown={() => { setOpen(false) }}
             >
                 <List>
                     {items.map((item) => (
@@ -98,7 +109,7 @@ export default function ShoppingCartDrawer(props) {
                     variant='contained' 
                     className='checkout-btn' 
                     disabled={items.length === 0} 
-                    onClick={() => {}}
+                    onClick={handleCheckout}
                 >
                     {`Checkout (${toCurrencyFormat(cartTotal)})`}
                 </Button>

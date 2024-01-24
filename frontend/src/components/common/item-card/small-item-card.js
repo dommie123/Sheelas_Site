@@ -16,7 +16,8 @@ export default function SmallItemCard(props) {
     const placeholderImgUrl = `https://www.russorizio.com/wp-content/uploads/2016/07/ef3-placeholder-image.jpg`;
     const displayPrice = toCurrencyFormat(fromCurrencyFormat(price) * quantity);
 
-    const handleRemoveItem = () => {
+    const handleRemoveItem = (event) => {
+        event.preventDefault();
         dispatch(removeItem({ itemId, name, price, quantity }));
     }
 
