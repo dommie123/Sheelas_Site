@@ -2,3 +2,11 @@
     flex: 3;
     margin: 0 15px;
 }
+
+.header-options-suite {
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-right: 5px;
+}
+

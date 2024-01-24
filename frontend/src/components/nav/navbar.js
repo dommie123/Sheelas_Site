@@ -15,6 +15,7 @@ import { logOutUser } from "../../slices/login-slice";
 import { Header } from "../common/header/header";
 
 import './navbar.css';
+import ShoppingCartDrawer from "../feature/buy-item/shopping-cart/shopping-cart";
 
 export const Navbar = (props) => {
     const navigate = useNavigate();
@@ -117,7 +118,7 @@ export const Navbar = (props) => {
                 >
                     <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </Menu>
-                <IconButton className="other-pages" title="Other Pages" onClick={(event) => { setAppsAnchorEl(event.currentTarget) }}>
+                {/* <IconButton className="other-pages" title="Other Pages" onClick={(event) => { setAppsAnchorEl(event.currentTarget) }}>
                     <AppsIcon />
                 </IconButton>
                 <Menu
@@ -131,7 +132,8 @@ export const Navbar = (props) => {
                 >
                     <MenuItem onClick={() => { navigate("/about"); handleAppsClose(); }}>About</MenuItem>
                     <MenuItem onClick={() => { navigate("/contact"); handleAppsClose(); }}>Contact Us</MenuItem>
-                </Menu>
+                </Menu> */}
+                <ShoppingCartDrawer className="shopping-cart" />
             </div>
         </Header>
     )

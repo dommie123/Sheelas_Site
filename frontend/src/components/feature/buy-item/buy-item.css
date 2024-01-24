@@ -10,6 +10,13 @@
     justify-content: flex-start;
 }
 
+.buy-item-button-suite {
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 14em;
+}
+
 .buy-item-information {
     margin-left: 15px;
 }

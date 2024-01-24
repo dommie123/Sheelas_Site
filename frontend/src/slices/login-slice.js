@@ -54,6 +54,7 @@ const loginSlice = createSlice({
         loggedInUser: {},
         forgotPasswordStep: 1,
         userExists: false,
+        userHasCheckedOut: false,
     },
     reducers: {
         logOutUser: (state) => {
@@ -84,6 +85,12 @@ const loginSlice = createSlice({
             return {
                 ...state,
                 error: false
+            }
+        },
+        setUserCheckedOut: (state, action) => {
+            return {
+                ...state,
+                userHasCheckedOut: action.payload
             }
         }
     },
@@ -142,5 +149,5 @@ const loginSlice = createSlice({
     }
 })
 
-export const { logOutUser, incrementStep, decrementStep, resetStepCounter, resetErrorMessage } = loginSlice.actions;
+export const { logOutUser, incrementStep, decrementStep, resetStepCounter, resetErrorMessage, setUserCheckedOut } = loginSlice.actions;
 export default loginSlice.reducer;

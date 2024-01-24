@@ -1,20 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import { Button } from "@mui/material";
 
 import { setSelectedItem } from "../../../slices/item-slice";
+import { addItem } from "../../../slices/cart-slice";
 import { authPutRequest } from "../../../utils/axios-helpers";
 import { showError } from '../../../utils/error';
 
 import BasicSelect from "../../common/select/select";
 
 import './buy-item.css';
+import { areItemsEqual } from "../../../utils/objects";
+import { addToMessageQueue } from "../../../slices/global-slice";
 
 export default function BuyItemPage() {
     const selectedItem = useSelector(state => state.items.selectedItem);
     const user = useSelector(state => state.login.loggedInUser);
+    const cartItems = useSelector(state => state.cart.items);
+    const [itemInCart, setItemInCart] = useState(false);
     const [quantitySelected, setQuantitySelected] = useState('1');
     const [quantityOptions, setQuantityOptions] = useState([]);
     const dispatch = useDispatch();
@@ -32,21 +37,38 @@ export default function BuyItemPage() {
             })
     }
 
-    const handleAddToCart = () => {
-        // TODO work on this after cart functionality is added
-    }
+    const handleAddToCart = useCallback(() => {
+        if (!itemInCart) {
+            dispatch(addItem({
+                ...selectedItem,
+                quantity: quantitySelected
+            }));
+            dispatch(addToMessageQueue({ severity: "success", content: "Item added to cart!" }));
+            navigate("/home");
+        }
+    }, [itemInCart, quantitySelected])
 
     useEffect(() => {
         if (!Boolean(selectedItem)) {
             return;
         }
 
+        // Check if this item is already in the shopping cart. If so, do not add it.
+        setItemInCart(false)
+        for (let item of cartItems) {
+            if (areItemsEqual(item, selectedItem)) {
+                setItemInCart(true);
+                break;
+            }
+        }  
+
         const newOptions = [];
         for (let i = 1; i <= selectedItem.quantity; i++) {
             newOptions.push(`${i}`);
         }
+
         setQuantityOptions(newOptions);
-    }, [selectedItem])
+    }, [selectedItem, cartItems])
 
     return Boolean(selectedItem) ? (
         <div className="buy-item-container">
@@ -77,7 +99,7 @@ export default function BuyItemPage() {
                             Buy Now
                         </Button>
                         <Button 
-                            disabled
+                            disabled={!Boolean(selectedItem.quantity > 0 && !itemInCart)}
                             className="add-to-cart-btn"
                             color="secondary"
                             onClick={handleAddToCart}

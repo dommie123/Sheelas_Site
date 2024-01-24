@@ -1,0 +1,119 @@
+import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+
+import {
+    Drawer,
+    Box,
+    List,
+    IconButton,
+    Button,
+    Typography,
+    Divider
+} from '@mui/material';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+
+import SmallItemCard from '../../../common/item-card/small-item-card';
+
+import { setUserCheckedOut } from '../../../../slices/login-slice';
+import { checkoutItems } from '../../../../slices/cart-slice';
+import { toCurrencyFormat, fromCurrencyFormat } from '../../../../utils/strings';
+
+import { primaryButtonExtraStyles } from '../../../../styles/global-styles';
+import "./shopping-cart.css";
+
+export default function ShoppingCartDrawer(props) {
+    const { className } = props;
+    const [open, setOpen] = useState(false);
+    const [cartTotal, setCartTotal] = useState(0);
+    const items = useSelector(state => state.cart.items);
+    const accessToken = useSelector(state => state.login.loggedInUser.accessToken);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    // const items = [ 
+    //     {
+    //         id: 1,
+    //         name: "Mint Candies",
+    //         description: "This is a test desecription",
+    //         price: "$0.99",
+    //         quantity: 1,
+    //         seller_id: 1
+    //     },
+    //     {
+    //         id: 2,
+    //         name: "My Hero Academia Stickers",
+    //         description: "This is a test desecription",
+    //         price: "$1.99",
+    //         quantity: 1,
+    //         seller_id: 1
+    //     },
+    // ];
+
+    const handleCheckout = () => {
+        setOpen(false);
+        dispatch(checkoutItems({ items, accessToken }));
+        dispatch(setUserCheckedOut(true));
+        navigate('/thank-you')
+    }
+
+    const calculateTotal = () => {
+        let newTotal = 0;
+
+        items.forEach(item => {
+            newTotal += fromCurrencyFormat(item.price) * item.quantity;
+        });
+
+        setCartTotal(newTotal);
+    }
+
+    const list = useCallback(() => { 
+        return items.length > 0 ? (
+            <Box
+                className={`${className}-list-container`}
+                sx={{ width: 400 }}
+                role="presentation"
+            >
+                <List>
+                    {items.map((item) => (
+                        <SmallItemCard itemId={item.id} name={item.name} price={item.price} quantity={item.quantity} />
+                    ))}
+                </List>
+            </Box>
+        ) : (<p className='cart-is-empty-text'>Your cart is empty! Why not fill it up with some awesome stuff?</p>)
+    }, [items]);
+
+    useEffect(() => {
+        calculateTotal();
+        // eslint-disable-next-line
+    }, [items]);
+
+    return (
+        <div className={className}>
+            <IconButton className={`${className}-button`} onClick={() => { setOpen(true) }}><ShoppingCartIcon /></IconButton>
+            <Drawer
+                anchor="right"
+                open={open}
+                onClose={() => { setOpen(false) }}
+                className={`${className}-drawer`}
+            >
+                <Typography variant='h5' component='h5' className='shopping-cart-header'>Your Cart</Typography>
+                <Divider className='cart-header-separator' sx={{
+                    marginBottom: "10px",
+                    marginTop: "10px",
+                    marginLeft: "15px",
+                    marginRight: "15px",
+                }}/>
+                {list()}
+                <Button 
+                    sx={{ ...primaryButtonExtraStyles, marginTop: "auto" }} 
+                    variant='contained' 
+                    className='checkout-btn' 
+                    disabled={items.length === 0} 
+                    onClick={handleCheckout}
+                >
+                    {`Checkout (${toCurrencyFormat(cartTotal)})`}
+                </Button>
+            </Drawer>
+        </div>
+    );
+}
