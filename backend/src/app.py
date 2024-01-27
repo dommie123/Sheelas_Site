@@ -8,6 +8,7 @@ from flask_jwt import JWT, jwt_required
 from flask_cors import CORS, cross_origin
 
 from utils.security import authenticate, identity, generate_verification_code, send_code_to_email
+from utils.email import send_email, generate_receipt
 from resources.user import RUser, UserRegister
 from resources.item import RItem, ItemList, FilteredItemList
 from resources.ticket import RTicket, TicketList
@@ -55,6 +56,7 @@ def send_verification_code():
 def checkout_items():
     try:
         items = request.json.get('items')
+        user = request.json.get('user')
         db_items = [Item.find_by_id(item['id']) for item in items]
         
         for index in range(len(items)):
@@ -63,6 +65,7 @@ def checkout_items():
             db_items[index].quantity -= subtract_item_quantity
             db_items[index].save_item()
 
+        send_email(user['email'], "SheBay Order Confirmation", generate_receipt(items, user), is_html=True)
         return { 'message': "Thank you!" }, 200
 
     except Exception as e:
