@@ -30,7 +30,7 @@ export default function ThankYouPage() {
             <p className='thank-you-additional-message'>
                 A confirmation email with your receipt will be sent to your inbox confirming your purchase. We hope you enjoy!
             </p>
-            {userCheckedOut ? <></> : <ItemCard {...selectedItem} price={toCurrencyFormat(selectedItem.price)} itemId={selectedItem.id} isOnThankYouPage />}
+            {userCheckedOut ? <></> : <ItemCard {...selectedItem} price={selectedItem.price} itemId={selectedItem.id} isOnThankYouPage />}
             <Button variant="contained" className='go-home-button' sx={primaryButtonExtraStyles} onClick={() => { navigate('/home') }}>Go Home</Button>
         </div>
     )
