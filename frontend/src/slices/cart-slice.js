@@ -5,7 +5,7 @@ export const checkoutItems = createAsyncThunk(
     "cart/checkout",
     async (data, thunkApi) => {
         try {
-            const response = await authPostRequest("/checkout", { items: data.items }, data.accessToken);
+            const response = await authPostRequest("/checkout", { items: data.items, user: data.user }, data.accessToken);
 
             return response.data;
         } catch (e) {

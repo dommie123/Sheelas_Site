@@ -4,10 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { Button } from "@mui/material";
 
-import { setSelectedItem } from "../../../slices/item-slice";
+import { checkoutItems } from "../../../slices/cart-slice";
 import { addItem } from "../../../slices/cart-slice";
-import { authPutRequest } from "../../../utils/axios-helpers";
-import { showError } from '../../../utils/error';
 
 import BasicSelect from "../../common/select/select";
 
@@ -27,14 +25,16 @@ export default function BuyItemPage() {
 
     const handleBuyNow = () => {
         // TODO payment gateway stuff
-        const price = Number.parseFloat(selectedItem.price.split("$")[1]);
-        authPutRequest(`item/${selectedItem.name}`, { ...selectedItem, price, quantity: selectedItem.quantity - 1 }, user.accessToken)
-            .then((res) => {
-                dispatch(setSelectedItem(res.data));
-                navigate("/thank-you");
-            }).catch(err => {
-                showError(err.message);
-            })
+        // const price = Number.parseFloat(selectedItem.price.split("$")[1]);
+        dispatch(checkoutItems({ items: [{ ...selectedItem, quantity: quantitySelected }], user: user, accessToken: user.accessToken }));
+        navigate("/thank-you");
+        // authPutRequest(`item/${selectedItem.name}`, { ...selectedItem, price, quantity: selectedItem.quantity - 1 }, user.accessToken)
+        //     .then((res) => {
+        //         dispatch(setSelectedItem(res.data));
+        //         navigate("/thank-you");
+        //     }).catch(err => {
+        //         showError(err.message);
+        //     })
     }
 
     const handleAddToCart = useCallback(() => {

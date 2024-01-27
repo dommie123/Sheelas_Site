@@ -27,7 +27,7 @@ export default function ShoppingCartDrawer(props) {
     const [open, setOpen] = useState(false);
     const [cartTotal, setCartTotal] = useState(0);
     const items = useSelector(state => state.cart.items);
-    const accessToken = useSelector(state => state.login.loggedInUser.accessToken);
+    const user = useSelector(state => state.login.loggedInUser);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     // const items = [ 
@@ -51,7 +51,7 @@ export default function ShoppingCartDrawer(props) {
 
     const handleCheckout = () => {
         setOpen(false);
-        dispatch(checkoutItems({ items, accessToken }));
+        dispatch(checkoutItems({ items, user: user, accessToken: user.accessToken }));
         dispatch(setUserCheckedOut(true));
         navigate('/thank-you')
     }
