@@ -36,7 +36,7 @@ api.add_resource(RItem, "/item/<string:name>")
 api.add_resource(ItemList, "/items")
 api.add_resource(RTicket, "/ticket")
 api.add_resource(TicketList, "/tickets")
-api.add_resource(FilteredItemList, "/fitems/<string:search_term>")
+api.add_resource(FilteredItemList, "/fitems")
 
 @app.route("/verify", methods=["POST"])
 @cross_origin(origins="http://localhost:3000")

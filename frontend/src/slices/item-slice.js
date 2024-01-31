@@ -22,7 +22,7 @@ export const getItemsByName = createAsyncThunk(
     async (searchTerm, thunkApi) => {
         try {
             const url = determineBackendURL();
-            const items = await axios.get(`${url}/fitems/${searchTerm}`);
+            const items = await axios.post(`${url}/fitems`, { search_term: searchTerm });
 
             return items.data;
         } catch (e) {
