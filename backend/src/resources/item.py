@@ -84,6 +84,44 @@ class ItemList(Resource):
         return {"items": [item.json() for item in Item.query.all()]}, 200
     
 class FilteredItemList(Resource):
-    def get(self, search_term):
-        search_term = search_term.replace("\"", '')
+    parser = reqparse.RequestParser()
+    parser.add_argument('search_term', 
+        type=str,
+        required=False                    
+    )
+    parser.add_argument('seller_id', 
+        type=int,
+        required=False                    
+    )
+    parser.add_argument('price', 
+        type=float,
+        required=False                    
+    )
+
+    def get(self):
+        data = self.parser.parse_args()
+
+        if not data['search_term']:
+            data['search_term'] = ""
+
+        search_term = data["search_term"].replace("\"", '')
         return {"items": [item.json() for item in Item.query.all() if search_term.lower() in item.name.lower()]}, 200
+    
+    def post(self):
+        data = self.parser.parse_args()
+
+        if not data['search_term']:
+            data['search_term'] = ""
+
+        search_term = data["search_term"].replace("\"", '')
+        if not data['seller_id'] and not data['price']:
+            return {"items": [item.json() for item in Item.query.all() if search_term.lower() in item.name.lower()]}, 200
+        
+        if data['seller_id']:
+            if data["price"]:
+                return {"items": [item.json() for item in Item.query.filter_by(seller_id=data["seller_id"]).all() if search_term.lower() in item.name.lower() and item.price <= data['price']]}
+            return {"items": [item.json() for item in Item.query.filter_by(seller_id=data["seller_id"]).all() if search_term.lower() in item.name.lower()]}
+
+        if data['price']:
+            return {"items": [item.json() for item in Item.query.all() if search_term.lower() in item.name.lower() and item.price <= data['price']]}
+

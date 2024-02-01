@@ -1,9 +1,9 @@
 .home-content {
     height: calc(100vh - 155px);
-}
-
-.add-item-button {
-    position: fixed;
-    left: 93vw;
-    bottom: 50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding-left: 15px;
+    width: 98vw;
 }

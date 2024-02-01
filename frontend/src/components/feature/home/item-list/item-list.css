@@ -1,5 +1,6 @@
 .item-list-container {
-    display: flex;
+    display: inline-flex;
     flex-direction: column;
     justify-content: center;
+    width: 70%;
 }

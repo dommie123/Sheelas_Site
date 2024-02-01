@@ -30,24 +30,6 @@ export default function ShoppingCartDrawer(props) {
     const user = useSelector(state => state.login.loggedInUser);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    // const items = [ 
-    //     {
-    //         id: 1,
-    //         name: "Mint Candies",
-    //         description: "This is a test desecription",
-    //         price: "$0.99",
-    //         quantity: 1,
-    //         seller_id: 1
-    //     },
-    //     {
-    //         id: 2,
-    //         name: "My Hero Academia Stickers",
-    //         description: "This is a test desecription",
-    //         price: "$1.99",
-    //         quantity: 1,
-    //         seller_id: 1
-    //     },
-    // ];
 
     const handleCheckout = () => {
         setOpen(false);

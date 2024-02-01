@@ -9,7 +9,7 @@ from flask_cors import CORS, cross_origin
 
 from utils.security import authenticate, identity, generate_verification_code, send_code_to_email
 from utils.email import send_email, generate_receipt
-from resources.user import RUser, UserRegister
+from resources.user import RUser, UserRegister, UserList
 from resources.item import RItem, ItemList, FilteredItemList
 from resources.ticket import RTicket, TicketList
 
@@ -32,11 +32,12 @@ jwt = JWT(app, authenticate, identity) # creates /auth endpoint
 
 api.add_resource(UserRegister, "/register")
 api.add_resource(RUser, "/user/<string:username>")
+api.add_resource(UserList, "/users")
 api.add_resource(RItem, "/item/<string:name>")
 api.add_resource(ItemList, "/items")
+api.add_resource(FilteredItemList, "/fitems")
 api.add_resource(RTicket, "/ticket")
 api.add_resource(TicketList, "/tickets")
-api.add_resource(FilteredItemList, "/fitems/<string:search_term>")
 
 @app.route("/verify", methods=["POST"])
 @cross_origin(origins="http://localhost:3000")
