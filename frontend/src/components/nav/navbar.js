@@ -66,7 +66,7 @@ export const Navbar = (props) => {
     }
 
     return (
-        <Header title="SheBay">
+        <Header title="SheeBay">
             <Autocomplete
                 className="product-search-bar"
                 options={items.map((item) => { return { label: item.name } })}
@@ -74,7 +74,7 @@ export const Navbar = (props) => {
                     <TextField
                         {...params}
                         size="small"
-                        label="Search"
+                        label="Search Products"
                     />
                 )}
                 onChange={determineSearchBarFunctionality}

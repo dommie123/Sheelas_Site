@@ -95,3 +95,8 @@ class RUser(Resource):
             return {'message': 'User not found!'}, 404
         user.delete_user()
         return {'message': 'User deleted!'}, 200
+
+
+class UserList(Resource):
+    def get(self):
+        return {"sellers": [user.json() for user in User.query.all()]}, 200

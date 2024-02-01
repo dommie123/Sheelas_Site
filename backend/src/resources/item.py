@@ -123,5 +123,5 @@ class FilteredItemList(Resource):
             return {"items": [item.json() for item in Item.query.filter_by(seller_id=data["seller_id"]).all() if search_term.lower() in item.name.lower()]}
 
         if data['price']:
-            return {"items": [item.json() for item in Item.query.filter_by(price=data['price']).all() if search_term.lower() in item.name.lower()]}
+            return {"items": [item.json() for item in Item.query.all() if search_term.lower() in item.name.lower() and item.price <= data['price']]}
 

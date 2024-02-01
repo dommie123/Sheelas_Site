@@ -1,0 +1,31 @@
+.item-filter-container {
+    width: 275px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    margin-right: 20px;
+    background-color: white;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    padding: 15px;
+    padding-top: 0;
+}
+
+.item-filter-price {
+    position: relative;
+    top: -10px;
+}
+
+.item-filter-heading {
+    position: relative;
+    top: -10px;
+}
+
+.item-filter-button-suite {
+    display: inline-flex;
+    justify-content: space-around;
+    width: 100%;
+    position: relative;
+    top: 5px;
+}
