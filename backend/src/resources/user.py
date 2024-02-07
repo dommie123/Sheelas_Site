@@ -60,12 +60,29 @@ class UserRegister(Resource):
     
 class RUser(Resource):
     parser = reqparse.RequestParser()
-    parser.add_argument('password', 
+    parser.add_argument('first_name', 
         type=str,
         required=True,
         help="This field cannot be blank!"
     )
-
+    parser.add_argument('last_name', 
+        type=str,
+        required=True,
+        help="This field cannot be blank!"
+    )
+    parser.add_argument('password', 
+        type=str,
+        required=False,
+    )
+    parser.add_argument('email', 
+        type=str,
+        required=True,
+        help="Please enter a valid email address!"
+    )
+    parser.add_argument('phone', 
+        type=str,
+        required=False
+    )
     @classmethod
     def get(cls, username):
         user = User.find_by_username(username)
@@ -80,8 +97,21 @@ class RUser(Resource):
             return {'message': 'User not found!'}, 404
 
         data = RUser.parser.parse_args()
-        new_password = data['password']
-        user.password = new_password
+
+        new_first_name = data['first_name']
+        new_last_name = data['last_name']
+        new_email = data['email']
+        new_phone = data['phone'] if data['phone'] else ""
+        new_password = data['password'] if data['password'] else ""
+
+        user.first_name = new_first_name
+        user.last_name = new_last_name
+        user.email = new_email
+        user.phone = new_phone
+
+        if new_password != "":
+            user.password = new_password
+            
         db.session.commit()
         
         return user.json(), 200

@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { Autocomplete, Menu, MenuItem, IconButton, TextField, Button } from "@mui/material";
+import { Autocomplete, Menu, MenuItem, TextField, Button } from "@mui/material";
 import { createFilterOptions } from "@mui/material/Autocomplete";
 
-import AppsIcon from '@mui/icons-material/Apps';
 import ArrowDropdownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 
@@ -12,10 +11,11 @@ import { getItems } from "../../slices/item-slice";
 import { getItemsByName } from "../../slices/item-slice";
 import { logOutUser } from "../../slices/login-slice";
 
+import ShoppingCartDrawer from "../feature/buy-item/shopping-cart/shopping-cart";
+
 import { Header } from "../common/header/header";
 
 import './navbar.css';
-import ShoppingCartDrawer from "../feature/buy-item/shopping-cart/shopping-cart";
 
 export const Navbar = (props) => {
     const navigate = useNavigate();
@@ -27,21 +27,19 @@ export const Navbar = (props) => {
 
     const [profAnchorEl, setProfAnchorEl] = useState(null);
     const profOpen = Boolean(profAnchorEl);
-    const [appsAnchorEl, setAppsAnchorEl] = useState(null);
-    const appsOpen = Boolean(appsAnchorEl);
 
     const handleProfClose = () => {
         setProfAnchorEl(null);
-    }
-
-    const handleAppsClose = () => {
-        setAppsAnchorEl(null);
     }
 
     const handleLogout = () => {
         dispatch(logOutUser());
         handleProfClose();
         navigate('/');
+    }
+
+    const handleNavToProfileSettings = () => {
+        navigate('/profile-settings')
     }
 
     const determineSearchBarFunctionality = (event, newValue) => {
@@ -116,23 +114,9 @@ export const Navbar = (props) => {
                         'aria-labelledby': 'profile-menu-button',
                     }}
                 >
+                    <MenuItem onClick={handleNavToProfileSettings}>Profile Settings</MenuItem>
                     <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </Menu>
-                {/* <IconButton className="other-pages" title="Other Pages" onClick={(event) => { setAppsAnchorEl(event.currentTarget) }}>
-                    <AppsIcon />
-                </IconButton>
-                <Menu
-                    className="apps-menu"
-                    anchorEl={appsAnchorEl}
-                    open={appsOpen}
-                    onClose={handleAppsClose}
-                    MenuListProps={{
-                        'aria-labelledby': 'apps-menu-button',
-                    }}
-                >
-                    <MenuItem onClick={() => { navigate("/about"); handleAppsClose(); }}>About</MenuItem>
-                    <MenuItem onClick={() => { navigate("/contact"); handleAppsClose(); }}>Contact Us</MenuItem>
-                </Menu> */}
                 <ShoppingCartDrawer className="shopping-cart" />
             </div>
         </Header>

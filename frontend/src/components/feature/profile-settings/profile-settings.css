@@ -1,0 +1,46 @@
+.profile-settings-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: calc(95vh - 75px);
+}
+
+.profile-settings-card {
+    display: inline-flex;
+    flex-direction: column;
+    padding: 10px 2em;
+    justify-content: space-around;
+    align-items: center;
+    margin: 20px 3em;
+}
+
+.profile-information-text-field {
+    width: 100%;
+}
+
+.profile-information-card {
+    flex: 3;
+}
+
+.other-profile-settings-card {
+    flex: 1;
+    
+}
+
+.profile-save-settings-btn {
+    margin-right: auto;
+}
+
+.enable-2fa-btn {
+    margin-right: auto;
+}
+
+.profile-bottom-btn-suite {
+    flex: 0.125;
+    margin-left: calc(1em + 4px);
+    margin-right: 3em;
+    width: 98vw;
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
