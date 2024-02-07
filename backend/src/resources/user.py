@@ -106,12 +106,12 @@ class RUser(Resource):
 
         user.first_name = new_first_name
         user.last_name = new_last_name
-        user.email = new_email
+        user.email = new_email 
         user.phone = new_phone
 
         if new_password != "":
             user.password = new_password
-            
+
         db.session.commit()
         
         return user.json(), 200
