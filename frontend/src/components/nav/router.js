@@ -11,6 +11,7 @@ import SplashPage from "../feature/splash/splash";
 import SellItemPage from "../feature/sell-item/sell-item-page";
 import BuyItemPage from "../feature/buy-item/buy-item";
 import ThankYouPage from "../feature/buy-item/thank-you/thank-you";
+import ProfileSettingsPage from "../feature/profile-settings/profile-settings";
 
 const router = createBrowserRouter([
     {
@@ -84,6 +85,15 @@ const router = createBrowserRouter([
             <>
                 <Navbar />
                 <ThankYouPage />
+            </>
+        )
+    },
+    {
+        path: '/profile-settings',
+        element: (
+            <>
+                <Navbar />
+                <ProfileSettingsPage />
             </>
         )
     }

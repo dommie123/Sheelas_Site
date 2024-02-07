@@ -1,0 +1,84 @@
+/* Profile Settings Styles */
+.profile-settings-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: calc(95vh - 75px);
+}
+
+.profile-settings-card {
+    display: inline-flex;
+    flex-direction: column;
+    padding: 10px 2em;
+    justify-content: space-around;
+    align-items: center;
+    margin: 20px 3em;
+}
+
+.profile-information-text-field {
+    width: 100%;
+}
+
+.profile-information-card {
+    flex: 3;
+}
+
+.other-profile-settings-card {
+    flex: 1;
+    
+}
+
+.profile-save-settings-btn {
+    margin-right: auto;
+}
+
+.enable-2fa-btn {
+    margin-right: auto;
+}
+
+.profile-bottom-btn-suite {
+    flex: 0.125;
+    margin-left: calc(1em + 4px);
+    margin-right: 3em;
+    width: 98vw;
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+/* Change Password Modal Styles */
+.change-password-text-field {
+    width: 95%;
+}
+
+.change-password-next-button {
+    height: 80%;
+    width: 95%;
+    position: relative;
+    left: 2.5%;
+}
+
+.change-password-header {
+    text-align: center;
+    font-size: 20pt;
+    flex: 4;
+}
+
+.change-password-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.change-password-text {
+    font-size: 10pt;
+}
+
+.change-password-modal-close-btn, .change-password-modal-back-btn {
+    flex: 1;
+    position: inherit;
+    height: 40px;
+    left: 10px;
+    top: 0.75em;
+}
