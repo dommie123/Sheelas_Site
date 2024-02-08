@@ -6,12 +6,24 @@ import { TextField, Button, Checkbox, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-import { incrementStep, retrieveVerificationCode, resetVerificationCode, registerUser, resetStepCounter, validatePassword, validatePhone, validateEmail, decrementStep } from '../../../slices/register-slice';
+import { 
+    incrementStep, 
+    retrieveVerificationCode, 
+    resetVerificationCode, 
+    registerUser, 
+    resetStepCounter, 
+    validatePassword,
+    validatePhone, 
+    validateEmail, 
+    decrementStep,
+    setRegUser
+} from '../../../slices/register-slice';
 import { addToMessageQueue } from '../../../slices/global-slice';
 import { showError } from '../../../utils/error';
 import { Modal } from '../../common/modal/modal';
 
 import './register-modal.css';
+import { logInUser } from '../../../slices/login-slice';
 
 export const RegisterModal = (props) => {
     const registerStep = useSelector(state => state.register.step);
@@ -61,6 +73,7 @@ export const RegisterModal = (props) => {
         } else if (registerStep === 4 && Boolean(user.username) && passwordValid) {
             dispatch(registerUser(user));
             dispatch(resetStepCounter());
+            dispatch(setRegUser(user));
             navigate("/home");
         }
 
@@ -82,7 +95,7 @@ export const RegisterModal = (props) => {
     }
 
     const resendVerificationCode = () => {
-        dispatch(retrieveVerificationCode({email: user.email}))
+        dispatch(retrieveVerificationCode({ email: user.email }))
         dispatch(addToMessageQueue({ severity: "info", content: "A new code was sent to your email." }))
     }
 
