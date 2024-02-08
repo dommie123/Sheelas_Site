@@ -37,6 +37,7 @@ const registerSlice = createSlice({
         phoneValid: true,
         passwordValid: true,
         confirmationCode: "",
+        regUser: false,
     },
     reducers: {
         incrementStep: (state) => {
@@ -82,6 +83,12 @@ const registerSlice = createSlice({
                 ...state,
                 confirmationCode: ''
             }
+        },
+        setRegUser: (state, action) => {
+            return {
+                ...state,
+                regUser: action.payload
+            }
         }
     },
     extraReducers: (builder) => {
@@ -110,5 +117,15 @@ const registerSlice = createSlice({
     }
 })
 
-export const { incrementStep, decrementStep, resetStepCounter, validateEmail, validatePhone, validatePassword, resetVerificationCode } = registerSlice.actions;
+export const { 
+    incrementStep, 
+    decrementStep, 
+    resetStepCounter, 
+    validateEmail, 
+    validatePhone, 
+    validatePassword,
+    resetVerificationCode,
+    setRegUser
+} = registerSlice.actions;
+
 export default registerSlice.reducer;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Autocomplete, Menu, MenuItem, TextField, Button } from "@mui/material";
@@ -7,9 +7,9 @@ import { createFilterOptions } from "@mui/material/Autocomplete";
 import ArrowDropdownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 
-import { getItems } from "../../slices/item-slice";
-import { getItemsByName } from "../../slices/item-slice";
-import { logOutUser } from "../../slices/login-slice";
+import { getItems, getItemsByName } from "../../slices/item-slice";
+import { logInUser, logOutUser } from "../../slices/login-slice";
+import { setRegComplete } from "../../slices/register-slice";
 
 import ShoppingCartDrawer from "../feature/buy-item/shopping-cart/shopping-cart";
 
@@ -22,6 +22,7 @@ export const Navbar = (props) => {
     const location = useLocation();
     const dispatch = useDispatch();
     const filter = createFilterOptions();
+    const regUser = useSelector(state => state.register.regUser);
     const items = useSelector(state => state.items.allItems);
     const user = useSelector(state => state.login.loggedInUser);
 
@@ -63,6 +64,12 @@ export const Navbar = (props) => {
             dispatch(getItemsByName(searchTerm));
         }
     }
+
+    useEffect(() => {
+        if (regUser) {
+            dispatch(logInUser(regUser))
+        }
+    }, [regUser])
 
     return (
         <Header title="SheeBay">
