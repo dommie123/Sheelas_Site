@@ -39,6 +39,7 @@ export const Navbar = (props) => {
     }
 
     const handleNavToProfileSettings = () => {
+        handleProfClose();
         navigate('/profile-settings')
     }
 
