@@ -38,7 +38,11 @@ class UserRegister(Resource):
         type=str,
         required=False
     )
-
+    parser.add_argument('twofa_enabled',
+        type=bool,
+        required=True,
+        help="This field cannot contain a null value!"
+    )
     def post(self):
         data = UserRegister.parser.parse_args()
         if User.find_by_username(data['username']):
@@ -83,6 +87,10 @@ class RUser(Resource):
         type=str,
         required=False
     )
+    parser.add_argument('twofa_enabled',
+        type=bool,
+        required=False
+    )
     @classmethod
     def get(cls, username):
         user = User.find_by_username(username)
@@ -103,11 +111,13 @@ class RUser(Resource):
         new_email = data['email']
         new_phone = data['phone'] if data['phone'] else ""
         new_password = data['password'] if data['password'] else ""
+        twofa_enabled = data['twofa_enabled'] if data['twofa_enabled'] else False
 
         user.first_name = new_first_name
         user.last_name = new_last_name
         user.email = new_email 
         user.phone = new_phone
+        user.twofa_enabled = twofa_enabled
 
         if new_password != "":
             user.password = new_password

@@ -48,3 +48,9 @@
     left: 10px;
     top: 0.75em;
 }
+
+/* .register-twofa-component {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+} */

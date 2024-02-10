@@ -9,6 +9,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import { Modal } from '../../common/modal/modal';
+import SwitchWithLabel from '../../common/switch/switch';
 
 import { changeUserSettings } from '../../../slices/login-slice';
 import { retrieveVerificationCode } from '../../../slices/register-slice';
@@ -198,18 +199,12 @@ export default function ProfileSettings() {
                 >
                     Change Password
                 </Button>
-                <Button 
-                    variant='outlined' 
-                    color='secondary' 
-                    disabled 
-                    className='enable-2fa-btn' 
-                    onClick={() => {}}
-                    sx={{
-                        marginRight: "auto"
-                    }}
-                >
-                    Enable Two-Factor Authentication
-                </Button>
+                <SwitchWithLabel 
+                    className='enable-twofa-switch' 
+                    label="Enable Two Factor Authentication" 
+                    onChange={(e) => setUserSettings({ ...userSettings, twofa_enabled: e.target.checked })} 
+                    wide
+                />
             </Card>
             <div className='profile-bottom-btn-suite'>
                 <Button 
