@@ -10,14 +10,16 @@ class User(db.Model):
     password = db.Column(db.String(80))
     email = db.Column(db.String(80))
     phone = db.Column(db.String(80))
+    twofa_enabled = db.Column(db.Boolean)
 
-    def __init__(self, first_name, last_name, username, password, email, phone=""):
+    def __init__(self, first_name, last_name, username, password, email, phone="", twofa_enabled=False):
         self.first_name = first_name
         self.last_name = last_name
         self.username = username
         self.password = password
-        self.email = email
+        self.email = email 
         self.phone = phone
+        self.twofa_enabled = twofa_enabled
 
     def json(self):
         return {
@@ -27,6 +29,7 @@ class User(db.Model):
             'username': self.username,
             'email': self.email,
             'phone': self.phone,
+            'twofa_enabled': self.twofa_enabled
         }
     
     def save_user(self):

@@ -71,3 +71,17 @@ def checkout_items():
 
     except Exception as e:
         return { 'message': f"An error occurred while processing your checkout! Error: {str(e)}"}, 500
+    
+
+@app.route('/soft_auth', methods=['POST'])
+@cross_origin(origins='http://localhost:3000')
+def soft_auth():
+    username = request.json.get('username')
+    password = request.json.get('password')
+
+    user = authenticate(username, password)
+
+    if user is None:
+        return { 'message': 'Incorrect username and/or password! Please try again.' }, 400
+    
+    return user.json(), 200

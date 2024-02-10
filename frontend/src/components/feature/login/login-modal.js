@@ -7,10 +7,13 @@ import { TextField, Button, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-import { incrementStep, decrementStep, logInUser, verifyUserExists, resetStepCounter, changePassword } from "../../../slices/login-slice";
+import { incrementStep, decrementStep, logInUser, verifyUserExists, resetStepCounter, changePassword, fetchUser } from "../../../slices/login-slice";
 import { retrieveVerificationCode } from "../../../slices/register-slice";
 import { addToMessageQueue } from "../../../slices/global-slice";
+
 import { showError } from "../../../utils/error";
+import { objectIsEmpty } from "../../../utils/objects";
+
 import { Modal } from "../../common/modal/modal";
 
 import { primaryButtonExtraStyles } from "../../../styles/global-styles";
@@ -18,12 +21,14 @@ import "./login-modal.css";
 
 export const LoginModal = () => {
     const loggedInUser = useSelector(state => state.login.loggedInUser);
+    const unverifiedUser = useSelector(state => state.login.unverifiedUser);
     const forgotPasswordStep = useSelector(state => state.login.forgotPasswordStep);
     const userExists = useSelector(state => state.login.userExists);
     const confirmationCode = useSelector(state => state.register.confirmationCode);
     const [forgotPassword, setForgotPassword] = useState(false);
     const [userConfirmationCode, setUserConfirmationCode] = useState("");
     const [confirmPass, setConfirmPass] = useState("");
+    const [twofaActive, setTwofaActive] = useState(false);
     const [user, setUser] = useState({
         username: "",
         password: "",
@@ -33,11 +38,11 @@ export const LoginModal = () => {
     const navigate = useNavigate();
 
     const signInUser = () => {
-        dispatch(logInUser(user));
+        dispatch(fetchUser(user));
     }
 
     const resendVerificationCode = () => {
-        dispatch(retrieveVerificationCode({email: user.email}))
+        dispatch(retrieveVerificationCode({ email: objectIsEmpty(loggedInUser) ? unverifiedUser.email : loggedInUser.email }));
         dispatch(addToMessageQueue({ severity: "info", content: "A new code was sent to your email." }))
     }
 
@@ -71,6 +76,15 @@ export const LoginModal = () => {
         // eslint-disable-next-line
     }, [forgotPasswordStep, loggedInUser, user, confirmPass, userExists]);
 
+    const logInUser2fa = () => {
+        if ((unverifiedUser.twofa_enabled && userConfirmationCode === confirmationCode && confirmationCode !== "") || !unverifiedUser.twofa_enabled) { 
+            dispatch(logInUser(user));
+            setTwofaActive(false);
+        } else {
+            setTwofaActive(true);
+        }
+    }
+
     useEffect(() => {
         if ((!userExists && user.username) || !user.username) {
             return;
@@ -81,8 +95,26 @@ export const LoginModal = () => {
         // eslint-disable-next-line
     }, [userExists]);
 
+    useEffect(() => {
+        if (objectIsEmpty(unverifiedUser)) {
+            return;
+        }
+
+        if (!objectIsEmpty(loggedInUser)) {
+            return;
+        }
+
+        logInUser2fa();
+    }, [unverifiedUser, loggedInUser])
+
+    useEffect(() => {
+        if (twofaActive) {
+            dispatch(retrieveVerificationCode({email: unverifiedUser.email}));
+        }
+    }, [twofaActive])
+
     const determineModalContent = () => {
-        if (!forgotPassword) {
+        if (!forgotPassword && !twofaActive) {
             return {
                 topContent: (
                     <>
@@ -120,6 +152,50 @@ export const LoginModal = () => {
                     >Sign In</Button>
                 )
             }
+        } else if (unverifiedUser.twofa_enabled) {
+            return {
+                topContent: (
+                    <>
+                        <IconButton className="login-modal-back-btn" onClick={() => { setTwofaActive(false); }}>
+                            <ArrowBackIcon />
+                        </IconButton>
+                        <h2 className='login-header'>
+                            We sent you a code!
+                        </h2>
+                    </>
+                ),
+                centerContent: (
+                    <div className='login-wrapper'>
+                        <TextField
+                            variant='outlined'
+                            label="Verification Code"
+                            onChange={(e) => setUserConfirmationCode(e.target.value)}
+                            className='login-text-field'
+                            type='password'
+                            value={userConfirmationCode}
+                        />
+                        <br />
+                        <Button variant='text' onClick={resendVerificationCode}>Didn't receive a code?</Button>
+                    </div>
+                ),
+                bottomContent: (
+                    <Button 
+                        className='login-next-button' 
+                        variant="contained" 
+                        sx={primaryButtonExtraStyles} 
+                        disabled={Boolean(!userConfirmationCode)} 
+                        onClick={() => {
+                            if (userConfirmationCode === confirmationCode) {
+                                logInUser2fa();
+                            } else {
+                                showError("That code doesn't match the one we sent you! Please try again or request a new code.");
+                            }
+                        }}
+                    >
+                        Sign In
+                    </Button>
+                )
+            }
         }
 
         switch(forgotPasswordStep) {
@@ -127,7 +203,7 @@ export const LoginModal = () => {
                 return { 
                     topContent: (
                         <>
-                            <IconButton className="login-modal-back-btn" onClick={() => {setForgotPassword(false)}}>
+                            <IconButton className="login-modal-back-btn" onClick={() => { setForgotPassword(false) }}>
                                 <ArrowBackIcon />
                             </IconButton>
                             <h2 className="login-header">

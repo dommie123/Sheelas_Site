@@ -2,8 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 import { determineBackendURL } from "../AppConfig";
-import { showError } from "../utils/error";
-import { authPutRequest } from "../utils/axios-helpers";
+import { authPostRequest, authPutRequest } from "../utils/axios-helpers";
 
 export const logInUser = createAsyncThunk(
     "login/auth",
@@ -16,7 +15,7 @@ export const logInUser = createAsyncThunk(
             const user = {...userData.data, accessToken: accessToken.data};
             return user;
         } catch (e) {
-            thunkApi.rejectWithValue(e);
+            return thunkApi.rejectWithValue(e);
         }
     }
 );
@@ -29,7 +28,7 @@ export const verifyUserExists = createAsyncThunk(
             const userData = await axios.get(`${url}/user/${data.username}`); 
             return userData.data
         } catch (e) {
-            thunkApi.rejectWithValue(e);
+            return thunkApi.rejectWithValue(e);
         }
     }
 )
@@ -65,6 +64,20 @@ export const changeUserSettings = createAsyncThunk(
     }
 )
 
+export const fetchUser = createAsyncThunk(
+    "login/fetchUser",
+    async (data, thunkApi) => {
+        try {
+            const url = determineBackendURL();
+            const user = await axios.post(`${url}/soft_auth`, data);
+
+            return user.data;
+        } catch (e) {
+            return thunkApi.rejectWithValue(e);
+        }
+    }
+)
+
 const loginSlice = createSlice({
     name: "login",
     initialState: {
@@ -73,6 +86,7 @@ const loginSlice = createSlice({
         forgotPasswordStep: 1,
         userExists: false,
         userHasCheckedOut: false,
+        unverifiedUser: {}
     },
     reducers: {
         logOutUser: (state) => {
@@ -129,6 +143,7 @@ const loginSlice = createSlice({
         builder.addCase(logInUser.rejected, (state, action) => {
             return {
                 ...state,
+                loggedInUser: {},
                 error: action.payload.message
             }
         });
@@ -187,7 +202,23 @@ const loginSlice = createSlice({
                 userExists: false,
                 error: action.payload.message
             }
-        })
+        });
+        builder.addCase(fetchUser.fulfilled, (state, action) => {
+            return {
+                ...state,
+                userExists: true,
+                unverifiedUser: action.payload,
+                error: false
+            }
+        });
+        builder.addCase(fetchUser.rejected, (state, action) => {
+            return {
+                ...state,
+                userExists: false,
+                unverifiedUser: {},
+                error: action.payload.message
+            }
+        });
     }
 })
 

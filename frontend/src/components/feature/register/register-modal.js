@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { TextField, Button, Checkbox, IconButton } from "@mui/material";
+import { TextField, Button, Checkbox, IconButton, Box, Switch, InputLabel } from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -20,7 +20,9 @@ import {
 } from '../../../slices/register-slice';
 import { addToMessageQueue } from '../../../slices/global-slice';
 import { showError } from '../../../utils/error';
+
 import { Modal } from '../../common/modal/modal';
+import SwitchWithLabel from '../../common/switch/switch';
 
 import './register-modal.css';
 import { logInUser } from '../../../slices/login-slice';
@@ -42,6 +44,7 @@ export const RegisterModal = (props) => {
         phone: "",
         username: "",
         password: "",
+        twofa_enabled: false
     })
     const [userConfirmationCode, setUserConfirmationCode] = useState("");
     const [passConfirm, setPassConfirm] = useState("");
@@ -284,6 +287,7 @@ export const RegisterModal = (props) => {
                         <div className='register-wrapper'>
                             <TextField
                                 variant='outlined'
+                                size='small'
                                 error={!lastNameValid}
                                 helperText={!lastNameValid ? "Please enter a valid username!" : null}
                                 label="Username"
@@ -294,6 +298,7 @@ export const RegisterModal = (props) => {
                             <br />
                             <TextField
                                 variant='outlined'
+                                size='small'
                                 error={!passwordValid}
                                 helperText={!passwordValid ? "Please enter a valid password!" : null}
                                 label="Password"
@@ -305,6 +310,7 @@ export const RegisterModal = (props) => {
                             <br />
                             <TextField
                                 variant='outlined'
+                                size='small'
                                 error={signupDisabled}
                                 helperText={passConfirm !== user.password ? "The passwords don't match! Please try again!" : null}
                                 label="Confirm Password"
@@ -314,6 +320,15 @@ export const RegisterModal = (props) => {
                                 value={passConfirm}
                             />
                             <br />
+                            {/* <Box sx={{ width: "95%" }} className="register-twofa-component">
+                                <InputLabel className='register-twofa-label'>Enable Two Factor Authentication</InputLabel>
+                                <Switch className='register-twofa-switch' onChange={(e) => setUser({ ...user, twofa_enabled: e.target.checked })} />
+                            </Box> */}
+                            <SwitchWithLabel 
+                                className='enable-twofa-switch' 
+                                label="Enable Two Factor Authentication" 
+                                onChange={(e) => setUser({ ...user, twofa_enabled: e.target.checked })} 
+                            />
                         </div>
                     ),
                     bottomContent: (
