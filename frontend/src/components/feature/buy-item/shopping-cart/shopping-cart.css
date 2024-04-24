@@ -27,3 +27,11 @@
     width: calc(100% - 10px);
     bottom: 20px;
 }
+
+@media screen and (max-width: 750px) {
+    .shopping-cart-drawer > .MuiPaper-root {
+        overflow-x: hidden;
+        width: 50%;
+        height: 100vh;
+    }  
+}

@@ -28,6 +28,7 @@ export default function ShoppingCartDrawer(props) {
     const [cartTotal, setCartTotal] = useState(0);
     const items = useSelector(state => state.cart.items);
     const user = useSelector(state => state.login.loggedInUser);
+    const isMobile = useSelector(state => state.global.isMobile);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -52,7 +53,7 @@ export default function ShoppingCartDrawer(props) {
         return items.length > 0 ? (
             <Box
                 className={`${className}-list-container`}
-                sx={{ width: 400 }}
+                sx={{ width: isMobile ? "90%" : 400 }}
                 role="presentation"
             >
                 <List>
