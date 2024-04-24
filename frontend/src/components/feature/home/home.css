@@ -1,9 +1,28 @@
 .home-content {
-    height: calc(100vh - 155px);
+    height: 100vh;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: flex-start;
     padding-left: 15px;
     width: 98vw;
+}
+
+.home-container {
+    height: calc(100vh - 155px);
+}
+
+@media screen and (max-width: 750px) {
+    .home-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        width: 100vw;
+        padding-left: 0;
+    }
+
+    .home-container {
+        height: calc(100vh - 205px);
+    }
 }

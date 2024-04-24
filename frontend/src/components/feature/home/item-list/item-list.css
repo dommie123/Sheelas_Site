@@ -4,3 +4,10 @@
     justify-content: center;
     width: 70%;
 }
+
+@media screen and (max-width: 750px) {
+    .item-list-container {
+        width: calc(100vw - 30px);
+        padding: 0 15px;
+    }
+}

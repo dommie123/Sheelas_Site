@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { Button, Typography } from '@mui/material';
+import { Button, Typography, IconButton } from '@mui/material';
 import Select from '../../../common/select/select';
 import PriceSlider from './item-filter-price-slider';
 
 import { getSellers } from '../../../../slices/seller-slice';
 import { getItemsByFilters } from '../../../../slices/item-slice';
 import { getItems } from '../../../../slices/item-slice';
+
+import CheckIcon from '@mui/icons-material/Check';
+import ClearIcon from '@mui/icons-material/Clear';
 
 import './item-filter.css';
 
@@ -17,6 +20,7 @@ export default function ItemFilter() {
     const [sellerOptions, setSellerOptions] = useState([])
     const sellers = useSelector(state => state.seller.sellers);
     const user = useSelector(state => state.login.loggedInUser);
+    const isMobile = useSelector(state => state.global.isMobile);
     const dispatch = useDispatch();
 
     const getIDFromUsername = (username) => {
@@ -81,8 +85,8 @@ export default function ItemFilter() {
 
     return (
         <div className='item-filter-container'>
-            <Typography variant='h6' component='h6' className='item-filter-heading'>Filter Items By</Typography>
-            <PriceSlider value={currentPrice} onChange={(e) => { setPrice(e.target.value) }} />
+            <Typography variant='h6' component='h6' className='item-filter-heading'>{isMobile ? "Filter" : "Filter Items By"}</Typography>
+            <PriceSlider value={currentPrice} onChange={(e) => { setPrice(e.target.value) }} className="item-filter-price" />
             <div className='item-filter item-filter-seller'>
                 <Select 
                     size="small"
@@ -94,8 +98,21 @@ export default function ItemFilter() {
                 />
             </div>
             <div className='item-filter-button-suite'>
-                <Button size='small' variant="contained" color='success' className='item-filter-apply-btn' onClick={handleApplyFilters}>Apply Filters</Button>
-                <Button size='small' variant="contained" color='error' className='item-filter-clear-btn' onClick={handleClearFilters}>Clear Filters</Button>
+                { isMobile 
+                ? <>
+                    <IconButton size='small' variant="contained" color='success' className='item-filter-apply-btn' onClick={handleApplyFilters}>
+                        <CheckIcon />
+                    </IconButton>
+                    <IconButton size='small' variant="contained" color='error' className='item-filter-clear-btn' onClick={handleClearFilters}>
+                        <ClearIcon />
+                    </IconButton>
+                </> 
+                : <>
+                    <Button size='small' variant="contained" color='success' className='item-filter-apply-btn' onClick={handleApplyFilters}>Apply Filters</Button>
+                    <Button size='small' variant="contained" color='error' className='item-filter-clear-btn' onClick={handleClearFilters}>Clear Filters</Button>
+                </>
+                }
+
             </div>
         </div>
     )
