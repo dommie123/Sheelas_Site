@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import  { useDispatch } from 'react-redux';
+import { useMediaQuery } from 'react-responsive';
 
 import { setMobile } from './slices/global-slice';
 
@@ -10,7 +11,7 @@ import './App.css';
 
 function App() {
     const dispatch = useDispatch();
-    const checkIsMobile = Boolean(window.innerWidth < 750);
+    const checkIsMobile = useMediaQuery({ query: `(max-width: 760px)` });
 
     useEffect(() => {
         console.log({width: window.innerWidth, checkIsMobile});
