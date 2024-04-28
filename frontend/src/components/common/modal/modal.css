@@ -72,7 +72,7 @@
     }
 }
 
-@media screen and (min-height: 820px) {
+@media screen and (min-height: 820px) and (max-width: 550px) {
     .modal-top-content > h2 {
         font-size: 24pt;
         margin-top: 15px;
