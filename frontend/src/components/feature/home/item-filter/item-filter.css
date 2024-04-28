@@ -29,3 +29,53 @@
     position: relative;
     top: 5px;
 }
+
+@media screen and (max-width: 750px) {
+    .item-filter-container {
+        width: calc(100vw - 30px);
+        height: 60px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        background-color: white;
+        border-bottom: 1px solid lightgray;
+        border-top: 0px none black;
+        border-radius: 5px;
+        margin-bottom: 15px;
+    }
+
+    .item-filter-heading {
+        position: relative; 
+        top: 20px;
+        flex: 0.5;
+        padding-right: 5px;
+    }
+
+    .item-filter-price {
+        position: relative;
+        top: 5px;
+        flex: 1;
+    }
+
+    .item-filter-price-label {
+        position: relative;
+        top: 5px;
+    }
+    
+    .item-filter-button-suite {
+        display: inline-flex;
+        justify-content: space-around;
+        width: 100%;
+        position: relative;
+        top: 5px;
+        flex: 0.5;
+    }
+
+    .item-filter-seller {
+        flex: 1;
+        position: relative;
+        top: 15px;
+        padding-left: 10px;
+        padding-right: 5px;
+    }
+}

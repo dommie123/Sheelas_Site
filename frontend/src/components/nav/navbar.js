@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Autocomplete, Menu, MenuItem, TextField, Button } from "@mui/material";
@@ -9,7 +9,7 @@ import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 
 import { getItems, getItemsByName } from "../../slices/item-slice";
 import { logInUser, logOutUser } from "../../slices/login-slice";
-import { setRegComplete } from "../../slices/register-slice";
+import { setMobile } from '../../slices/global-slice';
 
 import ShoppingCartDrawer from "../feature/buy-item/shopping-cart/shopping-cart";
 
@@ -25,6 +25,7 @@ export const Navbar = (props) => {
     const regUser = useSelector(state => state.register.regUser);
     const items = useSelector(state => state.items.allItems);
     const user = useSelector(state => state.login.loggedInUser);
+    const isMobile = useSelector(state => state.global.isMobile);
 
     const [profAnchorEl, setProfAnchorEl] = useState(null);
     const profOpen = Boolean(profAnchorEl);
@@ -71,8 +72,12 @@ export const Navbar = (props) => {
         }
     }, [regUser])
 
+    // useEffect(() => {
+    //     console.log({isMobile});
+    // }, [isMobile])
+
     return (
-        <Header title="SheeBay">
+        <Header title={isMobile ? "SB" : "SheeBay"}>
             <Autocomplete
                 className="product-search-bar"
                 options={items.map((item) => { return { label: item.name } })}
@@ -101,7 +106,7 @@ export const Navbar = (props) => {
                 }}
             />
             <div className="header-options-suite">
-                <Button
+                {isMobile ? <></> : <><Button
                     className="profile-menu-button"
                     aria-controls={profOpen ? 'profile-menu' : undefined}
                     aria-haspopup="true"
@@ -124,7 +129,7 @@ export const Navbar = (props) => {
                 >
                     <MenuItem onClick={handleNavToProfileSettings}>Profile Settings</MenuItem>
                     <MenuItem onClick={handleLogout}>Logout</MenuItem>
-                </Menu>
+                </Menu></>}
                 <ShoppingCartDrawer className="shopping-cart" />
             </div>
         </Header>

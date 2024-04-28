@@ -3,9 +3,16 @@ import { createSlice } from "@reduxjs/toolkit";
 const globalSlice = createSlice({
     name: "global",
     initialState: {
+        isMobile: false,
         messageQueue: []    // message = { severity: "error|warn|success|info", message: "<message>" }
     },
     reducers: {
+        setMobile: (state, action) => {
+            return {
+                ...state,
+                isMobile: action.payload
+            }
+        },
         addToMessageQueue: (state, action) => {
             return {
                 ...state, 
@@ -21,5 +28,5 @@ const globalSlice = createSlice({
     }
 });
 
-export const { addToMessageQueue, removeFromMessageQueue } = globalSlice.actions;
+export const { addToMessageQueue, removeFromMessageQueue, setMobile } = globalSlice.actions;
 export default globalSlice.reducer;

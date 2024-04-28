@@ -5,7 +5,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import Button from '@mui/material/Button';
 
 import { setUserCheckedOut } from '../../../../slices/login-slice';
-import { toCurrencyFormat } from '../../../../utils/strings';
 
 import ItemCard from '../../../common/item-card/item-card';
 

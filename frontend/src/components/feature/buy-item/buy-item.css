@@ -4,6 +4,11 @@
     margin-right: 15px;
 }
 
+.buy-item-image {
+    width: 50%;
+    max-width: 540px;
+}
+
 .buy-item-top-content {
     display: flex;
     flex-direction: row;
@@ -28,4 +33,27 @@
 .item-price {
     font-weight: 600;
     font-size: 18pt;
+}
+
+@media screen and (max-width: 750px)  {
+    .buy-item-top-content {
+        flex-direction: column;
+    }
+
+    .buy-item-image {
+        width: calc(100vw - 30px);
+    }
+
+    .buy-item-button-suite {
+        width: calc(100% - 15px);
+        flex-direction: column;
+        justify-content: space-between;
+        height: 115px;
+    }
+
+    .buy-now-btn, .add-to-cart-btn {
+        height: 50px;
+        margin-bottom: 15px;
+        font-size: 18pt;
+    }
 }
