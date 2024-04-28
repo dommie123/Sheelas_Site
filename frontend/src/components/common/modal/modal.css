@@ -43,15 +43,19 @@
     margin-top: 10px;
 }
 
+.modal-top-content > h2 {
+    margin-left: -1em;
+}
+
 @media screen and (max-width: 550px) {
     .modal-container {
         margin-top: 0;
     }
 
     .modal-content {
-        top: 14em;
+        top: 10em;
         width: 100%;
-        height: 50%;
+        height: 60%;
         border-radius: 0;
     }
 
@@ -65,5 +69,13 @@
 
     .modal-bottom-content {
         flex: 0.5;
+    }
+}
+
+@media screen and (min-height: 820px) {
+    .modal-top-content > h2 {
+        font-size: 24pt;
+        margin-top: 15px;
+        margin-left: -1em;
     }
 }
