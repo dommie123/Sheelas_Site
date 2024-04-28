@@ -22,6 +22,7 @@ import './profile-settings.css';
 
 export default function ProfileSettings() {
     const user = useSelector(state => state.login.loggedInUser);
+    const isMobile = useSelector(state => state.global.isMobile);
     const [resetPasswordStep, setPasswordStep] = useState(0);   // 0 means the user does not want to reset their password.
     const [userSettings, setUserSettings] = useState(user);
     const [userConfirmationCode, setUserConfirmationCode] = useState("");
@@ -156,7 +157,7 @@ export default function ProfileSettings() {
 
     return (
         <div className='profile-settings-container'>
-            <Typography variant='h4' component='h4' sx={{ textAlign: "center", fontWeight: "600" }} >Profile Settings</Typography>
+            <Typography variant='h4' component='h4' sx={{ textAlign: "center", fontWeight: "600", marginTop: isMobile ? "15px" : 0 }} >Profile Settings</Typography>
             <Card className='profile-information-card profile-settings-card'>
                 <TextField 
                     className='profile-information-text-field profile-information-first-name' 
@@ -212,7 +213,7 @@ export default function ProfileSettings() {
                     color='primary' 
                     className='profile-save-settings-btn' 
                     onClick={handleSaveChanges} 
-                    sx={{ width: "100%", margin: "0 2em" }}
+                    sx={{ width: "100%", margin: "0 2em", marginBottom: isMobile ? "10px" : 0 }}
                 >
                     <SaveIcon sx={{ marginRight: "5px" }}/> Save Changes
                 </Button>
@@ -221,7 +222,7 @@ export default function ProfileSettings() {
                 color='error' 
                 className='profile-reset-settings-btn' 
                 onClick={handleResetChanges} 
-                sx={{ width: "100%", margin: "0 2em" }}
+                sx={{ width: "100%", margin: "0 2em", marginBottom: isMobile ? "5px" : 0 }}
                 >
                     <ClearIcon sx={{ marginRight: "5px" }}/> Reset Changes
                 </Button>

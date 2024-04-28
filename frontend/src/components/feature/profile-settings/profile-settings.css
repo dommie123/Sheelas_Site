@@ -82,3 +82,11 @@
     left: 10px;
     top: 0.75em;
 }
+
+@media screen and (max-width: 750px) {
+    .profile-bottom-btn-suite {
+        width: calc(80% - 12px);
+        flex-direction: column;
+        justify-content: space-between;
+    }
+}
