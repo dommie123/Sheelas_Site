@@ -73,9 +73,10 @@ const registerSlice = createSlice({
             }
         },
         validatePassword: (state, action) => {
+            const re = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$");
             return {
                 ...state,
-                passwordValid: true
+                passwordValid: re.test(action.payload)
             }
         },
         resetVerificationCode: (state) => {
