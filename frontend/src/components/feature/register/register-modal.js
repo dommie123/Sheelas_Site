@@ -25,7 +25,6 @@ import { Modal } from '../../common/modal/modal';
 import SwitchWithLabel from '../../common/switch/switch';
 
 import './register-modal.css';
-import { logInUser } from '../../../slices/login-slice';
 
 export const RegisterModal = (props) => {
     const registerStep = useSelector(state => state.register.step);
@@ -300,7 +299,7 @@ export const RegisterModal = (props) => {
                                 variant='outlined'
                                 size='small'
                                 error={!passwordValid}
-                                helperText={!passwordValid ? "Please enter a valid password!" : null}
+                                helperText={!passwordValid ? "Your password MUST be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one symbol!" : null}
                                 label="Password"
                                 onChange={(e) => setUser({...user, password: e.target.value})}
                                 className='register-text-field'
@@ -320,10 +319,6 @@ export const RegisterModal = (props) => {
                                 value={passConfirm}
                             />
                             <br />
-                            {/* <Box sx={{ width: "95%" }} className="register-twofa-component">
-                                <InputLabel className='register-twofa-label'>Enable Two Factor Authentication</InputLabel>
-                                <Switch className='register-twofa-switch' onChange={(e) => setUser({ ...user, twofa_enabled: e.target.checked })} />
-                            </Box> */}
                             <SwitchWithLabel 
                                 className='enable-twofa-switch' 
                                 label="Enable Two Factor Authentication" 
