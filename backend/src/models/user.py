@@ -1,5 +1,6 @@
-from db import db
+from utils.passwords import hash_password
 
+from db import db
 class User(db.Model):
     __tablename__ = "users"
     
@@ -16,7 +17,7 @@ class User(db.Model):
         self.first_name = first_name
         self.last_name = last_name
         self.username = username
-        self.password = password
+        self.password = hash_password(password)
         self.email = email 
         self.phone = phone
         self.twofa_enabled = twofa_enabled
