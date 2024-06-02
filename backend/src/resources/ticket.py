@@ -1,5 +1,5 @@
 from flask_restful import Resource, reqparse
-from flask_jwt import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask import request
 
 from models.ticket import Ticket
@@ -27,7 +27,11 @@ class RTicket(Resource):
     )
 
     @jwt_required()
-    def post(self):   
+    def post(self):
+        admin_token = get_jwt_identity()
+        if not admin_token:
+            return {'message': 'You do not have permission to access this endpoint!'}, 403
+   
         data = self.parser.parse_args()
         
         ticket=Ticket(**data)
@@ -41,6 +45,10 @@ class RTicket(Resource):
     
     @jwt_required()
     def delete(self):
+        admin_token = get_jwt_identity()
+        if not admin_token:
+            return {'message': 'You do not have permission to access this endpoint!'}, 403
+
         id = request.args.get("id")
         
         ticket = Ticket.find_by_id(id)

@@ -1,7 +1,7 @@
 import sqlite3
 import re
 from flask_restful import Resource, reqparse
-from flask_jwt import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from db import db
 
 from utils.validators import validate_email, validate_phone
@@ -130,6 +130,10 @@ class RUser(Resource):
     @classmethod
     @jwt_required()
     def delete(cls, username):
+        admin_token = get_jwt_identity()
+        if not admin_token:
+            return {'message': 'You do not have permission to access this endpoint!'}, 403
+
         user = User.find_by_username(username)
         if not user:
             return {'message': 'User not found!'}, 404

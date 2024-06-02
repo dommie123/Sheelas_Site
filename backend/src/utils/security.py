@@ -1,7 +1,4 @@
-import os
 import random
-import hashlib
-import json
 
 from models.user import User
 from utils.email import send_email

@@ -1,6 +1,5 @@
-import sqlite3
 from flask_restful import Resource, reqparse
-from flask_jwt import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from models.item import Item
 
@@ -34,6 +33,10 @@ class RItem(Resource):
     
     @jwt_required()
     def post(self, name):
+        admin_token = get_jwt_identity()
+        if not admin_token:
+            return {'message': 'You do not have permission to access this endpoint!'}, 403
+
         item = Item.find_by_name(name)
         if item:
             return {"message": "This item already exists within the database!"}, 409
@@ -54,6 +57,10 @@ class RItem(Resource):
     
     @jwt_required()
     def put(self, name):
+        admin_token = get_jwt_identity()
+        if not admin_token:
+            return {'message': 'You do not have permission to access this endpoint!'}, 403
+
         data = self.parser.parse_args()
         item = Item.find_by_name(name)
         status_code = 202
@@ -72,6 +79,10 @@ class RItem(Resource):
     
     @jwt_required()
     def delete(self, name):
+        admin_token = get_jwt_identity()
+        if not admin_token:
+            return {'message': 'You do not have permission to access this endpoint!'}, 403
+
         item = Item.find_by_name(name)
 
         if item:
