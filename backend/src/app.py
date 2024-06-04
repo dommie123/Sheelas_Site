@@ -13,6 +13,8 @@ from resources.user import RUser, UserRegister, UserList
 from resources.item import RItem, ItemList, FilteredItemList
 from resources.ticket import RTicket, TicketList
 
+from constants import CORS_ALLOWED_ORIGINS
+
 from models.item import Item
 
 logging.basicConfig(level=logging.DEBUG)
@@ -27,7 +29,7 @@ app.secret_key = configs["app_secret_key"]
 api = Api(app)
 
 
-cors = CORS(app, resources={ r"/*": {"origins": "http://localhost:3000" }})
+cors = CORS(app, resources={ r"/*": {"origins": CORS_ALLOWED_ORIGINS }})
 jwt = JWTManager(app) # creates /auth endpoint
 
 api.add_resource(UserRegister, "/register")
@@ -40,7 +42,7 @@ api.add_resource(RTicket, "/ticket")
 api.add_resource(TicketList, "/tickets")
 
 @app.route("/verify", methods=["POST"])
-@cross_origin(origins="http://localhost:3000")
+@cross_origin(origins=CORS_ALLOWED_ORIGINS)
 def send_verification_code():
     try:
         verification_code = generate_verification_code()
@@ -52,7 +54,7 @@ def send_verification_code():
         return { 'message': f"An error occurred while sending out the verification code! Error: {str(e)}"}, 500
     
 @app.route('/checkout', methods=['POST'])
-@cross_origin(origins='http://localhost:3000')
+@cross_origin(origins=CORS_ALLOWED_ORIGINS)
 @jwt_required()
 def checkout_items():
     try:
@@ -73,7 +75,7 @@ def checkout_items():
         return { 'message': f"An error occurred while processing your checkout! Error: {str(e)}"}, 500
     
 @app.route("/auth", methods=['POST'])
-@cross_origin(origins='http://localhost:3000')
+@cross_origin(origins=CORS_ALLOWED_ORIGINS)
 def auth():
     user = auth_user(request)
 
@@ -85,7 +87,7 @@ def auth():
 
 
 @app.route('/soft_auth', methods=['POST'])
-@cross_origin(origins='http://localhost:3000')
+@cross_origin(origins=CORS_ALLOWED_ORIGINS)
 def soft_auth():
     user = auth_user(request)
     print(user)

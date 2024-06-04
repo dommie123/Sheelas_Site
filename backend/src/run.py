@@ -10,4 +10,4 @@ def create_tables():
         db.create_all()
         g._initialized = True
 
-app.run(port=5000, debug=True)
+app.run(host="10.0.0.252", port=5000, debug=True)
