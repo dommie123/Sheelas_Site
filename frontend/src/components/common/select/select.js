@@ -11,7 +11,7 @@ export default function BasicSelect(props) {
     return (
         <Box sx={{ minWidth: 120 }} className={`${className}-container`}>
             <FormControl fullWidth>
-                <InputLabel size={size} id={`${className}-label`}>{label}</InputLabel>
+                <InputLabel size={size} id={`${className}-label`} aria-label={`${className}`}>{label}</InputLabel>
                 <Select
                     size={size}
                     labelId={`${className}-label`}
@@ -20,7 +20,7 @@ export default function BasicSelect(props) {
                     label={label}
                     onChange={onChange}
                 >
-                    {options.map(option => <MenuItem value={option}>{option}</MenuItem>)}
+                    {options.map(option => <MenuItem value={option} aria-label={`Quantity Option ${option}`}>{option}</MenuItem>)}
                 </Select>
             </FormControl>
         </Box>
