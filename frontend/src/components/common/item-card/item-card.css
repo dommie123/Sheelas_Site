@@ -36,6 +36,7 @@
     cursor: pointer;
     text-decoration: none;
     color: black;
+    line-height: 1.5;
 }
 
 /* Small Item Card Styles */
@@ -66,15 +67,18 @@
 .small-item-title {
     font-weight: 300;
     text-overflow: ellipsis;
+    line-height: 1.5;
 }
 
 .small-item-price {
     font-weight: 600;
     font-size: 12pt;
+    line-height: 1.5;
 }
 
 .small-item-quantity {
     font-size: 10pt;
+    line-height: 1.5;
 }
 
 .small-item-delete-btn {

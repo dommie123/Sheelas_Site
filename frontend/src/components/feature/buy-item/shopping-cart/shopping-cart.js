@@ -63,6 +63,7 @@ export default function ShoppingCartDrawer(props) {
                 </List>
             </Box>
         ) : (<p className='cart-is-empty-text'>Your cart is empty! Why not fill it up with some awesome stuff?</p>)
+        // eslint-disable-next-line
     }, [items]);
 
     useEffect(() => {
@@ -72,7 +73,7 @@ export default function ShoppingCartDrawer(props) {
 
     return (
         <div className={className}>
-            <IconButton className={`${className}-button`} onClick={() => { setOpen(true) }}><ShoppingCartIcon /></IconButton>
+            <IconButton className={`${className}-button`} aria-label='Shopping Cart' onClick={() => { setOpen(true) }}><ShoppingCartIcon /></IconButton>
             <Drawer
                 anchor="right"
                 open={open}

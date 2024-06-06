@@ -24,13 +24,13 @@ export default function ItemCard(props) {
     }
 
     return  (
-        <Card className='item-card-container'>
+        <Card className='item-card-container' role='listitem'>
             <a onClick={handleLinkClick} href='/buy' className='select-item-link'><img className='item-image' src={placeholderImgUrl} alt='Placeholder Item' /></a>
             <div className='item-text-content-wrapper'>
-                <a onClick={handleLinkClick} href='/buy' className='select-item-link'><Typography variant='h5' component='h5' className='item-title'>{name}</Typography></a>
-                <a onClick={handleLinkClick} href='/buy' className='select-item-link'><Typography variant='p' component='p' className='item-decsription'>{description}</Typography></a>
-                <a onClick={handleLinkClick} href='/buy' className='select-item-link'><Typography variant='p' component='p' className='item-price'>{price}</Typography></a>
-                {((quantity < 10 && quantity > 0) && !isOnThankYouPage) && (<Typography variant='p' component='p' className='item-low-quantity-messsage'>Only {quantity} left! Order now!</Typography>)}
+                <a onClick={handleLinkClick} aria-label={`${name} Item Link ${name} Item Name`} href='/buy' className='select-item-link'><Typography variant='h5' component='h3' className='item-title'>{name}</Typography></a>
+                <a onClick={handleLinkClick} aria-label={`${name} Item Link ${name} Item Description ${description}`} href='/buy' className='select-item-link'><Typography variant='p' component='p' className='item-decsription'>{description}</Typography></a>
+                <a onClick={handleLinkClick} aria-label={`${name} Item Link ${name} Item Price ${price}`} href='/buy' className='select-item-link'><Typography variant='p' component='p' className='item-price'>{price}</Typography></a>
+                {((quantity < 10 && quantity > 0) && !isOnThankYouPage) && (<Typography variant='p' component='p' aria-label={`${name} Item Quantity Low`} className='item-low-quantity-messsage'>Only {quantity} left! Order now!</Typography>)}
             </div>
         </Card>
     )

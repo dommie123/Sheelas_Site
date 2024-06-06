@@ -14,7 +14,7 @@ import {
 import "./simple-drawer.css";
 
 export default function SimpleDrawer(props) {
-    const { anchor, options, drawerIcon, className } = props;   // options = [{ icon: <Icon />, label: "Label" }]
+    const { anchor, options, drawerIcon, className, buttonAriaLabel } = props;   // options = [{ icon: <Icon />, label: "Label" }]
     const [state, setState] = useState({
         top: anchor.top,
         left: anchor.left,
@@ -54,7 +54,7 @@ export default function SimpleDrawer(props) {
 
     return (
         <div className={className}>
-            <IconButton className={`${className}-button`} onClick={toggleDrawer(anchor, true)}>{drawerIcon}</IconButton>
+            <IconButton className={`${className}-button`} aria-label={buttonAriaLabel} onClick={toggleDrawer(anchor, true)}>{drawerIcon}</IconButton>
             <Drawer
                 anchor={anchor}
                 open={state[anchor]}

@@ -35,7 +35,7 @@ export function Header(props) {
 
     return (
         <header>
-            <SimpleDrawer anchor="left" options={options} drawerIcon={<MenuIcon />} className='nav-menu' /> 
+            <SimpleDrawer anchor="left" options={options} drawerIcon={<MenuIcon />} buttonAriaLabel="Main Menu" className='nav-menu' /> 
             <h1 className="header-title-text"><Link className="header-title-link" to="/home">{title}</Link></h1>
             {props.children}
         </header>

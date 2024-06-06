@@ -17,7 +17,7 @@ const marks = [
 ];
 
 export default function PriceSlider(props) {
-    const { value, onChange, className } = props;
+    const { value, onChange, className, sliderAriaLabel} = props;
     const isMobile = useSelector(state => state.global.isMobile);
 
     const sliderStyles = isMobile ? { marginLeft: 0, width: "100%" } : { marginLeft: "10px", width: "92%" };
@@ -25,11 +25,11 @@ export default function PriceSlider(props) {
     
     return (
         <Box className={className}>
-            <InputLabel className={`${className}-label`} sx={headerStyles}>Price</InputLabel>
+            <InputLabel id={`${className}-label-el`} className={`${className}-label`} aria-label={sliderAriaLabel} sx={headerStyles}>Price</InputLabel>
             <Slider
                 className={`${className}-slider`}
                 size='small'
-                aria-label="Custom marks"
+                aria-labelledby={`${className}-label-el`}
                 value={value}
                 valueLabelDisplay="auto"
                 marks={isMobile ? undefined : marks}

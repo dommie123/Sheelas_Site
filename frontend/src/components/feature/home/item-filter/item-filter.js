@@ -81,12 +81,13 @@ export default function ItemFilter() {
 
     useEffect(() => {
         dispatch(getSellers());
+        // eslint-disable-next-line
     }, [])
 
     return (
         <div className='item-filter-container'>
-            <Typography variant='h6' component='h6' className='item-filter-heading'>{isMobile ? "Filter" : "Filter Items By"}</Typography>
-            <PriceSlider value={currentPrice} onChange={(e) => { setPrice(e.target.value) }} className="item-filter-price" />
+            <Typography variant='h6' component='h2' aria-label="Filter Items By" className='item-filter-heading'>{isMobile ? "Filter" : "Filter Items By"}</Typography>
+            <PriceSlider value={currentPrice} sliderAriaLabel="Name your price" onChange={(e) => { setPrice(e.target.value) }} className="item-filter-price" />
             <div className='item-filter item-filter-seller'>
                 <Select 
                     size="small"
@@ -95,21 +96,22 @@ export default function ItemFilter() {
                     label="Seller"
                     className="item-filter-seller-selector"
                     options={sellerOptions}
+                    aria-label="Choose a seller"
                 />
             </div>
             <div className='item-filter-button-suite'>
                 { isMobile 
                 ? <>
-                    <IconButton size='small' variant="contained" color='success' className='item-filter-apply-btn' onClick={handleApplyFilters}>
+                    <IconButton size='small' variant="contained" color='success' className='item-filter-apply-btn' aria-label='Apply Filters' onClick={handleApplyFilters}>
                         <CheckIcon />
                     </IconButton>
-                    <IconButton size='small' variant="contained" color='error' className='item-filter-clear-btn' onClick={handleClearFilters}>
+                    <IconButton size='small' variant="contained" color='error' className='item-filter-clear-btn' aria-label='Clear Filters' onClick={handleClearFilters}>
                         <ClearIcon />
                     </IconButton>
                 </> 
                 : <>
-                    <Button size='small' variant="contained" color='success' className='item-filter-apply-btn' onClick={handleApplyFilters}>Apply Filters</Button>
-                    <Button size='small' variant="contained" color='error' className='item-filter-clear-btn' onClick={handleClearFilters}>Clear Filters</Button>
+                    <Button size='small' variant="contained" color='success' className='item-filter-apply-btn' aria-label='Apply Filters' onClick={handleApplyFilters}>Apply Filters</Button>
+                    <Button size='small' variant="contained" color='error' className='item-filter-clear-btn' aria-label='Clear Filters' onClick={handleClearFilters}>Clear Filters</Button>
                 </>
                 }
 
