@@ -56,13 +56,13 @@ export default function ShoppingCartDrawer(props) {
                 sx={{ width: isMobile ? "90%" : 400 }}
                 role="presentation"
             >
-                <List>
+                <List role="list" aria-label='Cart Items'>
                     {items.map((item) => (
                         <SmallItemCard itemId={item.id} name={item.name} price={item.price} quantity={item.quantity} />
                     ))}
                 </List>
             </Box>
-        ) : (<p className='cart-is-empty-text'>Your cart is empty! Why not fill it up with some awesome stuff?</p>)
+        ) : (<p className='cart-is-empty-text' aria-label='Cart is empty'>Your cart is empty! Why not fill it up with some awesome stuff?</p>)
         // eslint-disable-next-line
     }, [items]);
 
@@ -80,8 +80,8 @@ export default function ShoppingCartDrawer(props) {
                 onClose={() => { setOpen(false) }}
                 className={`${className}-drawer`}
             >
-                <Typography variant='h5' component='h5' className='shopping-cart-header'>Your Cart</Typography>
-                <Divider className='cart-header-separator' sx={{
+                <Typography variant='h5' component='h5' className='shopping-cart-header' role='heading' aria-label="Your Cart">Your Cart</Typography>
+                <Divider className='cart-header-separator' aria-hidden="true" sx={{
                     marginBottom: "10px",
                     marginTop: "10px",
                     marginLeft: "15px",
@@ -94,6 +94,7 @@ export default function ShoppingCartDrawer(props) {
                     className='checkout-btn' 
                     disabled={items.length === 0} 
                     onClick={handleCheckout}
+                    aria-label='Proceed to Checkout'
                 >
                     {`Checkout (${toCurrencyFormat(cartTotal)})`}
                 </Button>

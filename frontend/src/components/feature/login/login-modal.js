@@ -1,21 +1,28 @@
+// React Imports
 import React, { useState, useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
+// MUI Imports
 import { TextField, Button, IconButton } from "@mui/material";
 
+// MUI Icons
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
+// Slice Imports
 import { incrementStep, decrementStep, logInUser, verifyUserExists, resetStepCounter, changePassword, fetchUser } from "../../../slices/login-slice";
 import { retrieveVerificationCode } from "../../../slices/register-slice";
 import { addToMessageQueue } from "../../../slices/global-slice";
 
+// Custom Utils
 import { showError } from "../../../utils/error";
 import { objectIsEmpty } from "../../../utils/objects";
 
+// Custom Components
 import { Modal } from "../../common/modal/modal";
 
+// Style Imports
 import { primaryButtonExtraStyles } from "../../../styles/global-styles";
 import "./login-modal.css";
 
@@ -118,12 +125,12 @@ export const LoginModal = () => {
             return {
                 topContent: (
                     <>
-                        <IconButton className="login-modal-close-btn" onClick={() => {navigate("/")}}>
+                        <IconButton className="login-modal-close-btn" aria-label="Close" onClick={() => {navigate("/")}}>
                             <CloseIcon />
                         </IconButton>
-                        <h2 className="login-header">
+                        <h1 className="login-header">
                             Sign In Here!
-                        </h2>
+                        </h1>
                     </>
                 ),
                 centerContent: (
@@ -159,9 +166,9 @@ export const LoginModal = () => {
                         <IconButton className="login-modal-back-btn" onClick={() => { setTwofaActive(false); }}>
                             <ArrowBackIcon />
                         </IconButton>
-                        <h2 className='login-header'>
+                        <h1 className='login-header'>
                             We sent you a code!
-                        </h2>
+                        </h1>
                     </>
                 ),
                 centerContent: (
@@ -206,9 +213,9 @@ export const LoginModal = () => {
                             <IconButton className="login-modal-back-btn" onClick={() => { setForgotPassword(false) }}>
                                 <ArrowBackIcon />
                             </IconButton>
-                            <h2 className="login-header">
+                            <h1 className="login-header">
                                 Recover your account
-                            </h2>
+                            </h1>
                         </>
                     ),
                     centerContent: (
@@ -234,9 +241,9 @@ export const LoginModal = () => {
                             <IconButton className="login-modal-back-btn" onClick={() => {dispatch(decrementStep())}}>
                                 <ArrowBackIcon />
                             </IconButton>
-                            <h2 className='login-header'>
+                            <h1 className='login-header'>
                                 We sent you a code!
-                            </h2>
+                            </h1>
                         </>
                     ),
                     centerContent: (
@@ -272,9 +279,9 @@ export const LoginModal = () => {
                             <IconButton className="login-modal-back-btn" onClick={() => {dispatch(decrementStep())}}>
                                 <ArrowBackIcon />
                             </IconButton>
-                            <h2 className="login-header">
+                            <h1 className="login-header">
                                 Change your password
-                            </h2>
+                            </h1>
                         </>
                     ),
                     centerContent: (
@@ -318,25 +325,6 @@ export const LoginModal = () => {
                 }
         }
     }
-
-    // useEffect(() => {
-    //     if (!userExists && user.username) {
-    //         showError(`User ${user.username} doesn't exist in our database. Please try again.`);
-    //         return;
-    //     }
-
-    //     if (!loggedInUser && !user.username) {
-    //         showError('Please enter a username!');
-    //         return;
-    //     }
-
-    //     if (!sentCode) {
-    //         return;
-    //     }
-
-    //     dispatch(retrieveVerificationCode({email: loggedInUser.email}));
-    //     dispatch(incrementStep())
-    // }, [userExists, sentCode])
 
     useEffect(() => {
         // If the user is already logged in, send them home.

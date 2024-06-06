@@ -68,9 +68,10 @@ export default function SellItemPage() {
 
     return (
         <div className='sell-item-page-container'>
-            <h2 className='sell-item-header'>Sell your product here!</h2>
+            <h2 className='sell-item-header' aria-label='Sell Product' role='heading'>Sell your product here!</h2>
             <TextField
                 className='sell-item-name' 
+                aria-label='Product Name'
                 variant='outlined' 
                 label='Name of Product' 
                 value={productName}
@@ -79,19 +80,19 @@ export default function SellItemPage() {
                 }}
                 error={nameError}
                 helperText={nameError ? "Please enter a product name!" : undefined}
-                // sx={textFieldSx}
             />
             <TextField
                 className='sell-item-description' 
+                aria-label='Product Description'
                 variant='outlined' 
                 label='Product Description' 
                 value={productDescription}
                 onChange={(e) => setProductDescription(e.currentTarget.value)}
                 multiline
-                // sx={textFieldSx}
             />
             <TextField
                 className='sell-item-price'
+                aria-label='Product Price'
                 variant='outlined'
                 label="Price"
                 value={productPrice}
@@ -103,10 +104,10 @@ export default function SellItemPage() {
                 }}
                 error={priceError}
                 helperText={priceError ? "Price must be a decimal number (i.e. '3.25')!" : undefined}
-                // sx={textFieldSx}
             />
             <TextField
                 className='sell-item-quantity' 
+                aria-label='Product Quantity'
                 variant='outlined' 
                 label='Quantity' 
                 value={productQuantity}
@@ -115,9 +116,8 @@ export default function SellItemPage() {
                 }}
                 error={quantityError}
                 helperText={quantityError ? "Quantity must be a whole number!" : undefined}
-                // sx={textFieldSx}
             />
-            <Button className='sell-item-submit-button' onClick={handleSubmit} color='primary' variant='contained'>Submit</Button>
+            <Button className='sell-item-submit-button' aria-label="Submit Product" onClick={handleSubmit} color='primary' variant='contained'>Submit</Button>
         </div>
     )
 }
