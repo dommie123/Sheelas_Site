@@ -22,14 +22,14 @@ export default function SmallItemCard(props) {
     }
 
     return  (
-        <Card className='small-item-card-container'>
-            <img className='small-item-image' src={placeholderImgUrl} alt='Placeholder small-item' />
+        <Card className='small-item-card-container' role="listitem" >
+            <img className='small-item-image' src={placeholderImgUrl} alt='Placeholder small-item' aria-hidden="true" />
             <div className='small-item-text-content-wrapper'>
-                <Typography variant='h6' component='h6' className='small-item-title'>{name}</Typography>
-                <Typography variant='p' component='p' className='small-item-quantity'>Qty: {quantity}</Typography>
-                <Typography variant='p' component='p' className='small-item-price'>{displayPrice}</Typography>
+                <Typography variant='h6' component='h6' aria-label={`${name} Item Link ${name} Item Name`} className='small-item-title'>{name}</Typography>
+                <Typography variant='p' component='p' aria-label={`${name} Item Link ${name} Item Quantity ${quantity}`}className='small-item-quantity'>Qty: {quantity}</Typography>
+                <Typography variant='p' component='p' aria-label={`${name} Item Link ${name} Item Price ${price}`} className='small-item-price'>{displayPrice}</Typography>
             </div>
-            <IconButton color='error' className='small-item-delete-btn' onClick={handleRemoveItem}>
+            <IconButton color='error' className='small-item-delete-btn' aria-label={`Delete ${name} from cart`} onClick={handleRemoveItem}>
                 <DeleteForeverIcon />
             </IconButton>
         </Card>

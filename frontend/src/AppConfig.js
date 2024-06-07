@@ -1,13 +1,13 @@
 const configs = {
-    "localUrl": "http://127.0.0.1:5000",
-    "devUrl": "http://127.0.0.1:5000",  // TODO choose different URL for dev
-    "prodUrl": "http://127.0.0.1:5000"  // TODO choose different URL for prod
+    "localUrl": "http://10.0.0.252:5000",
+    "devUrl": "http://10.0.0.252:5000",  // TODO choose different URL for dev
+    "prodUrl": "http://10.0.0.252:5000"  // TODO choose different URL for prod
 }
 
 const determineBackendURL = () => {
     const frontendUrl = window.location.href;
 
-    if (frontendUrl.includes("localhost")) {
+    if (frontendUrl.includes("localhost" || frontendUrl.includes("10.0.0.252"))) {
         return configs.localUrl;
     }
 

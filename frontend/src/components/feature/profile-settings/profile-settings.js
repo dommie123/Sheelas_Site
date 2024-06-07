@@ -1,22 +1,29 @@
+// React Imports
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
+// Material Imports
 import { Typography, Button, Card, TextField, IconButton } from '@mui/material';
 
+// Material Icons
 import SaveIcon from '@mui/icons-material/Save';
 import ClearIcon from '@mui/icons-material/Clear';
 import CloseIcon from '@mui/icons-material/Close';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
+// Custom Components
 import { Modal } from '../../common/modal/modal';
 import SwitchWithLabel from '../../common/switch/switch';
 
+// Slice Imports
 import { changeUserSettings } from '../../../slices/login-slice';
 import { retrieveVerificationCode } from '../../../slices/register-slice';
 import { addToMessageQueue } from '../../../slices/global-slice';
 
+// Custom Imports
 import { showError } from '../../../utils/error';
 
+// Style Imports
 import { primaryButtonExtraStyles } from "../../../styles/global-styles";
 import './profile-settings.css';
 
@@ -157,7 +164,19 @@ export default function ProfileSettings() {
 
     return (
         <div className='profile-settings-container'>
-            <Typography variant='h4' component='h4' sx={{ textAlign: "center", fontWeight: "600", marginTop: isMobile ? "15px" : 0 }} >Profile Settings</Typography>
+            <Typography 
+                variant='h4' 
+                component='h2' 
+                sx={{ 
+                    textAlign: "center", 
+                    fontWeight: "600", 
+                    marginTop: isMobile ? "15px" : 0 
+                }} 
+                aria-label='Profile Settings'
+                role='header'
+            >
+                Profile Settings
+            </Typography>
             <Card className='profile-information-card profile-settings-card'>
                 <TextField 
                     className='profile-information-text-field profile-information-first-name' 
@@ -165,6 +184,7 @@ export default function ProfileSettings() {
                     label="First Name" 
                     value={userSettings.first_name}
                     onChange={handleInputChange} 
+                    aria-label='Change first name'
                 />
                 <TextField 
                     className='profile-information-text-field profile-information-last-name' 
@@ -172,6 +192,7 @@ export default function ProfileSettings() {
                     label="Last Name" 
                     value={userSettings.last_name}
                     onChange={handleInputChange} 
+                    aria-label='Change last name'
                 />
                 <TextField 
                     className='profile-information-text-field profile-information-email' 
@@ -179,6 +200,7 @@ export default function ProfileSettings() {
                     label="Email"
                     value={userSettings.email}
                     onChange={handleInputChange} 
+                    aria-label='Change email'
                 />
                 <TextField 
                     className='profile-information-text-field profile-information-phone'
@@ -186,6 +208,7 @@ export default function ProfileSettings() {
                     label="Phone" 
                     value={userSettings.phone} 
                     onChange={handleInputChange} 
+                    aria-label='Change phone number'
                 />
             </Card>
             <Card className='other-profile-settings-card profile-settings-card'>
@@ -195,8 +218,11 @@ export default function ProfileSettings() {
                     lassName='change-password-btn' 
                     onClick={handleOpenChangePasswordModal}
                     sx={{
-                        marginRight: "auto"
+                        marginRight: "auto",
+                        color: "#245cd4",
+                        borderColor: "#245cd4"
                     }}
+                    aria-label='Change Password'
                 >
                     Change Password
                 </Button>
@@ -214,15 +240,17 @@ export default function ProfileSettings() {
                     className='profile-save-settings-btn' 
                     onClick={handleSaveChanges} 
                     sx={{ width: "100%", margin: "0 2em", marginBottom: isMobile ? "10px" : 0 }}
+                    aria-label='Save Changes'
                 >
                     <SaveIcon sx={{ marginRight: "5px" }}/> Save Changes
                 </Button>
                 <Button 
-                variant='outlined' 
-                color='error' 
-                className='profile-reset-settings-btn' 
-                onClick={handleResetChanges} 
-                sx={{ width: "100%", margin: "0 2em", marginBottom: isMobile ? "5px" : 0 }}
+                    variant='outlined' 
+                    color='error' 
+                    className='profile-reset-settings-btn' 
+                    onClick={handleResetChanges} 
+                    sx={{ width: "100%", margin: "0 2em", marginBottom: isMobile ? "5px" : 0 }}
+                    aria-label='Reset Changes'
                 >
                     <ClearIcon sx={{ marginRight: "5px" }}/> Reset Changes
                 </Button>

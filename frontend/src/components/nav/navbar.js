@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Autocomplete, Menu, MenuItem, TextField, Button } from "@mui/material";
@@ -9,7 +9,6 @@ import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 
 import { getItems, getItemsByName } from "../../slices/item-slice";
 import { logInUser, logOutUser } from "../../slices/login-slice";
-import { setMobile } from '../../slices/global-slice';
 
 import ShoppingCartDrawer from "../feature/buy-item/shopping-cart/shopping-cart";
 
@@ -70,11 +69,8 @@ export const Navbar = (props) => {
         if (regUser) {
             dispatch(logInUser(regUser))
         }
+        //eslint-disable-next-line
     }, [regUser])
-
-    // useEffect(() => {
-    //     console.log({isMobile});
-    // }, [isMobile])
 
     return (
         <Header title={isMobile ? "SB" : "SheeBay"}>

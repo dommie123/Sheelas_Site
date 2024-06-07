@@ -29,19 +29,20 @@ export default function ContactUsPage() {
         };
 
         authPostRequest('ticket', reqBody, user.accessToken)
-            .then(res => dispatch(addToMessageQueue({severity: 'success', content: 'Your ticket was successfully submitted!'})))
+            .then(() => dispatch(addToMessageQueue({severity: 'success', content: 'Your ticket was successfully submitted!'})))
             .catch(err => showError(err.message));
     }
 
     return (
         <div className="contact-page-container">
-            <h2 className='contact-page-title-text'>How can we help?</h2>
+            <h2 className='contact-page-title-text' aria-label='How can we help' role='heading'>How can we help?</h2>
             <TextField 
                 variant='outlined'
                 value={productName}
                 onChange={(e) => setProductName(e.target.value)}
                 label='Name of product'
                 className='product-name-field'
+                aria-label='Product Name'
             />
             <RadioButtonsGroup
                 className="is-seller-field"
@@ -64,10 +65,17 @@ export default function ContactUsPage() {
                 ]}
             />
             <div className='comments-field-container'>
-                <InputLabel className='comments-field-label'>Tell us more</InputLabel>
-                <textarea className='comments-field' onChange={(e) => setComments(e.target.value)} />
+                <InputLabel className='comments-field-label' id="comments-field-label-el">Tell us more</InputLabel>
+                <textarea className='comments-field' aria-labelledby="comments-field-label-el" onChange={(e) => setComments(e.target.value)} />
             </div>
-            <Button variant="contained" className='submit-ticket-button' onClick={submitTicket}>Submit</Button>
+            <Button 
+                variant="contained" 
+                className='submit-ticket-button' 
+                aria-label="Submit Ticket"
+                onClick={submitTicket}
+            >
+                Submit
+            </Button>
         </div>
     )
 }

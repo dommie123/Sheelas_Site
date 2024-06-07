@@ -36,8 +36,7 @@ export const getItemsByFilters = createAsyncThunk(
     'items/getByFilter',
     async (data, thunkApi) => {
         try {
-            console.log({ data });
-            const items = await authPostRequest("/fitems", { seller_id: data.filters.seller_id, price: data.filters.price }, data.accessToken);
+            const items = await authPostRequest("fitems", { seller_id: data.filters.seller_id, price: data.filters.price }, data.accessToken);
 
             return items.data;
         } catch(e) {
@@ -50,18 +49,7 @@ export const sellItem = createAsyncThunk(
     'items/sell',
     async (data, thunkApi) => {
         try {
-            const url = determineBackendURL();
-            const accessToken = `jwt ${data.user.accessToken.access_token}`;
-            const res = await axios.post(
-                `${url}/item/${data.itemName}`,
-                data.item,
-                { 
-                    headers: {
-                        "Authorization": accessToken
-                    }
-                }
-            );
-
+            const res = await authPostRequest(`item/${data.itemName}`, data.item, data.user.accessToken);
             return res.data;
 
         } catch (e) {

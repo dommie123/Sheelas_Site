@@ -10,7 +10,7 @@ export default function AboutPage() {
                 alt="Placeholder"
                 className="about-us-image"
             />
-            <h4 className="about-header">About Us</h4>
+            <h2 className="about-header" aria-label="About Us" role="heading">About Us</h2>
             <p className="about-text">
             Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. 
             Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
@@ -29,7 +29,7 @@ export default function AboutPage() {
             nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit 
             cursus nunc,
             </p>
-            <h4 className="about-header">About This Site</h4>
+            <h2 className="about-header" aria-label="About this site" role="heading">About This Site</h2>
             <p className="about-text">
             Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. 
             Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.

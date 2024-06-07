@@ -9,15 +9,16 @@
 
 .thank-you-header {
     font-size: 30pt;
+    line-height: 1.5;
 }
 
 .thank-you-additional-message {
     font-size: 14pt;
+    line-height: 1.5;
 }
 
 .go-home-button {
     height: 75px;
     width: 35%;
     position: relative;
-    /* left: 24.5%; */
 }

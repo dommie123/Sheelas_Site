@@ -18,7 +18,6 @@
     align-items: flex-start;
     margin: auto;
     position: relative;
-    top: calc(50% - 250px);
 }
 
 .modal-top-content {
@@ -53,7 +52,6 @@
     }
 
     .modal-content {
-        top: 10em;
         width: 100%;
         height: 60%;
         border-radius: 0;

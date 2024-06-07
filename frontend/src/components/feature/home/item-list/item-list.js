@@ -17,7 +17,7 @@ export default function ItemList() {
     }, []);
 
     return (
-        <div className='item-list-container'>
+        <div className='item-list-container' role='list' aria-label='Items '>
             {items.length > 0 ? items.map(item => <ItemCard itemId={item.id} name={item.name} description={item.description} price={toCurrencyFormat(item.price)} quantity={item.quantity} seller_id={item.seller_id} />) : <></>}
         </div>
     )

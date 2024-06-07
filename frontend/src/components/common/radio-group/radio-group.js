@@ -16,8 +16,9 @@ export default function RadioButtonsGroup(props) {
                 name={className}
                 className={className}
                 onChange={onChange}
+                role="radiogroup"
             >
-                {options.map(option => <FormControlLabel value={option.value} control={<Radio />} label={option.label} />)}
+                {options.map(option => <FormControlLabel value={option.value} control={<Radio />} label={option.label} role='radio' />)}
             </RadioGroup>
         </FormControl>
     );

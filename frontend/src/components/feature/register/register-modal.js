@@ -137,12 +137,12 @@ export const RegisterModal = (props) => {
                 return {
                     topContent: (
                         <>
-                            <IconButton className="register-modal-close-btn" onClick={previousStep}>
+                            <IconButton className="register-modal-close-btn" aria-label='Close' onClick={previousStep}>
                                 <CloseIcon />
                             </IconButton>
-                            <h2 className='register-header'>
+                            <h1 className='register-header' aria-label='Create account' role='heading'>
                                 Create your account
-                            </h2>
+                            </h1>
                         </>
                     ),
                     centerContent: (
@@ -155,6 +155,8 @@ export const RegisterModal = (props) => {
                                 onChange={(e) => setUser({...user, first_name: e.target.value})}
                                 className='register-text-field'
                                 value={user.first_name}
+                                aria-label='First Name'
+                                role='textbox'
                             />
                             <br />
                             <TextField
@@ -165,6 +167,8 @@ export const RegisterModal = (props) => {
                                 onChange={(e) => setUser({...user, last_name: e.target.value})}
                                 className='register-text-field'
                                 value={user.last_name}
+                                aria-label='Last Name'
+                                role='textbox'
                             />
                             <br />
                             <TextField
@@ -175,6 +179,8 @@ export const RegisterModal = (props) => {
                                 onChange={(e) => setUser({...user, email: e.target.value})}
                                 className='register-text-field'
                                 value={user.email}
+                                aria-label='Email Address'
+                                role='textbox'
                             />
                         </div>
                     ),
@@ -184,6 +190,7 @@ export const RegisterModal = (props) => {
                             variant="contained"                     
                             sx={nextButtonExtraStyles}   
                             disabled={!(firstNameValid && lastNameValid && emailValid)} onClick={nextStep}
+                            aria-label='Next'
                         >
                             Next
                         </Button>
@@ -193,12 +200,12 @@ export const RegisterModal = (props) => {
                 return {
                     topContent: (
                         <>
-                            <IconButton className="register-modal-back-btn" onClick={previousStep}>
+                            <IconButton className="register-modal-back-btn" aria-label="Back" onClick={previousStep}>
                                 <ArrowBackIcon />
                             </IconButton>
-                            <h2 className='register-header'>
+                            <h1 className='register-header' aria-label='Add a phone number? (Optional)' role='heading'>
                                 Add a phone number?
-                            </h2>
+                            </h1>
                         </>
                     ),
                     centerContent: (
@@ -212,11 +219,20 @@ export const RegisterModal = (props) => {
                                 className='register-text-field'
                                 disabled={disablePhoneCheck}
                                 value={user.phone}
+                                aria-label='Phone Number'
+                                aria-disabled={disablePhoneCheck}
+                                role='textbox'
                             />
                             <br />
                             <div className='register-two-checkbox-wrapper'>
-                                <p className='register-text'>I don't want to receive SMS updates or promotional materials from Sheela's Shopping Site</p>
-                                <Checkbox checked={disablePhoneCheck} onChange={() => toggleDisablePhoneCheck(!disablePhoneCheck)}/>
+                                <p className='register-text' id='register-text-el'>I don't want to receive SMS updates or promotional materials from Sheela's Shopping Site</p>
+                                <Checkbox 
+                                    checked={disablePhoneCheck} 
+                                    aria-checked={disablePhoneCheck} 
+                                    aria-labelledby='register-text-el' 
+                                    role='checkbox'
+                                    onChange={() => toggleDisablePhoneCheck(!disablePhoneCheck)}
+                                />
                             </div>
                         </div>
                     ),
@@ -227,6 +243,7 @@ export const RegisterModal = (props) => {
                             sx={nextButtonExtraStyles} 
                             disabled={(!phoneValid || user.phone === "") && !disablePhoneCheck} 
                             onClick={nextStep}
+                            aria-label='Next'
                         >
                             Next
                         </Button>
@@ -236,12 +253,12 @@ export const RegisterModal = (props) => {
                 return {
                     topContent: (
                         <>
-                            <IconButton className="register-modal-back-btn" onClick={previousStep}>
+                            <IconButton className="register-modal-back-btn" aria-label="Back" onClick={previousStep}>
                                 <ArrowBackIcon />
                             </IconButton>
-                            <h2 className='register-header'>
+                            <h1 className='register-header' aria-label='We sent you a code' role='heading'>
                                 We sent you a code!
-                            </h2>
+                            </h1>
                         </>
                     ),
                     centerContent: (
@@ -253,9 +270,11 @@ export const RegisterModal = (props) => {
                                 className='register-text-field'
                                 type='password'
                                 value={userConfirmationCode}
+                                aria-label='Verification Code'
+                                role='textbox'
                             />
                             <br />
-                            <Button variant='text' onClick={resendVerificationCode}>Didn't receive a code?</Button>
+                            <Button variant='text' onClick={resendVerificationCode} aria-label="Didn't receive a code?">Didn't receive a code?</Button>
                         </div>
                     ),
                     bottomContent: (
@@ -265,6 +284,8 @@ export const RegisterModal = (props) => {
                             sx={nextButtonExtraStyles} 
                             disabled={Boolean(!userConfirmationCode)} 
                             onClick={nextStep}
+                            aria-label='Verify'
+                            aria-disabled={Boolean(!userConfirmationCode)}
                         >
                             Verify
                         </Button>
@@ -274,12 +295,12 @@ export const RegisterModal = (props) => {
                 return {
                     topContent: (
                         <>
-                            <IconButton className="register-modal-back-btn" onClick={previousStep}>
+                            <IconButton className="register-modal-back-btn" aria-label="Back" onClick={previousStep}>
                                 <ArrowBackIcon />
                             </IconButton>
-                            <h2 className='register-header'>
+                            <h1 className='register-header' aria-label='Create a username and password' role='heading'>
                                 You'll need a password
-                            </h2>
+                            </h1>
                         </>
                     ),
                     centerContent: (
@@ -293,6 +314,8 @@ export const RegisterModal = (props) => {
                                 onChange={(e) => setUser({...user, username: e.target.value})}
                                 className='register-text-field'
                                 value={user.username}
+                                aria-label='Username'
+                                role='textbox'
                             />
                             <br />
                             <TextField
@@ -305,6 +328,8 @@ export const RegisterModal = (props) => {
                                 className='register-text-field'
                                 type='password'
                                 value={user.password}
+                                aria-label='Password'
+                                role='textbox'
                             />
                             <br />
                             <TextField
@@ -317,6 +342,8 @@ export const RegisterModal = (props) => {
                                 className='register-text-field'
                                 type='password'
                                 value={passConfirm}
+                                aria-label='Confirm Password'
+                                role='textbox'
                             />
                             <br />
                             <SwitchWithLabel 
@@ -331,7 +358,10 @@ export const RegisterModal = (props) => {
                             className='register-next-button' 
                             variant="contained" 
                             sx={nextButtonExtraStyles} 
-                            disabled={signupDisabled} onClick={nextStep}
+                            disabled={signupDisabled} 
+                            onClick={nextStep}
+                            aria-label='Sign Up'
+                            aria-disabled={signupDisabled} 
                         >
                             Sign Up
                         </Button>
