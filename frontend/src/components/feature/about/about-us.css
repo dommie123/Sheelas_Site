@@ -5,3 +5,7 @@
 .about-us-image {
     margin-left: calc(50% - 162px);
 }
+
+.about-text {
+    line-height: 1.5;
+}
