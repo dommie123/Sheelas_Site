@@ -70,6 +70,12 @@ export const LoginModal = () => {
                 if (user.password !== confirmPass) {
                     showError("The passwords don't match! Please try again.");
                     return;
+                } else if (user.password === "") {
+                    showError("Please enter a password!");
+                    return;
+                } else if (confirmPass === "") {
+                    showError("Please confirm your password!");
+                    return;
                 }
                 
                 dispatch(changePassword(user));
@@ -128,24 +134,41 @@ export const LoginModal = () => {
                         <IconButton className="login-modal-close-btn" aria-label="Close" onClick={() => {navigate("/")}}>
                             <CloseIcon />
                         </IconButton>
-                        <h1 className="login-header">
+                        <h1 className="login-header" aria-label="Sign In" role="heading">
                             Sign In Here!
                         </h1>
                     </>
                 ),
                 centerContent: (
                     <div className="login-wrapper">
-                        <TextField className="login-text-field" variant="outlined" label="Username" onChange={(e) => setUser({...user, username: e.target.value})} value={user.username} />
+                        <TextField 
+                            className="login-text-field" 
+                            variant="outlined" 
+                            label="Username" 
+                            onChange={(e) => setUser({...user, username: e.target.value})} value={user.username} 
+                            aria-label='Username'
+                            role='textbox'
+                        />
                         <br />
-                        <TextField className="login-text-field" variant="outlined" label="Password" onChange={(e) => setUser({...user, password: e.target.value})} type="password" value={user.password} />
+                        <TextField 
+                            className="login-text-field" 
+                            variant="outlined" 
+                            label="Password" 
+                            onChange={(e) => setUser({...user, password: e.target.value})} type="password" value={user.password} 
+                            aria-label='Password'
+                            role='textbox'
+                        />
                         <br />
-                        <Button variant="text" onClick={() => {
-                            setUser({
-                                username: '',
-                                password: ''
-                            });
-                            setForgotPassword(true);
-                        }}>
+                        <Button 
+                            variant="text" 
+                            onClick={() => {
+                                setUser({
+                                    username: '',
+                                    password: ''
+                                });
+                                setForgotPassword(true);
+                            }
+                        }>
                             Forgot Password?
                         </Button>
                     </div>
@@ -163,10 +186,10 @@ export const LoginModal = () => {
             return {
                 topContent: (
                     <>
-                        <IconButton className="login-modal-back-btn" onClick={() => { setTwofaActive(false); }}>
+                        <IconButton className="login-modal-back-btn" aria-label="Back" onClick={() => { setTwofaActive(false); }}>
                             <ArrowBackIcon />
                         </IconButton>
-                        <h1 className='login-header'>
+                        <h1 className='login-header' aria-label="We sent you a code!" role="heading">
                             We sent you a code!
                         </h1>
                     </>
@@ -180,9 +203,11 @@ export const LoginModal = () => {
                             className='login-text-field'
                             type='password'
                             value={userConfirmationCode}
+                            aria-label='Verification Code'
+                            role='textbox'
                         />
                         <br />
-                        <Button variant='text' onClick={resendVerificationCode}>Didn't receive a code?</Button>
+                        <Button variant='text' onClick={resendVerificationCode} aria-label="Didn't receive a code?">Didn't receive a code?</Button>
                     </div>
                 ),
                 bottomContent: (
@@ -191,6 +216,7 @@ export const LoginModal = () => {
                         variant="contained" 
                         sx={primaryButtonExtraStyles} 
                         disabled={Boolean(!userConfirmationCode)} 
+                        aria-disabled={Boolean(!userConfirmationCode)} 
                         onClick={() => {
                             if (userConfirmationCode === confirmationCode) {
                                 logInUser2fa();
@@ -198,6 +224,7 @@ export const LoginModal = () => {
                                 showError("That code doesn't match the one we sent you! Please try again or request a new code.");
                             }
                         }}
+                        aria-label="Sign In"
                     >
                         Sign In
                     </Button>
@@ -210,7 +237,7 @@ export const LoginModal = () => {
                 return { 
                     topContent: (
                         <>
-                            <IconButton className="login-modal-back-btn" onClick={() => { setForgotPassword(false) }}>
+                            <IconButton className="login-modal-back-btn" aria-label="Back" onClick={() => { setForgotPassword(false) }}>
                                 <ArrowBackIcon />
                             </IconButton>
                             <h1 className="login-header">
@@ -220,7 +247,15 @@ export const LoginModal = () => {
                     ),
                     centerContent: (
                         <div className="login-wrapper">
-                            <TextField className="login-text-field" variant="outlined" label="Username" onChange={(e) => setUser({...user, username: e.target.value})} value={user.username} />
+                            <TextField 
+                                className="login-text-field" 
+                                variant="outlined" 
+                                label="Username" 
+                                onChange={(e) => setUser({...user, username: e.target.value})} 
+                                value={user.username} 
+                                aria-label='Username'
+                                role='textbox'
+                            />
                         </div>
                     ),
                     bottomContent: (
@@ -228,7 +263,8 @@ export const LoginModal = () => {
                             className="login-next-button" 
                             variant="contained" 
                             sx={primaryButtonExtraStyles}
-                            onClick={nextStep}   
+                            onClick={nextStep}
+                            aria-label="Send code"   
                         >
                             Send me a code
                         </Button>
@@ -238,10 +274,10 @@ export const LoginModal = () => {
                 return {
                     topContent: (
                         <>
-                            <IconButton className="login-modal-back-btn" onClick={() => {dispatch(decrementStep())}}>
+                            <IconButton className="login-modal-back-btn" aria-label="Back" onClick={() => {dispatch(decrementStep())}}>
                                 <ArrowBackIcon />
                             </IconButton>
-                            <h1 className='login-header'>
+                            <h1 className='login-header' aria-label="We sent you a code!" role="heading">
                                 We sent you a code!
                             </h1>
                         </>
@@ -255,9 +291,11 @@ export const LoginModal = () => {
                                 className='login-text-field'
                                 type='password'
                                 value={userConfirmationCode}
+                                aria-label='Verification Code'
+                                role='textbox'
                             />
                             <br />
-                            <Button variant='text' onClick={resendVerificationCode}>Didn't receive a code?</Button>
+                            <Button variant='text' onClick={resendVerificationCode} aria-label="Didn't receive a code?">Didn't receive a code?</Button>
                         </div>
                     ),
                     bottomContent: (
@@ -267,6 +305,8 @@ export const LoginModal = () => {
                             sx={primaryButtonExtraStyles} 
                             disabled={Boolean(!userConfirmationCode)} 
                             onClick={nextStep}
+                            aria-label='Verify'
+                            aria-disabled={Boolean(!userConfirmationCode)}
                         >
                             Verify
                         </Button>
@@ -276,10 +316,10 @@ export const LoginModal = () => {
                 return {
                     topContent: (
                         <>
-                            <IconButton className="login-modal-back-btn" onClick={() => {dispatch(decrementStep())}}>
+                            <IconButton className="login-modal-back-btn" aria-label="Back" onClick={() => {dispatch(decrementStep())}}>
                                 <ArrowBackIcon />
                             </IconButton>
-                            <h1 className="login-header">
+                            <h1 className="login-header" aria-label="Change password" role="heading">
                                 Change your password
                             </h1>
                         </>
@@ -293,6 +333,8 @@ export const LoginModal = () => {
                                 className="login-text-field"
                                 type="password"
                                 value={user.password}
+                                aria-label='Password'
+                                role='textbox'
                             />
                             <br />
                             <TextField
@@ -302,6 +344,8 @@ export const LoginModal = () => {
                                 className="login-text-field"
                                 type="password"
                                 value={confirmPass}
+                                aria-label='Confirm Password'
+                                role='textbox'
                             />
                         </div>
                     ),
@@ -312,6 +356,8 @@ export const LoginModal = () => {
                             sx={primaryButtonExtraStyles} 
                             disabled={Boolean(!userConfirmationCode)} 
                             onClick={nextStep}
+                            aria-label='Sign In'
+                            aria-disabled={Boolean(!userConfirmationCode)}
                         >
                             Sign In
                         </Button>

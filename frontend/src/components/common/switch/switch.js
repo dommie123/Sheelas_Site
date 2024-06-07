@@ -15,7 +15,7 @@ export default function SwitchWithLabel(props) {
     return (
         <Box sx={{ width: wide ? "100%" : "95%" }} className={`${className}-component switch-component`}>
             <InputLabel className={`${className}-label switch-label`} id={`${className}-label`}>{label}</InputLabel>
-            <Switch className={`${className}-switch switch`} aria-labelledby={`${className}-label`} onChange={onChange} />
+            <Switch className={`${className}-switch switch`} onChange={onChange} />
         </Box>
     )
 }
