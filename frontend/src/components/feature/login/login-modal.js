@@ -264,7 +264,7 @@ export const LoginModal = () => {
                             variant="contained" 
                             sx={primaryButtonExtraStyles}
                             onClick={nextStep}
-                            aria-label="Send code"   
+                            aria-label="Send me a code"   
                         >
                             Send me a code
                         </Button>
