@@ -1,5 +1,5 @@
 const configs = {
-    "localUrl": "http://10.0.0.240:5000",
+    "localUrl": "http://10.0.0.252:5000",
     // "localUrl": "http://192.168.215.188:5000",
     "devUrl": "http://10.0.0.252:5000",  // TODO choose different URL for dev
     "prodUrl": "http://10.0.0.252:5000"  // TODO choose different URL for prod

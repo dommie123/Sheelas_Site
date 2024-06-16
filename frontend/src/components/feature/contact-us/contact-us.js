@@ -38,7 +38,7 @@ export default function ContactUsPage() {
 
     return (
         <>
-            { Object.keys(user).length === 0 ? <Header title="SheeBay" /> : <Navbar /> }
+            {/* { Object.keys(user).length === 0 ? <Header title="SheeBay" /> : <Navbar /> } */}
             <div className="contact-page-container">
                 <h2 className='contact-page-title-text' aria-label='How can we help'>How can we help?</h2>
                 <TextField

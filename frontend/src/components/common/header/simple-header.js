@@ -1,7 +1,7 @@
 import React from "react";
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
-import { Link, Button } from '@mui/material';
+import { Button } from '@mui/material';
 
 import './header.css';
 
@@ -19,7 +19,7 @@ export const Header = (props) => {
 
     return (
         <header className="signout-header">
-            <h1 className="header-title-text"><Link className="header-title-link" to="/home">{title}</Link></h1>
+            <h1 className="header-title-text"><Link className="header-title-link" to="/">{title}</Link></h1>
             <div className="header-button-suite">
                 <Button variant="contained" className="sign-in-button" onClick={handleSignIn}>Sign In</Button>
                 <Button variant="outlined" className="sign-up-button" onClick={handleSignUp}>Sign Up</Button>

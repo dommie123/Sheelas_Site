@@ -12,6 +12,7 @@ import SellItemPage from "../feature/sell-item/sell-item-page";
 import BuyItemPage from "../feature/buy-item/buy-item";
 import ThankYouPage from "../feature/buy-item/thank-you/thank-you";
 import ProfileSettingsPage from "../feature/profile-settings/profile-settings";
+import ErrorPage from "../error/error-page";
 
 const router = createBrowserRouter([
     {
@@ -55,7 +56,7 @@ const router = createBrowserRouter([
         path: "/contact",
         element: (
             <>
-                {/* <Navbar /> */}
+                <Navbar />
                 <ContactUsPage />
             </>
         )
@@ -94,6 +95,12 @@ const router = createBrowserRouter([
                 <Navbar />
                 <ProfileSettingsPage />
             </>
+        )
+    },
+    {
+        path: '/error',
+        element: (
+            <ErrorPage />
         )
     }
 ]);
