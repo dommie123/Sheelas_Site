@@ -11,13 +11,15 @@ import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import { getItems, getItemsByName } from "../../slices/item-slice";
 import { logInUser, logOutUser } from "../../slices/login-slice";
 
+import { objectIsEmpty } from "../../utils/objects";
+
 import ShoppingCartDrawer from "../feature/buy-item/shopping-cart/shopping-cart";
 
 import { Header } from "../common/header/header";
 
 import './navbar.css';
 
-export const Navbar = (props) => {
+export const Navbar = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const dispatch = useDispatch();
@@ -67,7 +69,11 @@ export const Navbar = (props) => {
     }
 
     useEffect(() => {
-        if (regUser) {
+        if (!regUser && objectIsEmpty(user)) {
+            navigate('/error');
+        }
+
+        else if (regUser) {
             dispatch(logInUser(regUser))
         }
         //eslint-disable-next-line
