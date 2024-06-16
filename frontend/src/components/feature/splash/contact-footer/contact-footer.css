@@ -1,0 +1,32 @@
+.contact-footer {
+    background-color: #132e1a;
+    border-top: 2px solid black;
+    /* padding-top: 5px; */
+    padding-left: 20px;
+    color: white;
+}
+
+.other-contact-methods {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.contact-method {
+    flex: 1;
+    line-height: 1.5;
+}
+
+.contact-method-header {
+    margin-bottom: 0.5em;
+}
+
+.phone-contact, .email-contact {
+    margin-left: 20px;
+}
+
+.contact-icon {
+    margin-right: 5px;
+    position: relative;
+    top: 5px;
+}

@@ -11,3 +11,4 @@ def create_tables():
         g._initialized = True
 
 app.run(host="10.0.0.252", port=5000, debug=True)
+# app.run(host="192.168.215.188", port=5000, debug=True)
