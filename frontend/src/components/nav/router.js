@@ -47,7 +47,6 @@ const router = createBrowserRouter([
         path: "/about",
         element: (
             <>
-                <Navbar />
                 <AboutPage />
             </>
         )
@@ -56,7 +55,7 @@ const router = createBrowserRouter([
         path: "/contact",
         element: (
             <>
-                <Navbar />
+                {/* <Navbar /> */}
                 <ContactUsPage />
             </>
         )
