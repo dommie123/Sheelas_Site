@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 
 import { IconButton } from '@mui/material';
 
-import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
-import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import ArrowLeftIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowRightIcon from '@mui/icons-material/ArrowForwardIos';
 
 import './caroucel.css';
 
@@ -60,7 +60,7 @@ export default function Caroucel(props) {
                     }}
                     disabled={totalPages <= 1}
                 >
-                    <ArrowLeftIcon />
+                    <ArrowLeftIcon htmlColor='white' />
                 </IconButton>
                 <IconButton
                     className='caroucel-next-image-btn'
@@ -72,7 +72,7 @@ export default function Caroucel(props) {
                     }}
                     disabled={totalPages <= 1}
                 >
-                    <ArrowRightIcon />
+                    <ArrowRightIcon htmlColor='white' />
                 </IconButton>
                 <div className='caroucel-page-buttons'>
                     {props.children.map((_, index) => 
