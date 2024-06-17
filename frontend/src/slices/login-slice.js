@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 import { determineBackendURL } from "../AppConfig";
-import { authPostRequest, authPutRequest } from "../utils/axios-helpers";
+import { authPutRequest } from "../utils/axios-helpers";
 
 export const logInUser = createAsyncThunk(
     "login/auth",
@@ -81,6 +81,7 @@ export const fetchUser = createAsyncThunk(
 const loginSlice = createSlice({
     name: "login",
     initialState: {
+        checkedLocalSessionForUser: false,
         error: false,
         loggedInUser: {},
         forgotPasswordStep: 1,
@@ -90,9 +91,13 @@ const loginSlice = createSlice({
     },
     reducers: {
         logOutUser: (state) => {
+            // Clear logged in user from local session
+            localStorage.setItem("user", "");
+
             return {
                 ...state,
-                loggedInUser: {}
+                loggedInUser: {},
+                checkedLocalSessionForUser: false
             }
         },
         incrementStep: (state) => {
@@ -124,6 +129,26 @@ const loginSlice = createSlice({
                 ...state,
                 userHasCheckedOut: action.payload
             }
+        },
+        getUserFromSession: (state) => {
+            const userSession = localStorage.getItem("user");
+
+            if (userSession === "undefined") {
+                console.warn("WARNING: No user was found in local session!");
+                return {
+                    ...state,
+                    checkedLocalSessionForUser: true
+                }
+            }
+
+            const user = JSON.parse(userSession);
+            const accessToken = user.accessToken
+
+            return {
+                ...state,
+                loggedInUser: { ...user, accessToken },
+                checkedLocalSessionForUser: true
+            }
         }
     },
     extraReducers: (builder) => {
@@ -133,7 +158,12 @@ const loginSlice = createSlice({
                     ...state, 
                     error: "Incorrect username or password. Please try again.",
                 }
+            } else {
+                localStorage.setItem("user", JSON.stringify(action.payload));
             }
+
+            console.log({ user: localStorage.getItem("user") });
+
             return {
                 ...state, 
                 loggedInUser: action.payload,
@@ -222,5 +252,14 @@ const loginSlice = createSlice({
     }
 })
 
-export const { logOutUser, incrementStep, decrementStep, resetStepCounter, resetErrorMessage, setUserCheckedOut } = loginSlice.actions;
+export const { 
+    logOutUser, 
+    incrementStep,
+    decrementStep,
+    resetStepCounter,
+    resetErrorMessage,
+    setUserCheckedOut,
+    getUserFromSession 
+} = loginSlice.actions;
+
 export default loginSlice.reducer;

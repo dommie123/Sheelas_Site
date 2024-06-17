@@ -9,7 +9,7 @@ import ArrowDropdownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 
 import { getItems, getItemsByName } from "../../slices/item-slice";
-import { logInUser, logOutUser } from "../../slices/login-slice";
+import { getUserFromSession, logInUser, logOutUser } from "../../slices/login-slice";
 
 import { objectIsEmpty } from "../../utils/objects";
 
@@ -27,6 +27,7 @@ export const Navbar = () => {
     const regUser = useSelector(state => state.register.regUser);
     const items = useSelector(state => state.items.allItems);
     const user = useSelector(state => state.login.loggedInUser);
+    const checkedLocalSessionForUser = useSelector(state => state.login.checkedLocalSessionForUser);
     const isMobile = useSelector(state => state.global.isMobile);
 
     const [profAnchorEl, setProfAnchorEl] = useState(null);
@@ -69,7 +70,11 @@ export const Navbar = () => {
     }
 
     useEffect(() => {
-        if (!regUser && objectIsEmpty(user)) {
+        if (!checkedLocalSessionForUser) {
+            dispatch(getUserFromSession());
+        }
+
+        else if (!regUser && objectIsEmpty(user) && checkedLocalSessionForUser) {
             navigate('/error');
         }
 
@@ -77,7 +82,7 @@ export const Navbar = () => {
             dispatch(logInUser(regUser))
         }
         //eslint-disable-next-line
-    }, [regUser])
+    }, [regUser, user, checkedLocalSessionForUser])
 
     return (
         <Header title={isMobile ? "SB" : "SheeBay"}>
