@@ -90,7 +90,6 @@ def auth():
 @cross_origin(origins=CORS_ALLOWED_ORIGINS)
 def soft_auth():
     user = auth_user(request)
-    print(user)
 
     if user is None:
         return { 'message': 'Incorrect username and/or password! Please try again.' }, 400
