@@ -3,6 +3,10 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { TextField, InputAdornment, Button } from '@mui/material';
 
+import { IMAGE_EXTENSIONS } from '../../../lib/constants';
+
+import { ImageSelector } from './image-selector/image-selector';
+
 import { sellItem } from '../../../slices/item-slice';
 import { showError } from '../../../utils/error';
 
@@ -14,6 +18,7 @@ export default function SellItemPage() {
     const [productDescription, setProductDescription] = useState('');
     const [productPrice, setProductPrice] = useState(0);
     const [productQuantity, setProductQuantity] = useState(0);
+    const [imageUrl, setImageUrl] = useState("");
     const user = useSelector(state => state.login.loggedInUser);
     const itemError = useSelector(state => state.items.error);
 
@@ -23,25 +28,32 @@ export default function SellItemPage() {
     const [nameError, setNameError] = useState(false);
     const [priceError, setPriceError] = useState(false);
     const [quantityError, setQuantityError] = useState(false);
+    const [imageError, setImageError] = useState(false);
 
     const verifyUserInput = () => {
         setNameError(productName === '');
         setPriceError(isNaN(parseFloat(productPrice)));
         setQuantityError(isNaN(parseInt(productQuantity)));
+
+        // Verify that the file submitted is an image
+        const urlParts = imageUrl.split(".");
+        const extension = urlParts[urlParts.length - 1];
+
+        setImageError(!IMAGE_EXTENSIONS.includes(extension));
+    }
+
+    const itemHasErrors = () => {
+        return nameError || priceError || quantityError || imageError;
     }
 
     const handleSubmit = () => {
-        if (!user.id) {
-            showError('User not recognized! Please log in again!');
-            return;
-        }
-
         verifyUserInput();
 
-        if (nameError || priceError || quantityError) {
+        if (itemHasErrors) {
             return;
         }
         
+        // TODO convert item image URL to blob and send to backend
         const item = { 
             description: productDescription, 
             price: productPrice,
@@ -52,13 +64,20 @@ export default function SellItemPage() {
         dispatch(sellItem({itemName: productName, item, user}));
     }
 
+    const handleChangeImage = (e) => {
+        setImageUrl(e.currentTarget.value);
+        verifyUserInput();
+    }
+
     useEffect(() => {
         if (!load) {
             setLoad(true);
             return;
         }
         verifyUserInput();
-    }, [productName, productPrice, productQuantity]);
+
+        // eslint-disable-next-line
+    }, [productName, productPrice, productQuantity, imageUrl]);
 
     useEffect(() => {
         if (itemError.message) {
@@ -68,7 +87,7 @@ export default function SellItemPage() {
 
     return (
         <div className='sell-item-page-container'>
-            <h2 className='sell-item-header' aria-label='Sell Product' role='heading'>Sell your product here!</h2>
+            <h2 className='sell-item-header' aria-label='Sell Product'>Sell your product here!</h2>
             <TextField
                 className='sell-item-name' 
                 aria-label='Product Name'
@@ -117,7 +136,22 @@ export default function SellItemPage() {
                 error={quantityError}
                 helperText={quantityError ? "Quantity must be a whole number!" : undefined}
             />
-            <Button className='sell-item-submit-button' aria-label="Submit Product" onClick={handleSubmit} color='primary' variant='contained'>Submit</Button>
+            <ImageSelector 
+                label="Product Photos" 
+                value={imageUrl} 
+                handleChange={handleChangeImage} 
+                error={imageError}
+                helperText={imageError ? "Your file must be an image (i.e. '.jpg', '.png', '.jpeg')" : undefined}
+            />
+            <Button 
+                className='sell-item-submit-button' 
+                aria-label="Submit Product" 
+                onClick={handleSubmit} 
+                color='primary' 
+                variant='contained'
+            >
+                Submit
+            </Button>
         </div>
     )
 }

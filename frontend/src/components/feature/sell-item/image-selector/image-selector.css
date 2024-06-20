@@ -1,0 +1,18 @@
+.image-selector {
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.image-selector-label {
+    flex: 1;
+}
+
+.image-selector-input {
+    flex: 1.5;
+    padding-top: 0.5em !important;
+    padding-bottom: 5px !important;
+}
+
+.image-selector-helper-text {
+    flex: 0.5;
+}
