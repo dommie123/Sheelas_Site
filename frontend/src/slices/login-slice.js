@@ -97,6 +97,7 @@ const loginSlice = createSlice({
             return {
                 ...state,
                 loggedInUser: {},
+                unverifiedUser: {},
                 checkedLocalSessionForUser: false
             }
         },
