@@ -134,7 +134,7 @@ const loginSlice = createSlice({
         getUserFromSession: (state) => {
             const userSession = localStorage.getItem("user");
 
-            if (userSession === "undefined") {
+            if (userSession === "undefined" || userSession === "") {
                 console.warn("WARNING: No user was found in local session!");
                 return {
                     ...state,

@@ -26,12 +26,23 @@ export const Navbar = () => {
     const filter = createFilterOptions();
     const regUser = useSelector(state => state.register.regUser);
     const items = useSelector(state => state.items.allItems);
-    const user = useSelector(state => state.login.loggedInUser);
+    const loggedInUser = useSelector(state => state.login.loggedInUser);
     const checkedLocalSessionForUser = useSelector(state => state.login.checkedLocalSessionForUser);
     const isMobile = useSelector(state => state.global.isMobile);
 
     const [profAnchorEl, setProfAnchorEl] = useState(null);
     const profOpen = Boolean(profAnchorEl);
+
+    const userIsLoggedIn = () => {
+        if (!loggedInUser) {
+            return false;
+        } else if (loggedInUser === "") {
+            return false;
+        } else if (objectIsEmpty(loggedInUser)) {
+            return false;
+        }
+        return true;
+    }
 
     const handleProfClose = () => {
         setProfAnchorEl(null);
@@ -74,15 +85,15 @@ export const Navbar = () => {
             dispatch(getUserFromSession());
         }
 
-        else if (!regUser && objectIsEmpty(user) && checkedLocalSessionForUser) {
+        else if (!regUser && !userIsLoggedIn() && checkedLocalSessionForUser) {
             navigate('/error');
         }
 
-        else if (regUser) {
+        else if (regUser && !userIsLoggedIn()) {
             dispatch(logInUser(regUser))
         }
         //eslint-disable-next-line
-    }, [regUser, user, checkedLocalSessionForUser])
+    }, [regUser, loggedInUser, checkedLocalSessionForUser])
 
     return (
         <Header title={isMobile ? "SB" : "SheeBay"}>
@@ -123,7 +134,7 @@ export const Navbar = () => {
                         setProfAnchorEl(event.currentTarget)
                     }}
                 >
-                    {`Hi, ${user.first_name}`}
+                    {`Hi, ${loggedInUser.first_name}`}
                     {profOpen ? <ArrowDropUpIcon /> : <ArrowDropdownIcon />}
                 </Button>
                 <Menu
