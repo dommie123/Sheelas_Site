@@ -7,10 +7,17 @@ const authPostRequest = (endpoint, body, token) => {
     }});
 }
 
+const authPostRequestWithFile = (endpoint, formData, token) => {
+    return axios.post(`${determineBackendURL()}/${endpoint}`, formData, { headers: {
+        "Authorization": `Bearer ${token.access_token}`,
+        "Content-Type": 'multipart/form-data'
+    }});
+}
+
 const authPutRequest = (endpoint, body, token) => {
     return axios.put(`${determineBackendURL()}/${endpoint}`, body, { headers: {
         "Authorization": `Bearer ${token.access_token}`
     }});
 }
 
-export { authPostRequest, authPutRequest };
+export { authPostRequest, authPostRequestWithFile, authPutRequest };

@@ -103,6 +103,7 @@ def soft_auth():
     return user.json(), 200
 
 @app.route('/upload', methods=['POST'])
+@cross_origin(origins=CORS_ALLOWED_ORIGINS)
 def upload_image():
     try:
         # Check if the request contains a file
@@ -128,7 +129,7 @@ def upload_image():
         )
       
         # Generate the file URL
-        file_url = f"https://{aws_bucket_name}.s3.{aws_region_name}.amazonaws.com/{filename}"
+        file_url = f"https://{aws_bucket_name}.s3.{aws_region_name}.amazonaws.com/{aws_bucket_name}/{filename}"
 
         return jsonify({"message": "File uploaded successfully", "url": file_url}), 200
 

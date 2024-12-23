@@ -10,10 +10,10 @@ import './item-card.css';
 import { removeItem } from '../../../slices/cart-slice';
 
 export default function SmallItemCard(props) {
-    const { itemId, name, price, quantity } = props;
+    const { itemId, name, price, quantity, productImageUrl } = props;
     const dispatch = useDispatch();
     // TODO have custom images for each item (but save for later, since I struggle with custom image display)
-    const placeholderImgUrl = `https://www.russorizio.com/wp-content/uploads/2016/07/ef3-placeholder-image.jpg`;
+    const imageUrl = Boolean(productImageUrl) ? productImageUrl : `https://www.russorizio.com/wp-content/uploads/2016/07/ef3-placeholder-image.jpg`;
     const displayPrice = toCurrencyFormat(fromCurrencyFormat(price) * quantity);
 
     const handleRemoveItem = (event) => {
@@ -23,7 +23,7 @@ export default function SmallItemCard(props) {
 
     return  (
         <Card className='small-item-card-container' role="listitem" >
-            <img className='small-item-image' src={placeholderImgUrl} alt='Placeholder small-item' aria-hidden="true" />
+            <img className='small-item-image' src={imageUrl} alt='Placeholder small-item' aria-hidden="true" />
             <div className='small-item-text-content-wrapper'>
                 <Typography variant='h6' component='h6' aria-label={`${name} Item Link ${name} Item Name`} className='small-item-title'>{name}</Typography>
                 <Typography variant='p' component='p' aria-label={`${name} Item Link ${name} Item Quantity ${quantity}`}className='small-item-quantity'>Qty: {quantity}</Typography>

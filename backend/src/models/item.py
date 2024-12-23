@@ -8,15 +8,17 @@ class Item(db.Model):
     description = db.Column(db.String(200))
     quantity = db.Column(db.Integer)
     price = db.Column(db.Float)
+    image_url = db.Column(db.String(200))
 
     seller_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     seller = db.relationship("User")
 
-    def __init__(self, name, description, quantity, price, seller_id):
+    def __init__(self, name, description, quantity, price, image_url, seller_id):
         self.name = name
         self.description = description
         self.quantity = quantity
         self.price = price
+        self.image_url = image_url
         self.seller_id = seller_id
 
     def json(self):
@@ -26,6 +28,7 @@ class Item(db.Model):
             'description': self.description,
             'quantity': self.quantity,
             'price': self.price,
+            'image_url': self.image_url,
             'seller_id': self.seller_id
         }
     

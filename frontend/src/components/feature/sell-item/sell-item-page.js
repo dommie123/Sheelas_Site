@@ -9,6 +9,7 @@ import { ImageSelector } from './image-selector/image-selector';
 
 import { sellItem } from '../../../slices/item-slice';
 import { showError } from '../../../utils/error';
+import { authPostRequestWithFile } from '../../../utils/axios-helpers';
 
 import './sell-item-page.css';
 
@@ -18,7 +19,9 @@ export default function SellItemPage() {
     const [productDescription, setProductDescription] = useState('');
     const [productPrice, setProductPrice] = useState(0);
     const [productQuantity, setProductQuantity] = useState(0);
-    const [imageUrl, setImageUrl] = useState("");
+    const [localImgUrl, setLocalImgUrl] = useState("");         // C:\fakepath\imgname.ext
+    const [imageUrl, setImageUrl] = useState("");               // The actual image URL to store to the backend
+    const [imageFile, setImageFile] = useState(null);
     const user = useSelector(state => state.login.loggedInUser);
     const itemError = useSelector(state => state.items.error);
 
@@ -36,38 +39,70 @@ export default function SellItemPage() {
         setQuantityError(isNaN(parseInt(productQuantity)));
 
         // Verify that the file submitted is an image
-        const urlParts = imageUrl.split(".");
-        const extension = urlParts[urlParts.length - 1];
+        // const urlParts = imageUrl.split(".");
+        const extension = Boolean(imageFile) ? imageFile.type.split("/")[1] : "";
 
-        setImageError(!IMAGE_EXTENSIONS.includes(extension));
+        if (extension === "") {
+            setImageError(false);
+        } else {
+            setImageError(!IMAGE_EXTENSIONS.includes(extension));
+        }
     }
 
     const itemHasErrors = () => {
         return nameError || priceError || quantityError || imageError;
     }
 
+    const uploadImageAndGetUrl = async () => {
+        const formData = new FormData();
+        formData.append('file', imageFile);
+
+        const newImage = await authPostRequestWithFile("/upload", formData, user.accessToken);
+        return newImage.data.url;
+    }
+
     const handleSubmit = () => {
         verifyUserInput();
 
-        if (itemHasErrors) {
+        if (itemHasErrors()) {
             return;
         }
         
-        // TODO convert item image URL to blob and send to backend
+        // TODO convert item image URL to blob and send to backend 
+        // const productImgUrl = uploadImageAndGetUrl();
+
         const item = { 
             description: productDescription, 
             price: productPrice,
             quantity: productQuantity,
-            seller_id: user.id
+            image_url: imageUrl,
+            seller_id: user.id,
         }
 
         dispatch(sellItem({itemName: productName, item, user}));
     }
 
     const handleChangeImage = (e) => {
-        setImageUrl(e.currentTarget.value);
-        verifyUserInput();
+        setLocalImgUrl(e.currentTarget.value);
+        setImageFile(e.target.files[0]);
     }
+
+    useEffect(() => {
+        if (!imageFile) {
+            return;
+        }
+
+        verifyUserInput();
+
+        if (itemHasErrors()) {
+            return;
+        }
+
+        uploadImageAndGetUrl().then(res => {
+            setImageUrl(res);
+        })
+        // eslint-disable-next-line
+    }, [imageFile])
 
     useEffect(() => {
         if (!load) {
@@ -138,7 +173,7 @@ export default function SellItemPage() {
             />
             <ImageSelector 
                 label="Product Photos" 
-                value={imageUrl} 
+                value={localImgUrl} 
                 handleChange={handleChangeImage} 
                 error={imageError}
                 helperText={imageError ? "Your file must be an image (i.e. '.jpg', '.png', '.jpeg')" : undefined}
