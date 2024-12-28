@@ -1,4 +1,5 @@
 from utils.passwords import hash_password
+from enums.user import UserRole
 
 from db import db
 class User(db.Model):
@@ -12,8 +13,9 @@ class User(db.Model):
     email = db.Column(db.String(80))
     phone = db.Column(db.String(80))
     twofa_enabled = db.Column(db.Boolean)
+    role = db.Column(db.Integer)
 
-    def __init__(self, first_name, last_name, username, password, email, phone="", twofa_enabled=False):
+    def __init__(self, first_name, last_name, username, password, email, phone="", twofa_enabled=False, role=UserRole.BUYER.value):
         self.first_name = first_name
         self.last_name = last_name
         self.username = username
@@ -21,6 +23,7 @@ class User(db.Model):
         self.email = email 
         self.phone = phone
         self.twofa_enabled = twofa_enabled
+        self.role = role
 
     def json(self):
         return {
@@ -30,7 +33,8 @@ class User(db.Model):
             'username': self.username,
             'email': self.email,
             'phone': self.phone,
-            'twofa_enabled': self.twofa_enabled
+            'twofa_enabled': self.twofa_enabled,
+            'role': self.role
         }
     
     def save_user(self):

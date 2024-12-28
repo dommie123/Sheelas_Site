@@ -6,6 +6,7 @@ from db import db
 
 from utils.validators import validate_email, validate_phone
 from models.user import User
+from enums.user import UserRole
 
 class UserRegister(Resource):
     parser = reqparse.RequestParser()
@@ -57,7 +58,7 @@ class UserRegister(Resource):
         if user_phone and not validate_phone(user_phone):
             return {'message': f'{user_phone} is not in the correct format or is not valid!'}, 400
         
-        user = User(**data)
+        user = User(**data, role=UserRole.BUYER.value)
         user.save_user()
 
         return {'message': 'User created successfully!'}, 201
@@ -91,6 +92,10 @@ class RUser(Resource):
         type=bool,
         required=False
     )
+    parser.add_argument('role',
+        type=int,
+        required=False
+    )
     @classmethod
     def get(cls, username):
         user = User.find_by_username(username)
@@ -112,12 +117,14 @@ class RUser(Resource):
         new_phone = data['phone'] if data['phone'] else ""
         new_password = data['password'] if data['password'] else ""
         twofa_enabled = data['twofa_enabled'] if data['twofa_enabled'] else False
+        new_role = data['role'] if data['role'] else user.role
 
         user.first_name = new_first_name
         user.last_name = new_last_name
         user.email = new_email 
         user.phone = new_phone
         user.twofa_enabled = twofa_enabled
+        user.role = new_role
 
         if new_password != "":
             user.password = new_password
