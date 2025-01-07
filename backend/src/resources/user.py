@@ -5,6 +5,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from db import db
 
 from utils.validators import validate_email, validate_phone
+from utils.passwords import hash_password
 from models.user import User
 from enums.user import UserRole
 
@@ -127,7 +128,7 @@ class RUser(Resource):
         user.role = new_role
 
         if new_password != "":
-            user.password = new_password
+            user.password = hash_password(new_password)
 
         db.session.commit()
         

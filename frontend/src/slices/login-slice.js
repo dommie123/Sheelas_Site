@@ -133,7 +133,7 @@ const loginSlice = createSlice({
         getUserFromSession: (state) => {
             const userSession = localStorage.getItem("user");
 
-            if (userSession === "undefined") {
+            if (userSession === "undefined" || userSession === "") {
                 console.warn("WARNING: No user was found in local session!");
                 return {
                     ...state,
@@ -174,7 +174,7 @@ const loginSlice = createSlice({
             return {
                 ...state,
                 loggedInUser: {},
-                error: action.payload.message
+                error: action.payload.response.data.message
             }
         });
         builder.addCase(changePassword.fulfilled, (state, action) => {
@@ -246,7 +246,7 @@ const loginSlice = createSlice({
                 ...state,
                 userExists: false,
                 unverifiedUser: {},
-                error: action.payload.message
+                error: action.payload.response.data.message
             }
         });
     }

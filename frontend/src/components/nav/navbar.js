@@ -26,7 +26,7 @@ export const Navbar = () => {
     const filter = createFilterOptions();
     const regUser = useSelector(state => state.register.regUser);
     const items = useSelector(state => state.items.allItems);
-    const user = useSelector(state => state.login.loggedInUser);
+    const loggedInUser = useSelector(state => state.login.loggedInUser);
     const checkedLocalSessionForUser = useSelector(state => state.login.checkedLocalSessionForUser);
     const isMobile = useSelector(state => state.global.isMobile);
 
@@ -74,15 +74,15 @@ export const Navbar = () => {
             dispatch(getUserFromSession());
         }
 
-        else if (!regUser && objectIsEmpty(user) && checkedLocalSessionForUser) {
+        else if (!regUser && objectIsEmpty(loggedInUser) && checkedLocalSessionForUser && location.pathname !== "/error") {
             navigate('/error');
         }
 
-        else if (regUser) {
-            dispatch(logInUser(regUser))
+        else if (regUser && regUser.username !== loggedInUser.username && location.pathname !== "/error") {
+            dispatch(logInUser(regUser));
         }
         //eslint-disable-next-line
-    }, [regUser, user, checkedLocalSessionForUser])
+    }, [regUser, loggedInUser, checkedLocalSessionForUser])
 
     return (
         <Header title={isMobile ? "SB" : "SheeBay"}>
@@ -123,7 +123,7 @@ export const Navbar = () => {
                         setProfAnchorEl(event.currentTarget)
                     }}
                 >
-                    {`Hi, ${user.first_name}`}
+                    {`Hi, ${loggedInUser.first_name}`}
                     {profOpen ? <ArrowDropUpIcon /> : <ArrowDropdownIcon />}
                 </Button>
                 <Menu
