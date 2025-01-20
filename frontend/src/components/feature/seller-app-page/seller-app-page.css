@@ -1,0 +1,34 @@
+.seller-app-page-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 0;
+    height: calc(100% - 100px - 1em);  
+    margin-bottom: 1em;
+}
+
+.seller-application-heading {
+    text-align: center;
+    width: 100%;
+    margin-top: 0;
+}
+
+.seller-application-captcha-placeholder {
+    flex-grow: 0.2;
+    margin-top: 5em;
+    margin-bottom: 1em;
+    border: 1px solid black;
+    border-radius: 5px;
+    width: calc(20em - 45px);
+    display: inline-flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.seller-application-submit-btn {
+    flex-shrink: 1;
+    min-height: 50px;
+    width: 20em;
+}
+

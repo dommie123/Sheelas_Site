@@ -1,9 +1,10 @@
 import React from "react";
-import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import { Navbar } from "./navbar";
 import { RegisterModal } from "../feature/register/register-modal";
 import { LoginModal } from "../feature/login/login-modal";
+
 import HomePage from "../feature/home/home";
 import AboutPage from "../feature/about/about-us";
 import ContactUsPage from "../feature/contact-us/contact-us";
@@ -13,6 +14,7 @@ import BuyItemPage from "../feature/buy-item/buy-item";
 import ThankYouPage from "../feature/buy-item/thank-you/thank-you";
 import ProfileSettingsPage from "../feature/profile-settings/profile-settings";
 import ErrorPage from "../error/error-page";
+import SellerAppPage from "../feature/seller-app-page/seller-app-page";
 
 const router = createBrowserRouter([
     {
@@ -94,6 +96,15 @@ const router = createBrowserRouter([
             <>
                 <Navbar />
                 <ProfileSettingsPage />
+            </>
+        )
+    },
+    {
+        path: '/seller-application',
+        element: (
+            <>
+                <Navbar />
+                <SellerAppPage />
             </>
         )
     },

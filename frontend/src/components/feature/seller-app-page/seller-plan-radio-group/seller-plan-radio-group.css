@@ -1,0 +1,9 @@
+.seller-plan-radio-group {
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-start;
+    width: 100%;
+    min-width: 750px;
+    height: 50%;
+}

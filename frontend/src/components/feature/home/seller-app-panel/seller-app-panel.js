@@ -18,7 +18,7 @@ export const SellerApplicationPanel = () => {
         <UserApplicationPanel
             className="seller"
             panelContent={panelContent}
-            appPage={'/home'} // TODO Change this to the actual seller application page endpoint.
+            appPage={'/seller-application'}
         />
     )
 }
