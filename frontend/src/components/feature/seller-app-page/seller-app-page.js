@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { Typography, Button } from '@mui/material';
+import { Button } from '@mui/material';
+
+import { registerNewSeller } from '../../../slices/seller-slice';
+import { addToMessageQueue } from '../../../slices/global-slice';
+import { showError } from '../../../utils/error';
 
 import { SellerPlanRadioGroup } from './seller-plan-radio-group/seller-plan-radio-group';
 
@@ -34,7 +38,22 @@ export default function SellerAppPage() {
     }
 
     const handleNextClicked = () => {
-        console.log("Go to submit payment info");
+        // TODO have logic for submitting payment info
+        if (!currentPlan) {
+            showError("Please select a plan to continue!");
+            return;
+        }
+
+        const newUserInfo = { ...loggedInUser, role: 3, seller_plan: currentPlan }
+        dispatch(registerNewSeller({ 
+            username: newUserInfo.username, 
+            userData: newUserInfo, 
+            userToken: newUserInfo.accessToken 
+        }));
+
+        // TODO navigate to thank you page
+        dispatch(addToMessageQueue({severity: "success", message: "User has successfully been promoted to seller!"}));
+        navigate("/home");
     }
 
     useEffect(() => {
