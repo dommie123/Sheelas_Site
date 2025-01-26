@@ -7,7 +7,6 @@ from db import db
 from utils.validators import validate_email, validate_phone
 from utils.passwords import hash_password
 from models.user import User
-from enums.user import UserRole
 
 class UserRegister(Resource):
     parser = reqparse.RequestParser()
@@ -59,7 +58,7 @@ class UserRegister(Resource):
         if user_phone and not validate_phone(user_phone):
             return {'message': f'{user_phone} is not in the correct format or is not valid!'}, 400
         
-        user = User(**data, role=UserRole.BUYER.value)
+        user = User(**data)
         user.save_user()
 
         return {'message': 'User created successfully!'}, 201
@@ -97,6 +96,10 @@ class RUser(Resource):
         type=int,
         required=False
     )
+    parser.add_argument('seller_plan',
+        type=int,
+        required=False
+    )
     @classmethod
     def get(cls, username):
         user = User.find_by_username(username)
@@ -115,10 +118,11 @@ class RUser(Resource):
         new_first_name = data['first_name']
         new_last_name = data['last_name']
         new_email = data['email']
-        new_phone = data['phone'] if data['phone'] else ""
-        new_password = data['password'] if data['password'] else ""
+        new_phone = data['phone'] if data['phone'] else user.phone
+        new_password = data['password'] if data['password'] else user.password
         twofa_enabled = data['twofa_enabled'] if data['twofa_enabled'] else False
         new_role = data['role'] if data['role'] else user.role
+        new_seller_plan = data['seller_plan'] if data['seller_plan'] else user.seller_plan
 
         user.first_name = new_first_name
         user.last_name = new_last_name
@@ -126,8 +130,9 @@ class RUser(Resource):
         user.phone = new_phone
         user.twofa_enabled = twofa_enabled
         user.role = new_role
+        user.seller_plan = new_seller_plan
 
-        if new_password != "":
+        if new_password != "" and new_password is not None:
             user.password = hash_password(new_password)
 
         db.session.commit()

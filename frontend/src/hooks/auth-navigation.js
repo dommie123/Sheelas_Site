@@ -1,10 +1,9 @@
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import { objectIsEmpty } from '../utils/objects';
 
-export const useAuthNavigate = (endpoint, allowSellers = false) => {
+export const useAuthNavigate = (allowSellers = false) => {
     const loggedInUser = useSelector(state => state.login.loggedInUser);
     const navigate = useNavigate();
 
@@ -13,7 +12,7 @@ export const useAuthNavigate = (endpoint, allowSellers = false) => {
         allowedUserRoles.push(3);
     }
 
-    useEffect(() => {
+    return (endpoint) => {
         // If there is no user logged in, navigate them to the error page.
         if (objectIsEmpty(loggedInUser)) {
             navigate("/error");
@@ -25,6 +24,5 @@ export const useAuthNavigate = (endpoint, allowSellers = false) => {
         }
 
         navigate(endpoint);
-        // eslint-disable-next-line
-    }, [loggedInUser])
+    }
 }

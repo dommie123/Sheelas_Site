@@ -25,7 +25,7 @@ export function Header(props) {
     const isMobile = useSelector(state => state.global.isMobile);
     const loggedInUser = useSelector(state => state.login.loggedInUser);
     const navigate = useNavigate();
-    const authNavigate = useAuthNavigate();
+    const sellerNavigate = useAuthNavigate(true);
     const dispatch = useDispatch();
 
     const userIsSellerOrAdmin = useMemo(() => {
@@ -42,7 +42,7 @@ export function Header(props) {
     ] : []
 
     const sellerOptions = userIsSellerOrAdmin ? [
-        { icon: <AddBoxIcon />, label: "Sell Item", handleSelect: () => { authNavigate('/sell', true) } },
+        { icon: <AddBoxIcon />, label: "Sell Item", handleSelect: () => { sellerNavigate('/sell', true) } },
     ] : [];
 
     const options = [
