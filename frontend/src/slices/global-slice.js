@@ -4,7 +4,7 @@ const globalSlice = createSlice({
     name: "global",
     initialState: {
         isMobile: false,
-        messageQueue: []    // message = { severity: "error|warn|success|info", message: "<message>" }
+        messageQueue: []    // message = { severity: "error|warn|success|info", content: "<message>" }
     },
     reducers: {
         setMobile: (state, action) => {

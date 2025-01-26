@@ -52,7 +52,7 @@ export default function SellerAppPage() {
         }));
 
         // TODO navigate to thank you page
-        dispatch(addToMessageQueue({severity: "success", message: "User has successfully been promoted to seller!"}));
+        dispatch(addToMessageQueue({severity: "success", content: "User has successfully been promoted to seller!"}));
         navigate("/home");
     }
 
