@@ -215,7 +215,7 @@ export default function ProfileSettings() {
                 <Button
                     variant='outlined' 
                     color='info' 
-                    lassName='change-password-btn' 
+                    className='change-password-btn' 
                     onClick={handleOpenChangePasswordModal}
                     sx={{
                         marginRight: "auto",

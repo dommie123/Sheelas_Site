@@ -1,0 +1,19 @@
+.edit-item-page-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 0 15px;
+    height: 85%;
+}
+
+.edit-item-header {
+    text-align: center;
+}
+
+.edit-item-submit-button {
+    width: 100px;
+}
+
+.edit-item-description > .MuiInputBase-root {
+    height: 150px;
+}

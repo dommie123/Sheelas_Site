@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { TextField, InputAdornment, Button } from '@mui/material';
 
@@ -26,6 +27,7 @@ export default function SellItemPage() {
     const itemError = useSelector(state => state.items.error);
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     // Error handler variables
     const [nameError, setNameError] = useState(false);
@@ -105,12 +107,20 @@ export default function SellItemPage() {
     }, [imageFile])
 
     useEffect(() => {
+        if (user.role === 2) {
+            navigate('/error')
+        }
+        // eslint-disable-next-line
+    }, [user]);
+
+    useEffect(() => {
         if (!load) {
             setLoad(true);
             return;
         }
-        verifyUserInput();
 
+        verifyUserInput();
+      
         // eslint-disable-next-line
     }, [productName, productPrice, productQuantity, imageUrl]);
 

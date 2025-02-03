@@ -5,6 +5,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from db import db
 
 from utils.validators import validate_email, validate_phone
+from utils.passwords import hash_password
 from models.user import User
 
 class UserRegister(Resource):
@@ -91,6 +92,14 @@ class RUser(Resource):
         type=bool,
         required=False
     )
+    parser.add_argument('role',
+        type=int,
+        required=False
+    )
+    parser.add_argument('seller_plan',
+        type=int,
+        required=False
+    )
     @classmethod
     def get(cls, username):
         user = User.find_by_username(username)
@@ -109,18 +118,22 @@ class RUser(Resource):
         new_first_name = data['first_name']
         new_last_name = data['last_name']
         new_email = data['email']
-        new_phone = data['phone'] if data['phone'] else ""
-        new_password = data['password'] if data['password'] else ""
+        new_phone = data['phone'] if data['phone'] else user.phone
         twofa_enabled = data['twofa_enabled'] if data['twofa_enabled'] else False
+        new_role = data['role'] if data['role'] else user.role
+        new_seller_plan = data['seller_plan'] if data['seller_plan'] else user.seller_plan
 
         user.first_name = new_first_name
         user.last_name = new_last_name
         user.email = new_email 
         user.phone = new_phone
         user.twofa_enabled = twofa_enabled
+        user.role = new_role
+        user.seller_plan = new_seller_plan
 
-        if new_password != "":
-            user.password = new_password
+        new_password = data["password"]
+        if new_password != "" and new_password is not None:
+            user.password = hash_password(new_password)
 
         db.session.commit()
         

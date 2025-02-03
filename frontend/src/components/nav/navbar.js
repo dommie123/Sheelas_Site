@@ -18,6 +18,7 @@ import ShoppingCartDrawer from "../feature/buy-item/shopping-cart/shopping-cart"
 import { Header } from "../common/header/header";
 
 import './navbar.css';
+import { setRegUser } from "../../slices/register-slice";
 
 export const Navbar = () => {
     const navigate = useNavigate();
@@ -85,12 +86,13 @@ export const Navbar = () => {
             dispatch(getUserFromSession());
         }
 
-        else if (!regUser && !userIsLoggedIn() && checkedLocalSessionForUser) {
+        else if (objectIsEmpty(regUser) && objectIsEmpty(loggedInUser) && checkedLocalSessionForUser && location.pathname !== "/error") {
             navigate('/error');
         }
 
-        else if (regUser && !userIsLoggedIn()) {
-            dispatch(logInUser(regUser))
+        else if (!objectIsEmpty(regUser) && regUser.username !== loggedInUser.username && location.pathname !== "/error") {
+            dispatch(logInUser(regUser));
+            dispatch(setRegUser({}));
         }
         //eslint-disable-next-line
     }, [regUser, loggedInUser, checkedLocalSessionForUser])

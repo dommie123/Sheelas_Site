@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
 
+import { authPutRequest } from '../utils/axios-helpers';
 import { determineBackendURL } from "../AppConfig";
 
 export const getSellers = createAsyncThunk(
@@ -14,6 +15,19 @@ export const getSellers = createAsyncThunk(
             return thunkApi.rejectWithValue(err);
         }
 
+    }
+)
+
+export const registerNewSeller = createAsyncThunk(
+    "seller/register",
+    async ({username, userData, userToken}, thunkApi) => {
+        try {
+            const response = await authPutRequest(`user/${username}`, userData, userToken)
+
+            return response.data;
+        } catch (err) {
+            return thunkApi.rejectWithValue(err);
+        }
     }
 )
 
@@ -37,7 +51,22 @@ const sellerSlice = createSlice({
                 sellers: [],
                 error: true
             }
-        })
+        });
+        builder.addCase(registerNewSeller.fulfilled, (state, action) => {
+            const newUserData = action.payload;
+            localStorage.setItem("user", JSON.stringify(newUserData));
+
+            return {
+                ...state,
+                error: false
+            }
+        });
+        builder.addCase(registerNewSeller.rejected, (state) => {
+            return {
+                ...state,
+                error: true
+            }
+        });
     }
 })
 
