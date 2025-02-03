@@ -34,6 +34,17 @@ export const Navbar = () => {
     const [profAnchorEl, setProfAnchorEl] = useState(null);
     const profOpen = Boolean(profAnchorEl);
 
+    const userIsLoggedIn = () => {
+        if (!loggedInUser) {
+            return false;
+        } else if (loggedInUser === "") {
+            return false;
+        } else if (objectIsEmpty(loggedInUser)) {
+            return false;
+        }
+        return true;
+    }
+
     const handleProfClose = () => {
         setProfAnchorEl(null);
     }

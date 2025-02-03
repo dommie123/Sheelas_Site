@@ -19,6 +19,11 @@ class RItem(Resource):
         required=True,
         help="This field cannot be left blank!"
     )
+    parser.add_argument('image_url', 
+        type=str,
+        required=True,
+        help="This field cannot be left blank!"
+    )
     parser.add_argument("seller_id",
         type=int,
         required=True,

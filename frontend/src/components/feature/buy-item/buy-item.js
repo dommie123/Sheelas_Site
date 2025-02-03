@@ -74,7 +74,7 @@ export default function BuyItemPage() {
         <div className="buy-item-container">
             <div className="buy-item-top-content">
                 <img
-                    src="https://www.russorizio.com/wp-content/uploads/2016/07/ef3-placeholder-image.jpg" 
+                    src={selectedItem.productImageUrl}
                     className="buy-item-image"
                     alt={`${selectedItem.name}`}
                     aria-hidden="true"

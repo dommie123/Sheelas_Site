@@ -58,7 +58,7 @@ export default function ShoppingCartDrawer(props) {
             >
                 <List role="list" aria-label='Cart Items'>
                     {items.map((item) => (
-                        <SmallItemCard itemId={item.id} name={item.name} price={item.price} quantity={item.quantity} />
+                        <SmallItemCard itemId={item.id} name={item.name} price={item.price} quantity={item.quantity} productImageUrl={item.productImageUrl} />
                     ))}
                 </List>
             </Box>
