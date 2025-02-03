@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 import { determineBackendURL } from "../AppConfig";
-import { authPostRequest } from "../utils/axios-helpers";
+import { authPostRequest, authPutRequest } from "../utils/axios-helpers";
 
 export const getItems = createAsyncThunk(
     'items/get', 
@@ -52,6 +52,18 @@ export const sellItem = createAsyncThunk(
             const res = await authPostRequest(`item/${data.itemName}`, data.item, data.user.accessToken);
             return res.data;
 
+        } catch (e) {
+            return thunkApi.rejectWithValue(e);
+        }
+    }
+);
+
+export const updateItem = createAsyncThunk(
+    'items/update',
+    async (data, thunkApi) => {
+        try {
+            const res = await authPutRequest(`item/${data.itemName}`, data.item, data.user.accessToken);
+            return res.data;
         } catch (e) {
             return thunkApi.rejectWithValue(e);
         }
@@ -133,6 +145,19 @@ const itemSlice = createSlice({
             };
         });
         builder.addCase(sellItem.rejected, (state, action) => {
+            return {
+                ...state,
+                error: action.error
+            };
+        });
+        builder.addCase(updateItem.fulfilled, (state) => {
+            window.location.href = '/home';
+            return {
+                ...state,
+                error: {}
+            };
+        });
+        builder.addCase(updateItem.rejected, (state, action) => {
             return {
                 ...state,
                 error: action.error

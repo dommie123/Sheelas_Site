@@ -11,7 +11,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 // Slice Imports
-import { incrementStep, decrementStep, logInUser, verifyUserExists, resetStepCounter, changePassword, fetchUser } from "../../../slices/login-slice";
+import { incrementStep, decrementStep, logInUser, verifyUserExists, resetStepCounter, changePassword, fetchUser, clearUnverifiedUser } from "../../../slices/login-slice";
 import { retrieveVerificationCode } from "../../../slices/register-slice";
 import { addToMessageQueue } from "../../../slices/global-slice";
 
@@ -118,13 +118,22 @@ export const LoginModal = () => {
         }
 
         logInUser2fa();
+        // eslint-disable-next-line
     }, [unverifiedUser, loggedInUser])
 
     useEffect(() => {
         if (twofaActive) {
             dispatch(retrieveVerificationCode({email: unverifiedUser.email}));
         }
+        // eslint-disable-next-line
     }, [twofaActive])
+
+    useEffect(() => {
+        return () => {
+            dispatch(clearUnverifiedUser());
+        }
+        // eslint-disable-next-line
+    }, [])
 
     const determineModalContent = () => {
         if (!forgotPassword && !twofaActive) {
@@ -134,7 +143,7 @@ export const LoginModal = () => {
                         <IconButton className="login-modal-close-btn" aria-label="Close" onClick={() => {navigate("/")}}>
                             <CloseIcon />
                         </IconButton>
-                        <h1 className="login-header" aria-label="Sign In" role="heading">
+                        <h1 className="login-header" aria-label="Sign In">
                             Sign In Here!
                         </h1>
                     </>
@@ -189,7 +198,7 @@ export const LoginModal = () => {
                         <IconButton className="login-modal-back-btn" aria-label="Back" onClick={() => { setTwofaActive(false); }}>
                             <ArrowBackIcon />
                         </IconButton>
-                        <h1 className='login-header' aria-label="We sent you a code!" role="heading">
+                        <h1 className='login-header' aria-label="We sent you a code!">
                             We sent you a code!
                         </h1>
                     </>
@@ -277,7 +286,7 @@ export const LoginModal = () => {
                             <IconButton className="login-modal-back-btn" aria-label="Back" onClick={() => {dispatch(decrementStep())}}>
                                 <ArrowBackIcon />
                             </IconButton>
-                            <h1 className='login-header' aria-label="We sent you a code!" role="heading">
+                            <h1 className='login-header' aria-label="We sent you a code!">
                                 We sent you a code!
                             </h1>
                         </>
@@ -319,7 +328,7 @@ export const LoginModal = () => {
                             <IconButton className="login-modal-back-btn" aria-label="Back" onClick={() => {dispatch(decrementStep())}}>
                                 <ArrowBackIcon />
                             </IconButton>
-                            <h1 className="login-header" aria-label="Change password" role="heading">
+                            <h1 className="login-header" aria-label="Change password">
                                 Change your password
                             </h1>
                         </>

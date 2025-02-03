@@ -25,6 +25,7 @@ import { Modal } from '../../common/modal/modal';
 import SwitchWithLabel from '../../common/switch/switch';
 
 import './register-modal.css';
+import { objectIsEmpty } from '../../../utils/objects';
 
 export const RegisterModal = (props) => {
     const registerStep = useSelector(state => state.register.step);
@@ -36,6 +37,8 @@ export const RegisterModal = (props) => {
     const phoneValid = useSelector(state => state.register.phoneValid);
     const systemConfirmationCode = useSelector(state => state.register.confirmationCode);
     const passwordValid = useSelector(state => state.register.passwordValid);
+    const registeredUser = useSelector(state => state.register.regUser);
+    const [userHasRegistered, setUserHasRegistered] = useState(false);
     const [user, setUser] = useState({
         first_name: "",
         last_name: "",
@@ -75,10 +78,12 @@ export const RegisterModal = (props) => {
         } else if (registerStep === 4 && Boolean(user.username) && passwordValid) {
             dispatch(registerUser(user));
             dispatch(resetStepCounter());
-            dispatch(setRegUser(user));
-            navigate("/home");
+            setUserHasRegistered(true);
+            // dispatch(setRegUser(user));
+            // navigate("/home");
+            return;
         }
-
+        
         dispatch(incrementStep());
     }
 
@@ -128,8 +133,21 @@ export const RegisterModal = (props) => {
         }
         
         setSignupDisabled(!usernameValid || !passwordValid || (passConfirm !== user.password));
+        // eslint-disable-next-line
+    }, [user, passConfirm]);
 
-    }, [user, passConfirm])
+    useEffect(() => {
+        if (userHasRegistered) {
+            dispatch(setRegUser(user));
+            setUserHasRegistered(false);
+            return;
+        }
+
+        if (!objectIsEmpty(registeredUser)) {
+            navigate('/home');
+        }
+        // eslint-disable-next-line
+    }, [userHasRegistered, registeredUser])
     
     const determineModalContent = () => {
         switch(registerStep) {
@@ -140,7 +158,7 @@ export const RegisterModal = (props) => {
                             <IconButton className="register-modal-close-btn" aria-label='Close' onClick={previousStep}>
                                 <CloseIcon />
                             </IconButton>
-                            <h1 className='register-header' aria-label='Create account' role='heading'>
+                            <h1 className='register-header' aria-label='Create account'>
                                 Create your account
                             </h1>
                         </>
@@ -203,7 +221,7 @@ export const RegisterModal = (props) => {
                             <IconButton className="register-modal-back-btn" aria-label="Back" onClick={previousStep}>
                                 <ArrowBackIcon />
                             </IconButton>
-                            <h1 className='register-header' aria-label='Add a phone number? (Optional)' role='heading'>
+                            <h1 className='register-header' aria-label='Add a phone number? (Optional)'>
                                 Add a phone number?
                             </h1>
                         </>
@@ -256,7 +274,7 @@ export const RegisterModal = (props) => {
                             <IconButton className="register-modal-back-btn" aria-label="Back" onClick={previousStep}>
                                 <ArrowBackIcon />
                             </IconButton>
-                            <h1 className='register-header' aria-label='We sent you a code' role='heading'>
+                            <h1 className='register-header' aria-label='We sent you a code'>
                                 We sent you a code!
                             </h1>
                         </>
@@ -298,7 +316,7 @@ export const RegisterModal = (props) => {
                             <IconButton className="register-modal-back-btn" aria-label="Back" onClick={previousStep}>
                                 <ArrowBackIcon />
                             </IconButton>
-                            <h1 className='register-header' aria-label='Create a username and password' role='heading'>
+                            <h1 className='register-header' aria-label='Create a username and password'>
                                 You'll need a password
                             </h1>
                         </>

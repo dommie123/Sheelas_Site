@@ -2,7 +2,7 @@ import React from 'react';
 
 import ItemFilter from './item-filter/item-filter';
 import ItemList from './item-list/item-list';
-import { SellerApplicationPanel } from './seller-app-panel/seller-app-panel';
+import SellerApplicationPanel from './seller-app-panel/seller-app-panel';
 
 import './home.css';
 

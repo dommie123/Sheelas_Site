@@ -119,7 +119,6 @@ class RUser(Resource):
         new_last_name = data['last_name']
         new_email = data['email']
         new_phone = data['phone'] if data['phone'] else user.phone
-        new_password = data['password'] if data['password'] else user.password
         twofa_enabled = data['twofa_enabled'] if data['twofa_enabled'] else False
         new_role = data['role'] if data['role'] else user.role
         new_seller_plan = data['seller_plan'] if data['seller_plan'] else user.seller_plan
@@ -132,6 +131,7 @@ class RUser(Resource):
         user.role = new_role
         user.seller_plan = new_seller_plan
 
+        new_password = data["password"]
         if new_password != "" and new_password is not None:
             user.password = hash_password(new_password)
 

@@ -15,6 +15,7 @@ import ThankYouPage from "../feature/buy-item/thank-you/thank-you";
 import ProfileSettingsPage from "../feature/profile-settings/profile-settings";
 import ErrorPage from "../error/error-page";
 import SellerAppPage from "../feature/seller-app-page/seller-app-page";
+import EditItemPage from "../feature/edit-item/edit-item";
 
 const router = createBrowserRouter([
     {
@@ -78,6 +79,15 @@ const router = createBrowserRouter([
             <>
                 <Navbar />
                 <BuyItemPage />
+            </>
+        )
+    },
+    {
+        path: '/update-item',
+        element: (
+            <>
+                <Navbar />
+                <EditItemPage />
             </>
         )
     },

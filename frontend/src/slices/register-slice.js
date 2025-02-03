@@ -37,7 +37,7 @@ const registerSlice = createSlice({
         phoneValid: true,
         passwordValid: true,
         confirmationCode: "",
-        regUser: false,
+        regUser: {}
     },
     reducers: {
         incrementStep: (state) => {

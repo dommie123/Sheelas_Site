@@ -4,7 +4,7 @@ import { UserApplicationPanel } from "../../../common/app-panel/app-panel";
 
 import './seller-app-panel.css';
 
-export const SellerApplicationPanel = () => {
+export default function SellerApplicationPanel() {
     const panelContent = (
         <>
             <h2 className="seller-app-panel-title">Have Items to Sell?</h2>

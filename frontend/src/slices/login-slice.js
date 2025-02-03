@@ -133,7 +133,7 @@ const loginSlice = createSlice({
         getUserFromSession: (state) => {
             const userSession = localStorage.getItem("user");
 
-            if (userSession === "undefined" || userSession === "") {
+            if (!userSession || userSession === "") {
                 console.warn("WARNING: No user was found in local session!");
                 return {
                     ...state,
@@ -149,6 +149,12 @@ const loginSlice = createSlice({
                 loggedInUser: { ...user, accessToken },
                 checkedLocalSessionForUser: true
             }
+        },
+        clearUnverifiedUser: (state) => {
+            return {
+                ...state,
+                unverifiedUser: {}
+            }
         }
     },
     extraReducers: (builder) => {
@@ -161,8 +167,6 @@ const loginSlice = createSlice({
             } else {
                 localStorage.setItem("user", JSON.stringify(action.payload));
             }
-
-            console.log({ user: localStorage.getItem("user") });
 
             return {
                 ...state, 
@@ -259,7 +263,8 @@ export const {
     resetStepCounter,
     resetErrorMessage,
     setUserCheckedOut,
-    getUserFromSession 
+    getUserFromSession,
+    clearUnverifiedUser
 } = loginSlice.actions;
 
 export default loginSlice.reducer;

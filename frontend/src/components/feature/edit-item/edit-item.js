@@ -1,25 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { TextField, InputAdornment, Button } from '@mui/material';
 
-import { sellItem } from '../../../slices/item-slice';
 import { showError } from '../../../utils/error';
+import { updateItem } from '../../../slices/item-slice';
 
-import './sell-item-page.css';
+import './edit-item.css';
 
-export default function SellItemPage() {
-    const [load, setLoad] = useState(false);
+const EditItemPage = () => {
     const [productName, setProductName] = useState('');
     const [productDescription, setProductDescription] = useState('');
-    const [productPrice, setProductPrice] = useState(0);
     const [productQuantity, setProductQuantity] = useState(0);
+    const [productPrice, setProductPrice] = useState(0);
     const user = useSelector(state => state.login.loggedInUser);
     const itemError = useSelector(state => state.items.error);
 
     const dispatch = useDispatch();
-    const navigate = useNavigate();
+    const navigate = useNavigate(); 
 
     // Error handler variables
     const [nameError, setNameError] = useState(false);
@@ -31,7 +30,7 @@ export default function SellItemPage() {
         setPriceError(isNaN(parseFloat(productPrice)));
         setQuantityError(isNaN(parseInt(productQuantity)));
     }
-
+    
     const handleSubmit = () => {
         if (!user.id) {
             showError('User not recognized! Please log in again!');
@@ -43,7 +42,7 @@ export default function SellItemPage() {
         if (nameError || priceError || quantityError) {
             return;
         }
-        
+
         const item = { 
             description: productDescription, 
             price: productPrice,
@@ -51,37 +50,26 @@ export default function SellItemPage() {
             seller_id: user.id
         }
 
-        dispatch(sellItem({itemName: productName, item, user}));
-    }
+        dispatch(updateItem({ itemName: productName, item, user }));
+    };
 
     useEffect(() => {
         if (user.role === 2) {
-            navigate('/error')
-        }
-        // eslint-disable-next-line
-    }, [user]);
-
-    useEffect(() => {
-        if (!load) {
-            setLoad(true);
+            navigate('/error');
             return;
         }
 
-        verifyUserInput();
-        // eslint-disable-next-line
-    }, [productName, productPrice, productQuantity]);
-
-    useEffect(() => {
         if (itemError.message) {
             showError(itemError.message);
         }
-    }, [itemError])
+        // eslint-disable-next-line
+    }, [itemError, user]);
 
     return (
-        <div className='sell-item-page-container'>
-            <h2 className='sell-item-header' aria-label='Sell Product'>Sell your product here!</h2>
+        <div className='edit-item-page-container'>
+            <h2 className='edit-item-header' aria-label='Edit Product Information'>Update your product's information here!</h2>
             <TextField
-                className='sell-item-name' 
+                className='edit-item-name' 
                 aria-label='Product Name'
                 variant='outlined' 
                 label='Name of Product' 
@@ -93,7 +81,7 @@ export default function SellItemPage() {
                 helperText={nameError ? "Please enter a product name!" : undefined}
             />
             <TextField
-                className='sell-item-description' 
+                className='edit-item-description' 
                 aria-label='Product Description'
                 variant='outlined' 
                 label='Product Description' 
@@ -102,7 +90,7 @@ export default function SellItemPage() {
                 multiline
             />
             <TextField
-                className='sell-item-price'
+                className='edit-item-price'
                 aria-label='Product Price'
                 variant='outlined'
                 label="Price"
@@ -117,7 +105,7 @@ export default function SellItemPage() {
                 helperText={priceError ? "Price must be a decimal number (i.e. '3.25')!" : undefined}
             />
             <TextField
-                className='sell-item-quantity' 
+                className='edit-item-quantity' 
                 aria-label='Product Quantity'
                 variant='outlined' 
                 label='Quantity' 
@@ -128,7 +116,9 @@ export default function SellItemPage() {
                 error={quantityError}
                 helperText={quantityError ? "Quantity must be a whole number!" : undefined}
             />
-            <Button className='sell-item-submit-button' aria-label="Submit Product" onClick={handleSubmit} color='primary' variant='contained'>Submit</Button>
+            <Button className='edit-item-submit-button' aria-label="Update Product" onClick={handleSubmit} color='primary' variant='contained'>Save Changes</Button>
         </div>
-    )
-}
+    );
+};
+
+export default EditItemPage;
