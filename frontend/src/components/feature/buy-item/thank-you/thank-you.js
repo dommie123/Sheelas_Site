@@ -25,7 +25,7 @@ export default function ThankYouPage() {
 
     return (
         <div className='thank-you-container'>
-            <h2 className='thank-you-header' aria-label='Thank you' role='heading'>Thank you!</h2>
+            <h2 className='thank-you-header' aria-label='Thank you'>Thank you!</h2>
             <p className='thank-you-additional-message'>
                 A confirmation email with your receipt will be sent to your inbox confirming your purchase. We hope you enjoy!
             </p>

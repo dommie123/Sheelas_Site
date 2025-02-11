@@ -16,6 +16,7 @@ import ProfileSettingsPage from "../feature/profile-settings/profile-settings";
 import ErrorPage from "../error/error-page";
 import SellerAppPage from "../feature/seller-app-page/seller-app-page";
 import EditItemPage from "../feature/edit-item/edit-item";
+import WelcomePage from "../feature/register/welcome/welcome";
 
 const router = createBrowserRouter([
     {
@@ -36,6 +37,14 @@ const router = createBrowserRouter([
         element: (
             <>
                 <RegisterModal />
+            </>
+        )
+    },
+    {
+        path: "/register/welcome",
+        element: (
+            <>
+                <WelcomePage />
             </>
         )
     },
