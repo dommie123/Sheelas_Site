@@ -128,6 +128,15 @@ const router = createBrowserRouter([
         )
     },
     {
+        path: '/admin-application',
+        element: (
+            <>
+                <Navbar />
+                <p>Admin Application Page</p>
+            </>
+        )
+    },
+    {
         path: '/error',
         element: (
             <ErrorPage />
