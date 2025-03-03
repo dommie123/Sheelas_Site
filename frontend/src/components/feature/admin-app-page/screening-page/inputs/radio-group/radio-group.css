@@ -1,0 +1,13 @@
+.screening-radio-group-container {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    margin: 1em !important;
+}
+
+.screening-radio-group {
+    flex: 1;
+    display: inline-flex !important;
+    flex-direction: row !important;
+    justify-content: space-around !important;
+}

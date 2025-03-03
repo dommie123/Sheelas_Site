@@ -40,7 +40,7 @@ const AdminAppPage = () => {
 
     return (
         <div className='admin-application-page-container'>
-            <Stepper activeStep={activeStep}>
+            <Stepper activeStep={activeStep} className='admin-application-page-stepper'>
                 {steps.map((step, index) => {
                     const stepProps = {};
                     const labelProps = {};
