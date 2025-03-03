@@ -15,6 +15,7 @@ from utils.email import send_email, generate_receipt
 from resources.user import RUser, UserRegister, UserList
 from resources.item import RItem, ItemList, FilteredItemList
 from resources.ticket import RTicket, TicketList
+from resources.admin_app import AdminAppResource, AdminAppListResource
 
 from constants import CORS_ALLOWED_ORIGINS
 
@@ -46,6 +47,8 @@ api.add_resource(ItemList, "/items")
 api.add_resource(FilteredItemList, "/fitems")
 api.add_resource(RTicket, "/ticket")
 api.add_resource(TicketList, "/tickets")
+api.add_resource(AdminAppResource, "/admin_app")
+api.add_resource(AdminAppListResource, "/admin_apps")
 
 @app.route("/verify", methods=["POST"])
 @cross_origin(origins=CORS_ALLOWED_ORIGINS)

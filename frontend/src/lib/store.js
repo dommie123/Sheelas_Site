@@ -6,6 +6,7 @@ import globalSlice from '../slices/global-slice';
 import itemSlice from '../slices/item-slice';
 import cartSlice from '../slices/cart-slice';
 import sellerSlice from '../slices/seller-slice';
+import adminSlice from '../slices/admin-slice';
 
 export default configureStore({
     reducer: {
@@ -14,6 +15,7 @@ export default configureStore({
         global: globalSlice,
         items: itemSlice,
         cart: cartSlice,
-        seller: sellerSlice
+        seller: sellerSlice,
+        admin: adminSlice
     },
 })

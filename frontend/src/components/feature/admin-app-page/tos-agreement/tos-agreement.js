@@ -1,24 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+
+import { toggleAcceptTOS } from '../../../../slices/admin-slice';
 
 import './tos-agreement.css';
 
 const AdminApplicationTOS = () => {
     const [accepted, setAccepted] = useState(false);
+    const dispatch = useDispatch();
 
     const handleCheckboxChange = () => {
         setAccepted(!accepted);
     };
 
-    const handleApplyClick = () => {
-        if (accepted) {
-            alert('You have accepted the Terms of Service.');
-        } else {
-            alert('Please accept the Terms of Service before applying.');
-        }
-    };
+    useEffect(() => {
+        dispatch(toggleAcceptTOS(accepted));
+        // eslint-disable-next-line
+    }, [accepted])
 
     return (
-        <div>
+        <div className='tos-container'>
             <h1>Sheebay Terms of Service for Administrators</h1>
             <p>Effective Date: [Insert Date]</p>
             <p>Welcome to Sheebay! These Terms of Service (TOS) establish the expectations, responsibilities, and standards for all administrators (hereafter referred to as "Admins"). By accepting your role, you agree to comply with these terms and help foster a safe, transparent, and thriving community on Sheebay.</p>
@@ -90,7 +91,6 @@ const AdminApplicationTOS = () => {
                 <input type="checkbox" checked={accepted} onChange={handleCheckboxChange} />
                 <label>I accept the Terms of Service</label>
             </div>
-            <button onClick={handleApplyClick}>Apply</button>
         </div>
     );
 };

@@ -17,6 +17,7 @@ import ErrorPage from "../error/error-page";
 import SellerAppPage from "../feature/seller-app-page/seller-app-page";
 import EditItemPage from "../feature/edit-item/edit-item";
 import WelcomePage from "../feature/register/welcome/welcome";
+import AdminAppPage from "../feature/admin-app-page/admin-app-page";
 
 const router = createBrowserRouter([
     {
@@ -132,7 +133,7 @@ const router = createBrowserRouter([
         element: (
             <>
                 <Navbar />
-                <p>Admin Application Page</p>
+                <AdminAppPage />
             </>
         )
     },
