@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import moment from 'moment';
+
 import { Navigate } from 'react-router-dom';
 
 import { Card } from '@mui/material';
 
-import { ScreeningTextArea, ScreeningRadioGroup } from './inputs';
+import { ScreeningTextArea, ScreeningRadioGroup, ScreeningDatePicker } from './inputs';
 
 import AdminAppTOS from '../tos-agreement/tos-agreement';
 
@@ -17,7 +19,7 @@ const ScreeningPage = ({ activeStep }) => {
             pastExperience: "",
             whatCanYouOffer: "",
             salaryExpectations: 0.0,
-            expectedStartDate: ""
+            expectedStartDate: moment().format("MM/DD/yyyy")
         }
     }
 
@@ -54,10 +56,10 @@ const ScreeningPage = ({ activeStep }) => {
                             label='What are your salary expectations?'
                             handleChange={event => setBasicInfo({...basicInfo, salaryExpectations: event.target.value})}
                         />
-                        <ScreeningTextArea
+                        <ScreeningDatePicker
                             className='expected-start-date-control'
                             label='If you are considered for the role, when will be your earliest start date?'
-                            handleChange={event => setBasicInfo({...basicInfo, expectedStartDate: event.target.value})}
+                            handleChange={(newValue) => setBasicInfo({...basicInfo, expectedStartDate: newValue})}
                         />
                     </Card>
                 );
