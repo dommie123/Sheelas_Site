@@ -29,6 +29,14 @@ const ScreeningPage = ({ activeStep }) => {
             whatCanYouOffer: "",
             salaryExpectations: 0.0,
             expectedStartDate: moment().format("MM/DD/yyyy")
+        },
+        legalBackground: {
+            hasBeenIncarcerated: false,
+            pastCrimesCommitted: ""
+        },
+        medicalHistory: {
+            hasDisabilities: false,
+            medicalDisabilities: ""
         }
     }
     const salaryInputProps = {
@@ -37,6 +45,8 @@ const ScreeningPage = ({ activeStep }) => {
     
     const [basicInfo, setBasicInfo] = useState(initialState.basicInfo);
     const [jobExperience, setJobExperience] = useState(initialState.jobExperience);
+    const [legalBackground, setLegalBackground] = useState(initialState.legalBackground);
+    const [medicalHistory, setMedicalHistory] = useState(initialState.medicalHistory);
 
     const determineContent = () => {
         switch (activeStep) {
@@ -118,9 +128,45 @@ const ScreeningPage = ({ activeStep }) => {
                     </Card>
                 );
             case 2:
-                return <>Legal Background</>;
+                return (
+                    <Card className='legal-background-card'>
+                        <Typography variant='h4' component='h2' className='legal-background-header'>Legal Background</Typography>
+                        <ScreeningRadioGroup
+                            className='has-been-incarcerated-control'
+                            label='Have you been arrested or convicted of a crime (other than a minor traffic violation)?'
+                            value={legalBackground.hasBeenIncarcerated ? 'Yes' : 'No'}
+                            options={['Yes', 'No']}
+                            handleChange={event => setLegalBackground({...legalBackground, hasBeenIncarcerated: event.target.value === 'Yes'})}
+                        />
+                        <ScreeningTextArea
+                            className='past-crimes-committed-control'
+                            label='If so, list your past crimes here: '
+                            disabled={!legalBackground.hasBeenIncarcerated}
+                            value={legalBackground.pastCrimesCommitted}
+                            handleChange={event => setLegalBackground({...legalBackground, pastCrimesCommitted: event.target.value})}
+                        />
+                    </Card>
+                )
             case 3:
-                return <>Medical History</>;
+                return (
+                    <Card className='medical-history-card'>
+                        <Typography variant='h4' component='h2' className='medical-history-header'>Medical History</Typography>
+                        <ScreeningRadioGroup
+                            className='has-disabilities-control'
+                            label='Do you have any disabilities that may prevent you from performing your normal work duties?'
+                            value={medicalHistory.hasDisabilities ? 'Yes' : 'No'}
+                            options={['Yes', 'No']}
+                            handleChange={event => setMedicalHistory({...medicalHistory, hasDisabilities: event.target.value === 'Yes'})}
+                        />
+                        <ScreeningTextArea
+                            className='medical-disabilities-control'
+                            label='If so, list them here: '
+                            disabled={!medicalHistory.hasDisabilities}
+                            value={medicalHistory.medicalDisabilities}
+                            handleChange={event => setMedicalHistory({...medicalHistory, medicalDisabilities: event.target.value})}
+                        />
+                    </Card>
+                )
             case 4: 
                 return <>Review App</>;
             case 5:
