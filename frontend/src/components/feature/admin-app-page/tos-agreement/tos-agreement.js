@@ -42,17 +42,17 @@ const AdminApplicationTOS = () => {
             <p>Admins must refrain from the following actions:</p>
             <ul>
                 <li>Engaging in Political or Religious Activities</li>
-                <li>Participation in Illegal Activities</li>
+                <li>Participation in Illegal Activities, including:</li>
                 <ul>
                     <li>Theft or misappropriation of funds</li>
                     <li>Market manipulation or identity theft</li>
                     <li>Money laundering or cryptocurrency scams</li>
                     <li>Any form of cybercrime or activities that could reasonably be perceived as such</li>
                 </ul>
-                <li>Unwarranted Removal of Users or Items</li>
+                <li>Unwarranted Removal of Users or Items, unless they fall into the following categories:</li>
                 <ul>
                     <li>Lewd, raunchy, or offensive content</li>
-                    <li>Intangible services that cannot be verified</li>
+                    <li>Services or other intangible items</li>
                     <li>Items promoting hate speech, bigotry, or discrimination</li>
                 </ul>
                 <li>Harassment and Retaliation</li>
@@ -62,7 +62,7 @@ const AdminApplicationTOS = () => {
                 </ul>
                 <li>Acceptance of Bribes</li>
                 <ul>
-                    <li>Admins must not engage in bribery or accept gifts that could be perceived as attempts to influence their decisions.</li>
+                    <li>Admins must not engage in bribery or accept gifts that could be perceived as bribes.</li>
                 </ul>
             </ul>
             <h3>2.3. Approval of Changes</h3>
@@ -86,7 +86,7 @@ const AdminApplicationTOS = () => {
             <hr />
             <h2>5. Contact Information</h2>
             <p>For inquiries or further clarification regarding these Terms of Service, please contact:</p>
-            <p>[Insert Contact Information]</p>
+            <p>beegyoshi9817@gmail.com</p>
             <div>
                 <input type="checkbox" checked={accepted} onChange={handleCheckboxChange} />
                 <label>I accept the Terms of Service</label>
