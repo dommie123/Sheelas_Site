@@ -14,6 +14,7 @@ import './admin-app-page.css';
 const AdminAppPage = () => {
     const [activeStep, setActiveStep] = useState(0);
     const [completed, setCompleted] = useState({});
+    const isMobile = useSelector(state => state.global.isMobile);
     const acceptedTOS = useSelector(state => state.admin.acceptedTOS);
 
     const steps = ['Basic Info', 'Job Experience', 'Legal Background', 'Medical History', 'Review', 'Submit'];
@@ -51,7 +52,7 @@ const AdminAppPage = () => {
 
                     return (
                         <Step key={step} {...stepProps}>
-                            <StepLabel {...labelProps}>{step}</StepLabel>
+                            {!isMobile ? <StepLabel {...labelProps}>{step}</StepLabel> : <StepLabel {...labelProps}></StepLabel>}
                         </Step>
                     );
                 })}

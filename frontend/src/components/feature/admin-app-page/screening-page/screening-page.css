@@ -1,0 +1,13 @@
+.basic-info-header, .job-experience-header {
+    text-align: center;
+    width: 100%;
+    font-weight: 700 !important;
+    margin: 15px 0px !important;
+}
+
+.basic-info-subheader, .job-experience-subheader {
+    text-align: center;
+    width: 100%;
+    font-weight: 300 !important;
+    margin: 5px 0px !important;
+}
