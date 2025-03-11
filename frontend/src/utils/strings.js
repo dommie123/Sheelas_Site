@@ -17,3 +17,23 @@ export const capitalize = (string) => {
     
     return `${firstLetter}${restOfString}`;
 }
+
+export const fromCamelCase = (string) => {
+    if (typeof string !== "string") {
+        console.error(`ERROR: ${string} is not a string!`);
+        return;
+    }
+
+    let output = '';
+    for (let i = 0; i < string.length; i++) {
+        if (i === 0) {
+            output = output.concat(string.charAt(i).toUpperCase());
+        } else if (string.charAt(i) === string.charAt(i).toUpperCase()) {
+            output = output.concat(` ${string.charAt(i).toUpperCase()}`);
+        } else {
+            output = output.concat(string.charAt(i));
+        }
+    }
+
+    return output;
+}

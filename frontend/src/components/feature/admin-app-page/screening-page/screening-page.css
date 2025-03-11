@@ -1,13 +1,30 @@
-.basic-info-header, .job-experience-header, .legal-background-header, .medical-history-header {
+.basic-info-header, .job-experience-header, .legal-background-header, .medical-history-header, .review-app-header {
     text-align: center;
     width: 100%;
     font-weight: 700 !important;
     margin: 15px 0px !important;
 }
 
-.basic-info-subheader, .job-experience-subheader {
+.basic-info-subheader, .review-app-subheader {
     text-align: center;
     width: 100%;
     font-weight: 300 !important;
     margin: 5px 0px !important;
+}
+
+.review-app-card {
+    padding: 0 15px !important;
+    padding-bottom: 15px !important;
+}
+
+.review-basic-info-header, .review-job-experience-header, .review-legal-background-header, .review-medical-history-header {
+    font-weight: 900 !important;
+}
+
+.review-key {
+    font-weight: 600;
+}
+
+.review-entry {
+    font-weight: 400;
 }

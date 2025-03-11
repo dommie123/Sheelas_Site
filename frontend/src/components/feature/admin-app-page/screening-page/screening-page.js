@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import moment from 'moment';
@@ -6,6 +6,8 @@ import moment from 'moment';
 import { Card, InputAdornment, Typography } from '@mui/material';
 
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+
+import { fromCamelCase } from '../../../../utils/strings';
 
 import { ScreeningTextArea, ScreeningRadioGroup, ScreeningDatePicker, ScreeningTextField } from './inputs';
 import AdminAppTOS from '../tos-agreement/tos-agreement';
@@ -168,13 +170,51 @@ const ScreeningPage = ({ activeStep }) => {
                     </Card>
                 )
             case 4: 
-                return <>Review App</>;
+                return (
+                    <Card className='review-app-card'>
+                        <Typography variant='h4' component='h2' className='review-app-header'>Review Application</Typography>
+                        <Typography variant='h6' component='h3' className='review-app-subheader'>Please take a moment to review your application. We'll still be here when you're finished.</Typography>
+                        <hr />
+                        <Typography variant='h6' component='h3' className='review-basic-info-header'>Basic Info</Typography>
+                        {Object.entries(basicInfo).map(entry => (
+                            <p className='review-entry'><b className='review-key'>{fromCamelCase(entry[0])}: </b>{parseReviewEntry(entry[1])}</p>
+                        ))}
+                        <hr />
+                        <Typography variant='h6' component='h3' className='review-job-experience-header'>Job Experience</Typography>
+                        {Object.entries(jobExperience).map(entry => (
+                            <p className='review-entry'><b className='review-key'>{fromCamelCase(entry[0])}: </b>{parseReviewEntry(entry[1])}</p>
+                        ))}
+                        <hr />
+                        <Typography variant='h6' component='h3' className='review-legal-background-header'>Legal Background</Typography>
+                        {Object.entries(legalBackground).map(entry => (
+                            <p className='review-entry'><b className='review-key'>{fromCamelCase(entry[0])}: </b>{parseReviewEntry(entry[1])}</p>
+                        ))}
+                        <hr />
+                        <Typography variant='h6' component='h3' className='review-medical-history-header'>Medical History</Typography>
+                        {Object.entries(medicalHistory).map(entry => (
+                            <p className='review-entry'><b className='review-key'>{fromCamelCase(entry[0])}: </b>{parseReviewEntry(entry[1])}</p>
+                        ))}
+                    </Card>
+                )
             case 5:
                 return <AdminAppTOS />;
             default:
                 return <Navigate to='/home' />;
         }
     };
+
+    const parseReviewEntry = (entry) => {
+        switch (typeof entry) {
+            case "boolean": 
+                return entry ? 'Yes' : 'No';
+            case "string":
+                return entry === "" ? "N/A" : entry;
+            case "undefined": 
+                return "N/A";
+            default: 
+                return entry;
+        }
+    }
 
     return (
         <div className='screening-page-container'>
