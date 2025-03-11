@@ -3,6 +3,8 @@ import { useDispatch } from 'react-redux';
 
 import { toggleAcceptTOS } from '../../../../slices/admin-slice';
 
+import { Card, FormControl, FormLabel, Checkbox } from '@mui/material';
+
 import './tos-agreement.css';
 
 const AdminApplicationTOS = () => {
@@ -19,7 +21,7 @@ const AdminApplicationTOS = () => {
     }, [accepted])
 
     return (
-        <div className='tos-container'>
+        <Card className='tos-container'>
             <h1>Sheebay Terms of Service for Administrators</h1>
             <p>Effective Date: [Insert Date]</p>
             <p>Welcome to Sheebay! These Terms of Service (TOS) establish the expectations, responsibilities, and standards for all administrators (hereafter referred to as "Admins"). By accepting your role, you agree to comply with these terms and help foster a safe, transparent, and thriving community on Sheebay.</p>
@@ -38,10 +40,16 @@ const AdminApplicationTOS = () => {
             <p>To maintain the integrity of Sheebay’s platform, all Admins are expected to observe the following rules and avoid the prohibited activities listed below. Non-compliance will result in disciplinary actions, as outlined in Section 3.</p>
             <h3>2.1. Administrator Responsibilities</h3>
             <p>Admins are expected to act in accordance with Sheebay’s core values and fulfill their duties with professionalism, fairness, and respect for all users and fellow admins.</p>
+            <p>Admins must remove items or users that do not comply with Sheebay’s policies, including (but not limited to): </p>
+            <ul>
+                <li>Lewd, raunchy, or offensive content</li>
+                <li>Services or other intangible items</li>
+                <li>Items promoting hate speech, bigotry, or discrimination</li>
+            </ul>
             <h3>2.2. Prohibited Conduct</h3>
             <p>Admins must refrain from the following actions:</p>
             <ul>
-                <li>Engaging in Political or Religious Activities</li>
+                <li>Engaging in Political or Religious Activities on behalf of Sheebay or its staff</li>
                 <li>Participation in Illegal Activities, including:</li>
                 <ul>
                     <li>Theft or misappropriation of funds</li>
@@ -49,12 +57,7 @@ const AdminApplicationTOS = () => {
                     <li>Money laundering or cryptocurrency scams</li>
                     <li>Any form of cybercrime or activities that could reasonably be perceived as such</li>
                 </ul>
-                <li>Unwarranted Removal of Users or Items, unless they fall into the following categories:</li>
-                <ul>
-                    <li>Lewd, raunchy, or offensive content</li>
-                    <li>Services or other intangible items</li>
-                    <li>Items promoting hate speech, bigotry, or discrimination</li>
-                </ul>
+                <li>Removal of Users or Items (unless done so purely in good faith and in accordance with Sheebay’s policies)</li>
                 <li>Harassment and Retaliation</li>
                 <ul>
                     <li>Harassment of users, fellow admins, or the site owner is strictly forbidden.</li>
@@ -87,11 +90,11 @@ const AdminApplicationTOS = () => {
             <h2>5. Contact Information</h2>
             <p>For inquiries or further clarification regarding these Terms of Service, please contact:</p>
             <p>beegyoshi9817@gmail.com</p>
-            <div>
-                <input type="checkbox" checked={accepted} onChange={handleCheckboxChange} />
-                <label>I accept the Terms of Service</label>
-            </div>
-        </div>
+            <FormControl className='tos-accept-control'>
+                <Checkbox checked={accepted} onChange={handleCheckboxChange} />
+                <FormLabel>I accept the Terms of Service</FormLabel>
+            </FormControl>
+        </Card>
     );
 };
 
