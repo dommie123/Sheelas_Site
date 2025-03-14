@@ -1,9 +1,19 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { authPostRequest } from '../utils/axios-helpers';
+import { alertUser } from '../utils/alert-helpers';
 
 export const submitApplication = createAsyncThunk(
     "admin/submit-app",
     async (data, thunkApi) => {
-        // TODO submit an application to the backend
+        try {
+            const res = await authPostRequest('/admin_app', {
+                status: "Submitted",
+                message: JSON.stringify(data)
+            });
+            return res.data;
+        } catch (e) {
+            return thunkApi.rejectWithValue(e);
+        }
     }
 )
 
@@ -21,9 +31,16 @@ const adminSlice = createSlice({
                 ...state,
                 acceptedTOS: action.payload
             }
-        }
+        },
     },
     extraReducers: (builder) => {
+        builder.addCase(submitApplication.fulfilled, (state) => {
+            alertUser("Your application has been successfully submitted!");
+            return {
+                ...state,
+                error: false
+            }
+        });
         builder.addCase(submitApplication.rejected, (state) => {
             return {
                 ...state,

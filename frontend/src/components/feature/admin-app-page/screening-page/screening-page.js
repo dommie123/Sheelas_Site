@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
 
 import { Card, InputAdornment, Typography } from '@mui/material';
 
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 
+import { submitApplication } from '../../../../slices/admin-slice';
 import { fromCamelCase } from '../../../../utils/strings';
 
 import { ScreeningTextArea, ScreeningRadioGroup, ScreeningDatePicker, ScreeningTextField } from './inputs';
@@ -16,6 +17,8 @@ import './screening-page.css';
 
 const ScreeningPage = ({ activeStep }) => {
     const userInfo = useSelector(state => state.login.loggedInUser);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     
     const initialState = {
         basicInfo: {
@@ -199,7 +202,7 @@ const ScreeningPage = ({ activeStep }) => {
             case 5:
                 return <AdminAppTOS />;
             default:
-                return <Navigate to='/home' />;
+                return <></>;
         }
     };
 
@@ -215,6 +218,14 @@ const ScreeningPage = ({ activeStep }) => {
                 return entry;
         }
     }
+
+    useEffect(() => {
+        if (activeStep > 5) {
+            dispatch(submitApplication({ basicInfo, jobExperience, legalBackground, medicalHistory }));
+            navigate('/home');
+        }
+        // eslint-disable-next-line
+    }, [activeStep])
 
     return (
         <div className='screening-page-container'>
