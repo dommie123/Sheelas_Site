@@ -66,8 +66,8 @@ class AdminAppAdminResource(Resource):
 class AdminAppListResource(Resource):
     @jwt_required()
     def get(self):
-        user_id = get_jwt_identity()
-        user = User.find_by_id(user_id)
+        username = get_jwt_identity()
+        user = User.find_by_username(username)
         if user.role != UserRole.ADMIN.value:
             return {'message': 'You do not have permission to view this resource'}, 403
     
