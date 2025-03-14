@@ -57,7 +57,6 @@ class AdminAppAdminResource(Resource):
         
         username = get_jwt_identity()
         user = User.find_by_username(username)
-        print(f"User is {user.role}. Admin is {UserRole.ADMIN.value}.")
         if user.role != UserRole.ADMIN.value and admin_app.user_id != user.id:
             return {'message': 'You do not have permission to view this application'}, 403
         
