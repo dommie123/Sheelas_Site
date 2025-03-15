@@ -9,6 +9,7 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 
 import { submitApplication } from '../../../../slices/admin-slice';
 import { fromCamelCase } from '../../../../utils/strings';
+import { alertUser } from '../../../../utils/alert-helpers';
 
 import { ScreeningTextArea, ScreeningRadioGroup, ScreeningDatePicker, ScreeningTextField } from './inputs';
 import AdminAppTOS from '../tos-agreement/tos-agreement';
@@ -17,6 +18,7 @@ import './screening-page.css';
 
 const ScreeningPage = ({ activeStep }) => {
     const userInfo = useSelector(state => state.login.loggedInUser);
+    const hasError = useSelector(state => state.admin.error);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     
@@ -221,7 +223,12 @@ const ScreeningPage = ({ activeStep }) => {
 
     useEffect(() => {
         if (activeStep > 5) {
-            dispatch(submitApplication({ basicInfo, jobExperience, legalBackground, medicalHistory }));
+            dispatch(submitApplication({ data: { basicInfo, jobExperience, legalBackground, medicalHistory }, accessToken: userInfo.accessToken}));
+
+            if (!hasError) {
+                alertUser("Your application has been successfully submitted!");
+            }
+            
             navigate('/home');
         }
         // eslint-disable-next-line
