@@ -145,6 +145,13 @@ def upload_image():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+@app.route('/visits')
+@cross_origin(origins=CORS_ALLOWED_ORIGINS)
+def get_website_visits():
+    with open('access.log', 'r') as log:
+        log_lines = log.readlines()
+        return jsonify({"visits": len(log_lines)}), 200 
 
 def auth_user(request):
     username = request.json.get('username')

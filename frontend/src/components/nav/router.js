@@ -18,6 +18,7 @@ import SellerAppPage from "../feature/seller-app-page/seller-app-page";
 import EditItemPage from "../feature/edit-item/edit-item";
 import WelcomePage from "../feature/register/welcome/welcome";
 import AdminAppPage from "../feature/admin-app-page/admin-app-page";
+import AdminLayout from "../feature/admin/admin-layout";
 
 const router = createBrowserRouter([
     {
@@ -138,11 +139,20 @@ const router = createBrowserRouter([
         )
     },
     {
+        path: '/admin',
+        element: (
+            <>
+                <Navbar />
+                <AdminLayout />
+            </>
+        )
+    },
+    {
         path: '/error',
         element: (
             <ErrorPage />
         )
-    }
+    },
 ]);
 
 export default function Router(props) {
