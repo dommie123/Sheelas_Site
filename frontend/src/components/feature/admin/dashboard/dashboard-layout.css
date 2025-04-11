@@ -1,0 +1,36 @@
+.dashboard-layout-container {
+    display: grid;
+    column-gap: 1em;
+    row-gap: 1.5em;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    grid-template-areas: 
+        "top-left top-right" 
+        "center center" 
+        "bottom-left bottom-right"
+    ;
+    grid-template-columns: auto auto;
+}
+
+.sheebay-website-visit-count-card {
+    grid-area: top-left;
+}
+
+.sheebay-total-sales-to-visits-card {
+    grid-area: top-right;
+}
+
+.sheebay-users-card {
+    grid-area: center;
+}
+
+.sheebay-support-tickets-card {
+    grid-area: bottom-left;
+}
+
+.sheebay-guest-support-tickets-card {
+    grid-area: bottom-right;
+}
+

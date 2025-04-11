@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from 'react-redux';
 
 import { Tabs, Tab, Box } from "@mui/material";
 
@@ -9,8 +10,8 @@ function TabPanel(props) {
         <div
             role="tabpanel"
             hidden={value !== index}
-            id={`vertical-tabpanel-${index}`}
-            aria-labelledby={`vertical-tab-${index}`}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
             {...other}
         >
             {value === index && (
@@ -29,8 +30,17 @@ function a11yProps(index) {
   };
 }
 
-export default function SimpleTabs({ tabs, className }) { // tabs = [{ label: string, content: JSXElement }]
+export default function SimpleTabs({ tabs, className, ariaLabel }) { // tabs = [{ label: string, content: JSXElement }]
     const [value, setValue] = React.useState(0);
+    const isMobile = useSelector(state => state.global.isMobile);
+    
+    const verticalTabStyles = {
+        flexGrow: 2,
+        bgcolor: "background.paper",
+        display: "flex",
+        height: "100%",
+        width: "100%"
+    };
 
     const handleChange = (_, newValue) => {
         setValue(newValue);
@@ -39,20 +49,15 @@ export default function SimpleTabs({ tabs, className }) { // tabs = [{ label: st
     return (
         <Box
             className={className}
-            sx={{
-                flexGrow: 1,
-                bgcolor: "background.paper",
-                display: "flex",
-                height: 224,
-            }}
+            sx={isMobile ? { width: '100%', bgcolor: "background.paper", } : verticalTabStyles}
         >
             <Tabs
-                orientation="vertical"
-                variant="scrollable"
+                orientation={isMobile ? "horizontal" : "vertical"}
+                variant={isMobile ? "fullWidth" : "scrollable"}
                 value={value}
                 onChange={handleChange}
-                aria-label="Vertical tabs example"
-                sx={{ borderRight: 1, borderColor: "divider" }}
+                aria-label={ariaLabel}
+                sx={isMobile ? undefined : { borderRight: 1, borderColor: "divider" }}
             >
                 {tabs.map((tab, index) => <Tab label={tab.label} {...a11yProps(index)} />)}
             </Tabs>
