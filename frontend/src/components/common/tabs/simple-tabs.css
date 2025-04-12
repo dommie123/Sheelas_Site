@@ -1,0 +1,8 @@
+.vertical-tabs-container {
+    width: 100%;
+}
+
+.vertical-tabpanel {
+    width: calc(100vw - 125px);
+    height: calc(100% - 100px);
+}

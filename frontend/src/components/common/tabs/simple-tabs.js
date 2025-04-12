@@ -3,19 +3,23 @@ import { useSelector } from 'react-redux';
 
 import { Tabs, Tab, Box } from "@mui/material";
 
+import './simple-tabs.css';
+
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
+    const isMobile = useSelector(state => state.global.isMobile);
 
     return (
         <div
             role="tabpanel"
             hidden={value !== index}
+            className={`${isMobile ? 'simple' : 'vertical'}-tabpanel`}
             id={`simple-tabpanel-${index}`}
             aria-labelledby={`simple-tab-${index}`}
             {...other}
         >
             {value === index && (
-                <Box sx={{ p: 3 }}>
+                <Box sx={{ p: 3, height: "100%" }}>
                     {children}
                 </Box>
             )}
@@ -48,7 +52,7 @@ export default function SimpleTabs({ tabs, className, ariaLabel }) { // tabs = [
 
     return (
         <Box
-            className={className}
+            className={`${className} ${isMobile ? 'horizontal' : 'vertical'}-tabs-container`}
             sx={isMobile ? { width: '100%', bgcolor: "background.paper", } : verticalTabStyles}
         >
             <Tabs
