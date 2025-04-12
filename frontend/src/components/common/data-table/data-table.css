@@ -1,0 +1,44 @@
+.data-table-container {
+    padding: 0.5em 0px;
+    background-color: #F5FFF5;
+    margin: 0px;
+    border-collapse: collapse;
+}
+
+.data-table-title-header {
+    padding: 0.5em;
+    background-color: #EEFFF0;
+    border-bottom: 1px solid #BAFFBA;
+}
+
+.data-table-title {
+    text-align: left;
+    padding-left: 1em;
+    font-weight: 600;
+    font-size: 18pt;
+}
+
+.data-table-column-header {
+    text-align: left;
+    font-weight: 600;
+    font-size: 14pt;
+    padding: 0.25em;
+    border-bottom: 1px solid #DCF0DC;
+    margin: 0px;
+    background-color: whitesmoke;
+    height: 100%;
+}
+
+.data-table-body {
+    height: fit-content;
+    overflow: scroll;
+    background-color: white;
+}
+
+.data-table-cell {
+    border-bottom: 1px solid #DCDCDC;
+    font-size: 14pt;
+    padding: 0.25em;
+    padding-left: 0.3em;
+    margin: 0px;
+}

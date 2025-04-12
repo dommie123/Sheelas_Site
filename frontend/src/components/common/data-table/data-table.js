@@ -13,7 +13,7 @@ const DataTable = (props) => {
                 <b className='data-table-title'>{title}</b>
             </caption>
             <thead className='data-table-head'>
-                {columns.map(col => <th className='data-table-column-header'>{fromCamelCase(col)}</th>)}
+                <tr className='data-table-header-row'>{columns.map(col => <th className='data-table-column-header'>{fromCamelCase(col)}</th>)}</tr>
             </thead>
             <tbody className='data-table-body'>
                 {data.map(dataEntry => 
