@@ -1,5 +1,7 @@
+import axios from 'axios';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { authPostRequest } from '../utils/axios-helpers';
+import { determineBackendURL } from '../AppConfig';
 
 export const submitApplication = createAsyncThunk(
     "admin/submit-app",
@@ -14,11 +16,26 @@ export const submitApplication = createAsyncThunk(
             return thunkApi.rejectWithValue(e);
         }
     }
+);
+
+export const getAllUsers = createAsyncThunk(
+    "admin/all-users",
+    async (_, thunkApi) => {
+        try {
+            const url = determineBackendURL();
+            const res = await axios.get(`${url}/users`);
+
+            return res.data.users;
+        } catch (e) {
+            return thunkApi.rejectWithValue(e);
+        }
+    }
 )
 
 const initialState = {
     acceptedTOS: false,
-    error: false
+    error: false,
+    allUsers: []
 }
 
 const adminSlice = createSlice({
@@ -44,7 +61,20 @@ const adminSlice = createSlice({
                 ...state,
                 error: true
             }
-        })
+        });
+        builder.addCase(getAllUsers.fulfilled, (state, action) => {
+            return {
+                ...state,
+                error: false,
+                allUsers: action.payload
+            }
+        });
+        builder.addCase(getAllUsers.rejected, (state) => {
+            return {
+                ...state,
+                error: true
+            }
+        });
     }
 });
 

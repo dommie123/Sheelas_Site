@@ -156,4 +156,4 @@ class RUser(Resource):
 
 class UserList(Resource):
     def get(self):
-        return {"sellers": [user.json() for user in User.query.all()]}, 200
+        return {"users": [user.json() for user in User.query.all()]}, 200

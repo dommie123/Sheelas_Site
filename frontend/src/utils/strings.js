@@ -37,3 +37,14 @@ export const fromCamelCase = (string) => {
 
     return output;
 }
+
+export const fromSnakeCase = (string) => {
+    if (typeof string !== "string") {
+        console.error(`ERROR: ${string} is not a string!`);
+        return;
+    }
+
+    // Replace underscores with spaces and capitalize each word in the resulting string.
+    let output = string.split("_").map(str => capitalize(str)).join(" ");
+    return output;
+}
