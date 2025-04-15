@@ -1,5 +1,5 @@
 // React Imports
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // Material Imports
@@ -16,12 +16,13 @@ import { Modal } from '../../common/modal/modal';
 import SwitchWithLabel from '../../common/switch/switch';
 
 // Slice Imports
-import { changeUserSettings } from '../../../slices/login-slice';
+import { changeUserSettings, clearUnverifiedUser, fetchUser } from '../../../slices/login-slice';
 import { retrieveVerificationCode } from '../../../slices/register-slice';
 import { addToMessageQueue } from '../../../slices/global-slice';
 
 // Custom Imports
 import { showError } from '../../../utils/error';
+import { objectIsEmpty } from '../../../utils/objects';
 
 // Style Imports
 import { primaryButtonExtraStyles } from "../../../styles/global-styles";
@@ -30,7 +31,10 @@ import './profile-settings.css';
 export default function ProfileSettings() {
     const user = useSelector(state => state.login.loggedInUser);
     const isMobile = useSelector(state => state.global.isMobile);
+    const unverifiedUser = useSelector(state => state.login.unverifiedUser);    // Used to check if fetchUser is successful.
+    const errorMessage = useSelector(state => state.login.error);
     const [resetPasswordStep, setPasswordStep] = useState(0);   // 0 means the user does not want to reset their password.
+    const [demoteSelfStep, setDemoteSelfStep] = useState(0);
     const [userSettings, setUserSettings] = useState(user);
     const [userConfirmationCode, setUserConfirmationCode] = useState("");
     const [confirmPass, setConfirmPass] = useState("");
@@ -46,7 +50,16 @@ export default function ProfileSettings() {
         dispatch(retrieveVerificationCode({ email: user.email }));
     }
 
+    const handleOpenDemoteSelfModal = () => {
+        setDemoteSelfStep(1);
+        dispatch(retrieveVerificationCode({ email: user.email }));
+    }
+
     const handleChangePassword = () => {
+        if (userSettings.password === "") {
+            showError("Please enter a password.");
+            return;
+        }
         if (userSettings.password !== confirmPass) {
             showError("The passwords don't match! Please try again.");
             return;
@@ -55,7 +68,125 @@ export default function ProfileSettings() {
         setPasswordStep(0);
     }
 
-    const determineModalContent = () => {
+    const handleDemoteSelf = () => {
+        // TODO demote admin to buyer or seller depending on if they have a seller plan
+        if (userSettings.password === "") {
+            showError("Please enter a password.");
+            return;
+        }
+        if (userSettings.password !== confirmPass) {
+            showError("The passwords don't match! Please try again.");
+            return;
+        }
+
+        dispatch(fetchUser({ username: user.username, password: userSettings.password }));
+    }
+
+    const determineDemoteSelfModalContent = () => {
+        switch(demoteSelfStep) {
+            case 1: 
+                return {
+                    topContent: (
+                        <>
+                            <IconButton className="demote-self-modal-close-btn" onClick={() => { setDemoteSelfStep(0) }}>
+                                <CloseIcon />
+                            </IconButton>
+                            <h2 className="demote-self-header">
+                                We sent you a code!
+                            </h2>
+                        </>
+                    ),
+                    centerContent: (                        
+                        <div className='demote-self-wrapper'>
+                            <TextField
+                                variant='outlined'
+                                label="Verification Code"
+                                onChange={(e) => setUserConfirmationCode(e.target.value)}
+                                className='demote-self-text-field'
+                                type='password'
+                                value={userConfirmationCode}
+                            />
+                            <br />
+                            <Button variant='text' onClick={resendVerificationCode}>Didn't receive a code?</Button>
+                        </div>
+                    ),
+                    bottomContent: (
+                        <Button 
+                            className='demote-self-next-button' 
+                            variant="contained" 
+                            sx={primaryButtonExtraStyles} 
+                            disabled={Boolean(!userConfirmationCode)} 
+                            onClick={() => { setDemoteSelfStep(2) }}
+                        >
+                            Verify
+                        </Button>
+                    )
+                }
+            case 2: 
+                return {
+                    topContent: (
+                        <>
+                            <IconButton className="demote-self-back-btn" aria-label="Back" onClick={() => setDemoteSelfStep(1)}>
+                                <ArrowBackIcon />
+                            </IconButton>
+                            <div className='demote-self-head-wrapper'>
+                                <h1 className="demote-self-header" aria-label="Confirm removal of admin role">
+                                    Password Confirmation
+                                </h1>
+                                <b className="demote-self-subheader">To confirm the removal of your admin status, please enter your password.</b>
+                            </div>
+                        </>
+                    ),
+                    centerContent: (
+                        <div className="demote-self-wrapper">
+                            <TextField
+                                variant="outlined"
+                                label="Password"
+                                onChange={(e) => setUserSettings({...user, ...userSettings, password: e.target.value})}
+                                className="demote-self-text-field"
+                                type="password"
+                                value={user.password}
+                                aria-label='Password'
+                                role='textbox'
+                            />
+                            <br />
+                            <TextField
+                                variant="outlined"
+                                label="Confirm Password"
+                                onChange={(e) => setConfirmPass(e.target.value)}
+                                className="demote-self-text-field"
+                                type="password"
+                                value={confirmPass}
+                                aria-label='Confirm Password'
+                                role='textbox'
+                            />
+                        </div>
+                    ),
+                    bottomContent: (
+                        <Button
+                            className='login-next-button' 
+                            variant="contained" 
+                            sx={primaryButtonExtraStyles}
+                            color="error" 
+                            disabled={Boolean(!userConfirmationCode)} 
+                            onClick={handleDemoteSelf}
+                            aria-label='Retire Admin Role'
+                            aria-disabled={Boolean(!userConfirmationCode)}
+                        >
+                            Retire Admin Role
+                        </Button>
+                    )
+                }
+            default: 
+                return {
+                    topContent: <></>,
+                    centerContent: <></>,
+                    bottomContent: <></>
+                }
+        }
+    }
+
+    const determineChangePasswordModalContent = () => {
         switch(resetPasswordStep) {
             case 1: 
                 return {
@@ -162,6 +293,43 @@ export default function ProfileSettings() {
         setUserSettings({ ...userSettings, [event.target.name]: event.target.value });
     }
 
+    useEffect(() => {
+        // Do nothing if the user is not trying to remove their admin role.
+        if (demoteSelfStep !== 2) {
+            return;
+        }
+
+        if (demoteSelfStep === 2 && (!confirmPass || confirmPass === "")) {
+            return;
+        }   
+
+        // If user is not verified and they are in the process of demoting themselves, do nothing.
+        if (objectIsEmpty(unverifiedUser) && demoteSelfStep === 2) {
+            showError(errorMessage);
+            return;
+        }
+
+        // Otherwise, reset step counter and demote the user.
+        setDemoteSelfStep(0);
+
+        let newRole = 3; // Seller role
+        if (user.sellerPlan === 0) {
+            newRole = 2 // Buyer role
+        }
+
+        console.log({...user, role: newRole})
+
+        dispatch(changeUserSettings({user: {...user, role: newRole}, accessToken: user.accessToken }));
+        // eslint-disable-next-line
+    }, [demoteSelfStep, unverifiedUser])
+
+    useEffect(() => {
+        return () => {
+            dispatch(clearUnverifiedUser());
+        }
+        // eslint-disable-next-line
+    }, [])
+
     return (
         <div className='profile-settings-container'>
             <Typography 
@@ -232,6 +400,18 @@ export default function ProfileSettings() {
                     onChange={(e) => setUserSettings({ ...userSettings, twofa_enabled: e.target.checked })} 
                     wide
                 />
+                {user.role === 1 && <Button
+                    variant='outlined'
+                    color='error'
+                    className='demote-self-btn'
+                    onClick={handleOpenDemoteSelfModal}
+                    sx={{
+                        marginRight: "auto",
+                    }}
+                    aria-label='Change Password'
+                >
+                    Retire Admin Role
+                </Button>}
             </Card>
             <div className='profile-bottom-btn-suite'>
                 <Button 
@@ -257,9 +437,14 @@ export default function ProfileSettings() {
             </div>
             { resetPasswordStep > 0 ?         
                 <Modal 
-                    topContent={determineModalContent().topContent}
-                    centerContent={determineModalContent().centerContent}
-                    bottomContent={determineModalContent().bottomContent}
+                    topContent={determineChangePasswordModalContent().topContent}
+                    centerContent={determineChangePasswordModalContent().centerContent}
+                    bottomContent={determineChangePasswordModalContent().bottomContent}
+                /> : demoteSelfStep > 0 ? 
+                <Modal 
+                    topContent={determineDemoteSelfModalContent().topContent}
+                    centerContent={determineDemoteSelfModalContent().centerContent}
+                    bottomContent={determineDemoteSelfModalContent().bottomContent}
                 /> : 
                 <></> 
             }
