@@ -29,6 +29,11 @@
     height: 100%;
 }
 
+.data-table-column-header-empty {
+    height: 30px;
+    padding: 2px;
+}
+
 .data-table-body {
     height: fit-content;
     overflow: scroll;
@@ -41,4 +46,11 @@
     padding: 0.25em;
     padding-left: 0.3em;
     margin: 0px;
+}
+
+.data-table-no-data-message {
+    text-align: center;
+    width: 100%;
+    font-weight: 600;
+    color:  rgba(0,0,0,0.6);
 }

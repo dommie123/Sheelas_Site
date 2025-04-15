@@ -32,10 +32,40 @@ export const getAllUsers = createAsyncThunk(
     }
 )
 
+export const getSupportTickets = createAsyncThunk(
+    'admin/tickets',
+    async (_, thunkApi) => {
+        try {
+            const url = determineBackendURL();
+            const res = await axios.get(`${url}/tickets`);
+
+            return res.data.tickets;
+        } catch (e) {
+            return thunkApi.rejectWithValue(e);
+        }
+    }
+)
+
+export const getGuestSupportTickets = createAsyncThunk(
+    'admin/guest-tickets',
+    async (_, thunkApi) => {
+        try {
+            const url = determineBackendURL();
+            const res = await axios.get(`${url}/tickets`);
+
+            return res.data.tickets;
+        } catch (e) {
+            return thunkApi.rejectWithValue(e);
+        }
+    }
+)
+
 const initialState = {
     acceptedTOS: false,
     error: false,
-    allUsers: []
+    allUsers: [],
+    supportTickets: [],
+    guestTickets: []
 }
 
 const adminSlice = createSlice({
@@ -70,6 +100,32 @@ const adminSlice = createSlice({
             }
         });
         builder.addCase(getAllUsers.rejected, (state) => {
+            return {
+                ...state,
+                error: true
+            }
+        });
+        builder.addCase(getSupportTickets.fulfilled, (state, action) => {
+            return {
+                ...state,
+                error: false,
+                supportTickets: action.payload
+            }
+        });
+        builder.addCase(getSupportTickets.rejected, (state) => {
+            return {
+                ...state,
+                error: true
+            }
+        });
+        builder.addCase(getGuestSupportTickets.fulfilled, (state, action) => {
+            return {
+                ...state,
+                error: false,
+                guestTickets: action.payload
+            }
+        });
+        builder.addCase(getGuestSupportTickets.rejected, (state) => {
             return {
                 ...state,
                 error: true
