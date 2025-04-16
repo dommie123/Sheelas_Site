@@ -9,7 +9,7 @@ import './users-layout.css';
 const UsersLayout = () => {
     return (
         <div className='users-layout-container'>
-            <Card className='all-users-table-card'><AllUsersTable /></Card>
+            <Card className='all-users-table-card'><AllUsersTable showActions={true} /></Card>
         </div>
     );
 };

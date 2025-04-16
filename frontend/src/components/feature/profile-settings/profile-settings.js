@@ -321,14 +321,14 @@ export default function ProfileSettings() {
 
         dispatch(changeUserSettings({user: {...user, role: newRole}, accessToken: user.accessToken }));
         // eslint-disable-next-line
-    }, [demoteSelfStep, unverifiedUser])
+    }, [demoteSelfStep, unverifiedUser]);
 
     useEffect(() => {
         return () => {
             dispatch(clearUnverifiedUser());
         }
         // eslint-disable-next-line
-    }, [])
+    }, []);
 
     return (
         <div className='profile-settings-container'>
