@@ -92,7 +92,16 @@ const DataTable = (props) => {
                     horizontal: 'left',
                 }}
             >
-                {actions.map(action => <MenuItem onClick={(event) => { action.onClick(event, selectedRow) }}>{action.label}</MenuItem>)}
+                {actions.map(action => 
+                    <MenuItem 
+                        onClick={(event) => { 
+                            action.onClick(event, selectedRow); 
+                            handleCloseMoreOptions(event); 
+                        }}
+                    >
+                        {action.label}
+                    </MenuItem>)
+                }
             </Menu>
 
         </>
