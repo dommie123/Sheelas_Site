@@ -17,6 +17,8 @@ import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import CloseIcon from '@mui/icons-material/Close';
 
+import './all-users-table.css';
+
 export default function AllUsersTable({ showActions }) {
     const [columns, setColumns] = useState([]);
     const [data, setData] = useState([]);
@@ -25,6 +27,14 @@ export default function AllUsersTable({ showActions }) {
     const allUsers = useSelector(state => state.admin.allUsers);
     const loggedInUser = useSelector(state => state.login.loggedInUser);
     const dispatch = useDispatch();
+
+    const refreshUserTable = () => {
+        if (allUsers.length !== 0) {
+            return;
+        }
+
+        dispatch(getAllUsers());
+    }
 
     const handleRemoveUser = (event, userEntry) => {
         setModalState(1);
@@ -48,18 +58,21 @@ export default function AllUsersTable({ showActions }) {
 
     const handleConfirmRemoveUser = async () => {
         try {
-            const response = await authDeleteRequest(`user/${selectedUser.username}`);
+            const response = await authDeleteRequest(`user/${selectedUser.username}`, loggedInUser.accessToken);
             alertUser(response.data.message);
         } catch (e) {
-            showError(e.data.message);
+            showError(e);
         }
 
+        refreshUserTable();
         handleCloseModal();
     }
 
     const handleConfirmDemoteAdmin = () => {
         dispatch(changeUserSettings({ user: selectedUser, accessToken: loggedInUser.accessToken}));
         alertUser(`${selectedUser.first_name} has been demoted successfully!`);
+        refreshUserTable();
+        handleCloseModal();
     }
 
     const determineModalContent = () => {
@@ -100,7 +113,7 @@ export default function AllUsersTable({ showActions }) {
                         </IconButton>
                         <h2 className='confirm-demote-admin-header'>Please confirm</h2>
                     </>,
-                    centerContent: <p className='confirm-demote-admin-paragraph'>Are you sure you want to remove {selectedUser.first_name} from the database?</p>,
+                    centerContent: <p className='confirm-demote-admin-paragraph'>Are you sure you want to revoke {selectedUser.first_name}'s administrator privileges?</p>,
                     bottomContent: <div className='confirm-demote-admin-button-suite'>
                         <Button 
                             variant='contained' 
@@ -137,11 +150,7 @@ export default function AllUsersTable({ showActions }) {
         : [];
 
     useEffect(() => {
-        if (allUsers.length !== 0) {
-            return;
-        }
-
-        dispatch(getAllUsers());
+        refreshUserTable();
         // eslint-disable-next-line
     }, [])
 

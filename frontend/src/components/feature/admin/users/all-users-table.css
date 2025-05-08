@@ -1,0 +1,32 @@
+.confirm-user-removal-modal-close-btn, .confirm-demote-admin-modal-close-btn {
+    margin-left: 5px !important;
+    margin-top: 15px !important;
+    height: 35px;
+}
+
+.confirm-user-removal-header, .confirm-demote-admin-header {
+    text-align: center;
+    flex: 1;
+}
+
+.confirm-user-removal-paragraph, .confirm-demote-admin-paragraph {
+    text-align: center;
+    width: 100%;
+}
+
+.confirm-user-removal-button-suite, .confirm-demote-admin-button-suite {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    gap: 5px;
+}
+
+.confirm-user-removal-yes-btn, .confirm-user-removal-no-btn, .confirm-demote-admin-yes-btn, .confirm-demote-admin-no-btn {
+    flex: 1;
+    height: 50px;
+    font-size: 16pt !important;
+    margin: 0 5px !important;
+    margin-top: 0.5em !important;
+    border-radius: 15px !important;
+}
