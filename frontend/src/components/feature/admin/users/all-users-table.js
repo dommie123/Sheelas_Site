@@ -28,8 +28,8 @@ export default function AllUsersTable({ showActions }) {
     const loggedInUser = useSelector(state => state.login.loggedInUser);
     const dispatch = useDispatch();
 
-    const refreshUserTable = () => {
-        if (allUsers.length !== 0) {
+    const refreshUserTable = (forceRefresh = false) => {
+        if (allUsers.length !== 0 && !forceRefresh) {
             return;
         }
 
@@ -37,11 +37,21 @@ export default function AllUsersTable({ showActions }) {
     }
 
     const handleRemoveUser = (event, userEntry) => {
+        if (userEntry.id === loggedInUser.id) {
+            showError("You cannot remove yourself from the database.");
+            return;
+        }
+
         setModalState(1);
         setSelectedUser(userEntry);
     }
 
     const handleDemoteAdmin = (event, userEntry) => {
+        if (userEntry.id === loggedInUser.id) {
+            showError("You cannot demote yourself from this page. Please do this from the Profile Settings instead.");
+            return;
+        }
+
         if (userEntry.role !== 1) {
             showError(`${userEntry.first_name} is not an admin!`);
             return;
@@ -69,9 +79,9 @@ export default function AllUsersTable({ showActions }) {
     }
 
     const handleConfirmDemoteAdmin = () => {
-        dispatch(changeUserSettings({ user: selectedUser, accessToken: loggedInUser.accessToken}));
+        dispatch(changeUserSettings({ user: { ...selectedUser, role: 3 }, accessToken: loggedInUser.accessToken}));
         alertUser(`${selectedUser.first_name} has been demoted successfully!`);
-        refreshUserTable();
+        refreshUserTable(true);
         handleCloseModal();
     }
 
