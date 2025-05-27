@@ -18,6 +18,20 @@ export const submitApplication = createAsyncThunk(
     }
 );
 
+export const getTotalSiteVisits = createAsyncThunk(
+    'admin/visits',
+    async (_, thunkApi) => {
+        try {
+            const url = determineBackendURL();
+            const res = await axios.get(`${url}/visits`);
+
+            return res.data.visits;
+        } catch (e) {
+            return thunkApi.rejectWithValue(e);
+        }
+    }
+)
+
 export const getAllUsers = createAsyncThunk(
     "admin/all-users",
     async (_, thunkApi) => {
@@ -30,7 +44,7 @@ export const getAllUsers = createAsyncThunk(
             return thunkApi.rejectWithValue(e);
         }
     }
-)
+);
 
 export const getSupportTickets = createAsyncThunk(
     'admin/tickets',
@@ -44,7 +58,7 @@ export const getSupportTickets = createAsyncThunk(
             return thunkApi.rejectWithValue(e);
         }
     }
-)
+);
 
 export const getGuestSupportTickets = createAsyncThunk(
     'admin/guest-tickets',
@@ -58,11 +72,12 @@ export const getGuestSupportTickets = createAsyncThunk(
             return thunkApi.rejectWithValue(e);
         }
     }
-)
+);
 
 const initialState = {
     acceptedTOS: false,
     error: false,
+    totalVisits: undefined,
     allUsers: [],
     supportTickets: [],
     guestTickets: []
@@ -90,6 +105,20 @@ const adminSlice = createSlice({
             return {
                 ...state,
                 error: true
+            }
+        });
+        builder.addCase(getTotalSiteVisits.fulfilled, (state, action) => {
+            return {
+                ...state,
+                error: false,
+                totalVisits: action.payload
+            }
+        });
+        builder.addCase(getTotalSiteVisits.rejected, (state) => {
+            return {
+                ...state,
+                error: true,
+                totalVisits: null
             }
         });
         builder.addCase(getAllUsers.fulfilled, (state, action) => {
