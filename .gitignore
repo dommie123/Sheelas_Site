@@ -1,2 +1,3 @@
 # The gitignore that applies to both the frontend and backend parts of the application
 access.log
+sales.log
