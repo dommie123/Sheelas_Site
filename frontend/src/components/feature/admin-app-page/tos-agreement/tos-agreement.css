@@ -1,0 +1,14 @@
+.tos-container {
+    margin-top: 5px;
+    padding: 0 15px;
+}
+
+.tos-accept-control {
+    display: flex !important;
+    flex-direction: row !important;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+    margin-bottom: 10px !important;
+}

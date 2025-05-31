@@ -20,4 +20,10 @@ const authPutRequest = (endpoint, body, token) => {
     }});
 }
 
-export { authPostRequest, authPostRequestWithFile, authPutRequest };
+const authDeleteRequest = (endpoint, token) => {
+    return axios.delete(`${determineBackendURL()}/${endpoint}`, { headers: {
+        "Authorization": `Bearer ${token.access_token}`
+    }});
+}
+
+export { authPostRequest, authPostRequestWithFile, authPutRequest, authDeleteRequest };

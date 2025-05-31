@@ -1,0 +1,24 @@
+.welcome-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    height: calc(100vh - 155px);
+    padding: 0 15px;
+}
+
+.welcome-header {
+    font-size: 30pt;
+    line-height: 1.5;
+}
+
+.welcome-additional-message {
+    font-size: 14pt;
+    line-height: 1.5;
+}
+
+.log-in-button {
+    height: 75px;
+    width: 35%;
+    position: relative;
+}

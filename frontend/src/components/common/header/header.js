@@ -13,6 +13,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import HelpIcon from '@mui/icons-material/Help';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import LogoutIcon from '@mui/icons-material/Logout';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
 import { objectIsEmpty } from "../../../utils/objects";
 
@@ -26,6 +27,7 @@ export function Header(props) {
     const loggedInUser = useSelector(state => state.login.loggedInUser);
     const navigate = useNavigate();
     const sellerNavigate = useAuthNavigate(true);
+    const adminNavigate = useAuthNavigate();
     const dispatch = useDispatch();
 
     const userIsSellerOrAdmin = useMemo(() => {
@@ -45,15 +47,18 @@ export function Header(props) {
         { icon: <AddBoxIcon />, label: "Sell Item", handleSelect: () => { sellerNavigate('/sell', true) } },
     ] : [];
 
+    const adminOptions = loggedInUser.role === 1 ? [
+        { icon: <AdminPanelSettingsIcon />, label: "Admin Dashboard", handleSelect: () => { adminNavigate('/admin') }},
+    ] : [];
+
     const options = [
         { icon: <HomeIcon />, label: "Home", handleSelect: () => { navigate('/home') } },
+        ...adminOptions,
         ...sellerOptions,
         { icon: <InfoIcon />, label: "About Us", handleSelect: () => { navigate('/about') } },
         { icon: <HelpIcon />, label: "Contact Us", handleSelect: () => { navigate('/contact') } },
         ...mobileOptions
     ]
-
-
 
     return (
         <header>

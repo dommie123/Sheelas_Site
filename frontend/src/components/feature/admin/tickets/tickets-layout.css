@@ -1,0 +1,21 @@
+.tickets-layout-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: calc(100vh - 160px);
+    gap: 1em;
+}
+
+.support-tickets-table-card {
+    flex: 1;
+    width: 100%;
+    overflow: auto !important;
+}
+
+.guest-tickets-table-card {
+    flex: 1;
+    width: 100%;
+    overflow: auto !important;
+}

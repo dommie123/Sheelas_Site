@@ -144,7 +144,7 @@ export const RegisterModal = (props) => {
         }
 
         if (!objectIsEmpty(registeredUser)) {
-            navigate('/home');
+            navigate('/register/welcome');
         }
         // eslint-disable-next-line
     }, [userHasRegistered, registeredUser])
@@ -243,7 +243,7 @@ export const RegisterModal = (props) => {
                             />
                             <br />
                             <div className='register-two-checkbox-wrapper'>
-                                <p className='register-text' id='register-text-el'>I don't want to receive SMS updates or promotional materials from Sheela's Shopping Site</p>
+                                <p className='register-text' id='register-text-el'>I don't want to receive SMS updates or promotional materials from SheeBay</p>
                                 <Checkbox 
                                     checked={disablePhoneCheck} 
                                     aria-checked={disablePhoneCheck} 

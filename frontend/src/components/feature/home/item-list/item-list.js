@@ -14,7 +14,7 @@ export default function ItemList() {
     useEffect(() => {
         dispatch(getItems());
         // eslint-disable-next-line
-    }, []);
+    }, [items.legnth]);
 
     return (
         <div className='item-list-container' role='list' aria-label='Items '>

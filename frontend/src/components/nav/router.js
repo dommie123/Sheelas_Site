@@ -16,6 +16,9 @@ import ProfileSettingsPage from "../feature/profile-settings/profile-settings";
 import ErrorPage from "../error/error-page";
 import SellerAppPage from "../feature/seller-app-page/seller-app-page";
 import EditItemPage from "../feature/edit-item/edit-item";
+import WelcomePage from "../feature/register/welcome/welcome";
+import AdminAppPage from "../feature/admin-app-page/admin-app-page";
+import AdminLayout from "../feature/admin/admin-layout";
 
 const router = createBrowserRouter([
     {
@@ -36,6 +39,14 @@ const router = createBrowserRouter([
         element: (
             <>
                 <RegisterModal />
+            </>
+        )
+    },
+    {
+        path: "/register/welcome",
+        element: (
+            <>
+                <WelcomePage />
             </>
         )
     },
@@ -119,11 +130,29 @@ const router = createBrowserRouter([
         )
     },
     {
+        path: '/admin-application',
+        element: (
+            <>
+                <Navbar />
+                <AdminAppPage />
+            </>
+        )
+    },
+    {
+        path: '/admin',
+        element: (
+            <>
+                <Navbar />
+                <AdminLayout />
+            </>
+        )
+    },
+    {
         path: '/error',
         element: (
             <ErrorPage />
         )
-    }
+    },
 ]);
 
 export default function Router(props) {

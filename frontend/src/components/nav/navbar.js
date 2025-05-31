@@ -10,15 +10,16 @@ import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 
 import { getItems, getItemsByName } from "../../slices/item-slice";
 import { getUserFromSession, logInUser, logOutUser } from "../../slices/login-slice";
+import { setRegUser } from "../../slices/register-slice";
 
 import { objectIsEmpty } from "../../utils/objects";
+import { isUserSeller } from "../../utils/user-helpers";
 
 import ShoppingCartDrawer from "../feature/buy-item/shopping-cart/shopping-cart";
 
 import { Header } from "../common/header/header";
 
 import './navbar.css';
-import { setRegUser } from "../../slices/register-slice";
 
 export const Navbar = () => {
     const navigate = useNavigate();
@@ -34,17 +35,6 @@ export const Navbar = () => {
     const [profAnchorEl, setProfAnchorEl] = useState(null);
     const profOpen = Boolean(profAnchorEl);
 
-    const userIsLoggedIn = () => {
-        if (!loggedInUser) {
-            return false;
-        } else if (loggedInUser === "") {
-            return false;
-        } else if (objectIsEmpty(loggedInUser)) {
-            return false;
-        }
-        return true;
-    }
-
     const handleProfClose = () => {
         setProfAnchorEl(null);
     }
@@ -53,6 +43,11 @@ export const Navbar = () => {
         dispatch(logOutUser());
         handleProfClose();
         navigate('/');
+    }
+
+    const handleNavToAdminApplication = () => {
+        handleProfClose();
+        navigate('/admin-application');
     }
 
     const handleNavToProfileSettings = () => {
@@ -149,6 +144,7 @@ export const Navbar = () => {
                     }}
                 >
                     <MenuItem onClick={handleNavToProfileSettings}>Profile Settings</MenuItem>
+                    {isUserSeller(loggedInUser) && <MenuItem onClick={handleNavToAdminApplication}>Apply for Admin</MenuItem>}
                     <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </Menu></>}
                 <ShoppingCartDrawer className="shopping-cart" />

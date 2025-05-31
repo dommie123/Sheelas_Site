@@ -24,7 +24,7 @@ export const registerNewSeller = createAsyncThunk(
         try {
             const response = await authPutRequest(`user/${username}`, userData, userToken)
 
-            return response.data;
+            return {...response.data, accessToken: userToken};
         } catch (err) {
             return thunkApi.rejectWithValue(err);
         }

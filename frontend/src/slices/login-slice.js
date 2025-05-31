@@ -212,7 +212,7 @@ const loginSlice = createSlice({
             return {
                 ...state, 
                 userExists: Boolean(action.payload),
-                loggedInUser: action.payload,
+                loggedInUser: {...action.payload, accessToken: state.loggedInUser.accessToken},
                 error: false
             }
         });
@@ -227,7 +227,7 @@ const loginSlice = createSlice({
             return {
                 ...state,
                 userExists: true,
-                loggedInUser: action.payload,
+                loggedInUser: {...action.payload, accessToken: state.loggedInUser.accessToken},
                 error: false
             }
         });

@@ -1,0 +1,10 @@
+.screening-text-field-control {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between;
+    margin: 1em !important;
+}
+
+.screening-text-field {
+    flex: 1;
+}

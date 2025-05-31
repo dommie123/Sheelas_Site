@@ -1,0 +1,8 @@
+.users-layout-container {
+    width: 100%;
+    height: calc(100vh - 160px);
+}
+
+.all-users-table-card {
+    height: 100%;
+}

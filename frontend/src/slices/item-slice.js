@@ -2,7 +2,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 import { determineBackendURL } from "../AppConfig";
-import { authPostRequest, authPutRequest } from "../utils/axios-helpers";
+import { authDeleteRequest, authPostRequest, authPutRequest } from "../utils/axios-helpers";
+import { alertUser } from "../utils/alert-helpers";
 
 export const getItems = createAsyncThunk(
     'items/get', 
@@ -70,10 +71,23 @@ export const updateItem = createAsyncThunk(
     }
 );
 
+export const removeItem = createAsyncThunk(
+    'items/remove',
+    async (data, thunkApi) => {
+        try {
+            const res = await authDeleteRequest(`item/${data.itemName}`, data.accessToken);
+            return res.data;
+        } catch (e) {
+            return thunkApi.rejectWithValue(e);
+        }
+    }
+)
+
 const itemSlice = createSlice({
     name: 'items',
     initialState: {
         allItems: [],
+        alertMessage: "",
         items: [],      // list of items filtered by search term (if applicable)
         selectedItem: {},
         error: {}
@@ -89,6 +103,18 @@ const itemSlice = createSlice({
             return {
                 ...state,
                 selectedItem: {}
+            }
+        },
+        clearAlertMessage: (state) => {
+            return {
+                ...state,
+                alertMessage: ""
+            }
+        },
+        clearErrorMessage: (state) => {
+            return {
+                ...state,
+                error: {}
             }
         }
     },
@@ -163,8 +189,31 @@ const itemSlice = createSlice({
                 error: action.error
             };
         });
+        // builder.addCase(removeItem.fulfilled, (state) => {
+        //     return {
+        //         ...state,
+        //         error: false
+        //     }
+        // });
+        builder.addCase(removeItem.rejected, (state, action) => {
+            const statusCode = action.payload.response.status;
+            if (statusCode === 410) {
+                return {
+                    ...state,
+                    alertMessage: "Item has been removed successfully! Please refresh the page to see the updated item list.",
+                    error: false
+                }
+            } else {
+                return {
+                    ...state,
+                    alertMessage: "",
+                    error: action.error
+                }
+            }
+
+        });
     }
 });
 
-export const { setSelectedItem, clearSelectedItem } = itemSlice.actions;
+export const { setSelectedItem, clearSelectedItem, clearAlertMessage, clearErrorMessage } = itemSlice.actions;
 export default itemSlice.reducer;
