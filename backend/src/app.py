@@ -82,7 +82,7 @@ def checkout_items():
         send_email(user['email'], "SheBay Order Confirmation", generate_receipt(items, user), is_html=True)
 
         with open("sales.log", 'a') as file:
-            file.write(f"[{datetime.datetime.now()}] - Sale of {db_items} made to {user.first_name} {user.last_name}")
+            file.write(f"[{datetime.datetime.now()}] - Sale of {db_items} made to {user['first_name']} {user['last_name']}")
             file.close()
 
         return { 'message': "Thank you!" }, 200
