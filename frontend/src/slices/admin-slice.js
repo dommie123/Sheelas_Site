@@ -30,7 +30,21 @@ export const getTotalSiteVisits = createAsyncThunk(
             return thunkApi.rejectWithValue(e);
         }
     }
-)
+);
+
+export const getTotalSales = createAsyncThunk(
+    "admin/sales",
+    async (_, thunkApi) => {
+        try {
+            const url = determineBackendURL();
+            const res = await axios.get(`${url}/sales`);
+
+            return res.data.sales;
+        } catch (e) {
+            return thunkApi.rejectWithValue(e);
+        }
+    }
+);
 
 export const getAllUsers = createAsyncThunk(
     "admin/all-users",
@@ -78,6 +92,7 @@ const initialState = {
     acceptedTOS: false,
     error: false,
     totalVisits: undefined,
+    totalSales: undefined,
     allUsers: [],
     supportTickets: [],
     guestTickets: []
@@ -119,6 +134,20 @@ const adminSlice = createSlice({
                 ...state,
                 error: true,
                 totalVisits: null
+            }
+        });
+        builder.addCase(getTotalSales.fulfilled, (state, action) => {
+            return {
+                ...state,
+                error: false,
+                totalSales: action.payload
+            }
+        });
+        builder.addCase(getTotalSales.rejected, (state) => {
+            return {
+                ...state,
+                error: true,
+                totalSales: null
             }
         });
         builder.addCase(getAllUsers.fulfilled, (state, action) => {

@@ -1,6 +1,7 @@
 import os
 import json
 import logging
+import datetime
 
 from flask import Flask, request, jsonify
 from flask_restful import Api
@@ -79,6 +80,11 @@ def checkout_items():
             db_items[index].save_item()
 
         send_email(user['email'], "SheBay Order Confirmation", generate_receipt(items, user), is_html=True)
+
+        with open("sales.log", 'a') as file:
+            file.write(f"[{datetime.datetime.now()}] - Sale of {db_items} made to {user.first_name} {user.last_name}")
+            file.close()
+
         return { 'message': "Thank you!" }, 200
 
     except Exception as e:
@@ -149,9 +155,24 @@ def upload_image():
 @app.route('/visits')
 @cross_origin(origins=CORS_ALLOWED_ORIGINS)
 def get_website_visits():
-    with open('access.log', 'r') as log:
-        log_lines = log.readlines()
-        return jsonify({"visits": len(log_lines)}), 200 
+    try:
+        with open('access.log', 'r') as log:
+            log_lines = log.readlines()
+            return jsonify({"visits": len(log_lines)}), 200 
+    except FileNotFoundError as err:
+        print("WARNING: File not found!")
+        return jsonify({"visits": 0})
+
+@app.route('/sales')
+@cross_origin(origins=CORS_ALLOWED_ORIGINS)
+def get_total_sales():
+    try:
+        with open('sales.log', 'r') as log:
+            log_lines = log.readlines()
+            return jsonify({"sales": len(log_lines)}), 200
+    except FileNotFoundError as err:
+        print("WARNING: File not found!")
+        return jsonify({"sales": 0}), 200
 
 def auth_user(request):
     username = request.json.get('username')
