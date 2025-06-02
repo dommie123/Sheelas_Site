@@ -10,7 +10,7 @@ export default function ContactFooter() {
     return (
         <footer className="contact-footer">
             <p className="contact-footer-heading">
-                Need help? Contact us <Link to="/">here</Link>.
+                Need help? Contact us <Link to="/contact">here</Link>.
             </p>
             <p className="other-contact-methods">
                 <span className="contact-method contact-method-header">Or contact us using the following methods:</span>

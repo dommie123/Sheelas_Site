@@ -79,7 +79,7 @@ export const getGuestSupportTickets = createAsyncThunk(
     async (_, thunkApi) => {
         try {
             const url = determineBackendURL();
-            const res = await axios.get(`${url}/tickets`);
+            const res = await axios.get(`${url}/guest_tickets`);
 
             return res.data.tickets;
         } catch (e) {

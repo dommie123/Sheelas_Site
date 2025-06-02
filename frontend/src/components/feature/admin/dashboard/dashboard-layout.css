@@ -9,7 +9,7 @@
     grid-template-areas: 
         "top-left top-right" 
         "center center" 
-        "bottom-left bottom-right"
+        "bottom bottom"
     ;
     grid-template-columns: 48% 48%;
     grid-template-rows: 25% 40% 35%;
@@ -32,10 +32,10 @@
 }
 
 .sheebay-support-tickets-card {
-    grid-area: bottom-left;
+    grid-area: bottom;
 }
 
-.sheebay-guest-support-tickets-card {
+/* .sheebay-guest-support-tickets-card {
     grid-area: bottom-right;
-}
+} */
 
