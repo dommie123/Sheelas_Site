@@ -15,7 +15,7 @@ from utils.security import authenticate, generate_verification_code, send_code_t
 from utils.email import send_email, generate_receipt
 from resources.user import RUser, UserRegister, UserList
 from resources.item import RItem, ItemList, FilteredItemList
-from resources.ticket import RTicket, TicketList
+from resources.ticket import RTicket, RGuestTicket, TicketList, GuestTicketList, AllTicketsList
 from resources.admin_app import AdminAppUserResource, AdminAppAdminResource, AdminAppListResource
 
 from constants import CORS_ALLOWED_ORIGINS
@@ -47,7 +47,10 @@ api.add_resource(RItem, "/item/<string:name>")
 api.add_resource(ItemList, "/items")
 api.add_resource(FilteredItemList, "/fitems")
 api.add_resource(RTicket, "/ticket")
+api.add_resource(RGuestTicket, "/guest_ticket")
 api.add_resource(TicketList, "/tickets")
+api.add_resource(GuestTicketList, "/guest_tickets")
+api.add_resource(AllTicketsList, "/all_tickets")
 api.add_resource(AdminAppUserResource, "/admin_app")
 api.add_resource(AdminAppAdminResource, '/admin_app/<int:app_id>')
 api.add_resource(AdminAppListResource, "/admin_apps")

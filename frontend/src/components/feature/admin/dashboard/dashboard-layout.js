@@ -62,7 +62,7 @@ const DashboardLayout = () => {
             </Card>
             <Card className='sheebay-users-card'><AllUsersTable /></Card>
             <Card className='sheebay-support-tickets-card'><SupportTicketsTable /></Card>
-            <Card className='sheebay-guest-support-tickets-card'><GuestTicketsTable /></Card>
+            {/* <Card className='sheebay-guest-support-tickets-card'><GuestTicketsTable /></Card> */}
         </div>
     );
 };

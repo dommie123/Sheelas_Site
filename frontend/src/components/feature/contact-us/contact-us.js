@@ -1,26 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { TextField, Button, InputLabel } from '@mui/material';
 
-import { Header } from '../../common/header/simple-header';
-
-import { Navbar } from '../../nav/navbar';
 import RadioButtonsGroup from '../../common/radio-group/radio-group';
 import BasicSelect from '../../common/select/select';
+import { Header } from '../../common/header/simple-header';
+import { Navbar } from '../../nav/navbar';
 
-import { addToMessageQueue } from '../../../slices/global-slice';
+import { postGuestSupportTicket, postSupportTicket } from '../../../slices/ticket-slice';
+
 import { showError } from '../../../utils/error';
-import { authPostRequest } from '../../../utils/axios-helpers';
+import { objectIsEmpty } from '../../../utils/objects';
+import { alertUser } from '../../../utils/alert-helpers';
 
 import './contact-us.css';
 
 export default function ContactUsPage() {
     const user = useSelector(state => state.login.loggedInUser);
+    const error = useSelector(state => state.ticket.error);
     const [productName, setProductName] = useState("");
     const [isSeller, setIsSeller] = useState(false);
     const [issue, setIssue] = useState("");
     const [comments, setComments] = useState("");
+    const [ticketSubmitted, setTicketSubmitted] = useState(false);
     const dispatch = useDispatch();
 
     const submitTicket = () => {
@@ -31,14 +34,26 @@ export default function ContactUsPage() {
             comments
         };
 
-        authPostRequest('ticket', reqBody, user.accessToken)
-            .then(() => dispatch(addToMessageQueue({ severity: 'success', content: 'Your ticket was successfully submitted!' })))
-            .catch(err => showError(err.message));
+        if (objectIsEmpty(user)) {
+            dispatch(postGuestSupportTicket(reqBody));
+        } else {
+            dispatch(postSupportTicket({ ticketData: reqBody, accessToken: user.accessToken }));
+        }
+
+        setTicketSubmitted(true);
     }
+
+    useEffect(() => {
+        if (ticketSubmitted && !error) {
+            alertUser("Your ticket has been successfully submitted!");
+        } else if (ticketSubmitted && error) {
+            showError(error);
+        }
+    }, [error, ticketSubmitted]);
 
     return (
         <>
-            {/* { Object.keys(user).length === 0 ? <Header title="SheeBay" /> : <Navbar /> } */}
+            { objectIsEmpty(user) ? <Header title="SheeBay" /> : <Navbar />}
             <div className="contact-page-container">
                 <h2 className='contact-page-title-text' aria-label='How can we help'>How can we help?</h2>
                 <TextField

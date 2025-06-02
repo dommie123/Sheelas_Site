@@ -70,7 +70,6 @@ const router = createBrowserRouter([
         path: "/contact",
         element: (
             <>
-                <Navbar />
                 <ContactUsPage />
             </>
         )
