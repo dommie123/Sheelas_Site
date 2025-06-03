@@ -29,16 +29,18 @@ export const registerUser = createAsyncThunk(
     }
 )
 
+const initialState = {
+    step: 1, 
+    emailValid: true,
+    phoneValid: true,
+    passwordValid: true,
+    confirmationCode: "",
+    regUser: {}
+}
+
 const registerSlice = createSlice({
     name: "register",
-    initialState: {
-        step: 1, 
-        emailValid: true,
-        phoneValid: true,
-        passwordValid: true,
-        confirmationCode: "",
-        regUser: {}
-    },
+    initialState,
     reducers: {
         incrementStep: (state) => {
             return {
@@ -90,6 +92,12 @@ const registerSlice = createSlice({
                 ...state,
                 regUser: action.payload
             }
+        },
+        clearRegUser: (state) => {
+            return {
+                ...state,
+                regUser: initialState.regUser
+            }
         }
     },
     extraReducers: (builder) => {
@@ -126,7 +134,8 @@ export const {
     validatePhone, 
     validatePassword,
     resetVerificationCode,
-    setRegUser
+    setRegUser,
+    clearRegUser
 } = registerSlice.actions;
 
 export default registerSlice.reducer;
