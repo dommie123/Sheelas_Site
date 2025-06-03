@@ -1,12 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 import { Button } from '@mui/material';
+
+import { clearRegUser } from '../../../../slices/register-slice';
 
 import './welcome.css';
 
 const WelcomePage = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    // Clear the newly registered user's information from the app state once they have been registered successfully.
+    useEffect(() => {
+        return () => {
+            dispatch(clearRegUser());
+        }
+        // eslint-disable-next-line
+    }, [])
 
     return (
         <div className='welcome-container'>
