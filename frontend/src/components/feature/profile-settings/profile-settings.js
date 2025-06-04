@@ -1,5 +1,5 @@
 // React Imports
-import React, { useState, useEffect } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // Material Imports
@@ -35,7 +35,16 @@ export default function ProfileSettings() {
     const errorMessage = useSelector(state => state.login.error);
     const [resetPasswordStep, setPasswordStep] = useState(0);   // 0 means the user does not want to reset their password.
     const [demoteSelfStep, setDemoteSelfStep] = useState(0);
-    const [userSettings, setUserSettings] = useState(user);
+    const [isCancellingMembership, setCancellingMembership] = useState(false);
+    const [userSettings, setUserSettings] = useState({
+        id: -1,
+        first_name: "",
+        last_name: "",
+        email: "",
+        phone: "",
+        username: "",
+        password: "",
+    });
     const [userConfirmationCode, setUserConfirmationCode] = useState("");
     const [confirmPass, setConfirmPass] = useState("");
     const dispatch = useDispatch();
@@ -66,6 +75,19 @@ export default function ProfileSettings() {
         }
 
         setPasswordStep(0);
+    }
+
+    const handleOpenCancelMembershipModal = () => {
+        setCancellingMembership(true);
+    }
+
+    const handleCancelMembership = () => {
+        dispatch(changeUserSettings({ user: {...user, role: 2 }, accessToken: user.accessToken }));
+        setCancellingMembership(false);
+    }
+
+    const handleCloseCancelMembershipModal = () => {
+        setCancellingMembership(false);
     }
 
     const handleDemoteSelf = () => {
@@ -280,6 +302,52 @@ export default function ProfileSettings() {
         }
     }
 
+    const determineCancelMembershipModalContent = () => {
+        return {
+            topContent: <>
+                <IconButton className='confirm-cancel-membership-modal-close-btn' onClick={handleCloseCancelMembershipModal}>
+                    <CloseIcon />
+                </IconButton>
+                <h2 className='confirm-cancel-membership-header'>Please confirm</h2>
+            </>,
+            centerContent: <p className='confirm-cancel-membership-paragraph'>Are you sure you want to cancel your seller membership plan?</p>,
+            bottomContent: <div className='confirm-cancel-membership-button-suite'>
+                <Button 
+                    variant='contained' 
+                    color='primary' 
+                    className='confirm-cancel-membership-yes-btn' 
+                    onClick={handleCancelMembership}
+                >
+                    Yes
+                </Button>
+                <Button 
+                    variant='outlined' 
+                    color='error' 
+                    className='confirm-cancel-membership-no-btn' 
+                    onClick={handleCloseCancelMembershipModal}
+                >
+                    No
+                </Button>
+            </div>
+        }
+    }
+
+    const renderModal = useMemo(() => {
+        let modalContent = null;
+
+        if (resetPasswordStep > 0) {
+            modalContent = determineChangePasswordModalContent();
+        } else if (demoteSelfStep > 0) {
+            modalContent = determineDemoteSelfModalContent();
+        } else if (isCancellingMembership) {
+            modalContent = determineCancelMembershipModalContent();
+        } 
+
+        return modalContent ? <Modal {...modalContent} /> : <></>
+
+        // eslint-disable-next-line
+    }, [resetPasswordStep, demoteSelfStep, isCancellingMembership]);
+
     const handleSaveChanges = () => {
         dispatch(changeUserSettings({ user: { ...user, ...userSettings }, accessToken: user.accessToken }));
         dispatch(addToMessageQueue({ severity: "success", content: "Your changes have been saved!" }))
@@ -322,6 +390,13 @@ export default function ProfileSettings() {
         dispatch(changeUserSettings({user: {...user, role: newRole}, accessToken: user.accessToken }));
         // eslint-disable-next-line
     }, [demoteSelfStep, unverifiedUser]);
+
+    useEffect(() => {
+        if (userSettings.id === -1 && !objectIsEmpty(user)) {
+            setUserSettings(user);
+        }
+        // eslint-disable-next-line
+    }, [user]);
 
     useEffect(() => {
         return () => {
@@ -408,9 +483,21 @@ export default function ProfileSettings() {
                     sx={{
                         marginRight: "auto",
                     }}
-                    aria-label='Change Password'
+                    aria-label='Retire Admin Role'
                 >
                     Retire Admin Role
+                </Button>}
+                {user.role === 3 && <Button
+                    variant='outlined'
+                    color='error'
+                    className='cancel-seller-plan-btn'
+                    onClick={handleOpenCancelMembershipModal}
+                    sx={{
+                        marginRight: "auto",
+                    }}
+                    aria-label='Cancel Seller Membership'
+                >
+                    Cancel Seller Membership
                 </Button>}
             </Card>
             <div className='profile-bottom-btn-suite'>
@@ -435,19 +522,7 @@ export default function ProfileSettings() {
                     <ClearIcon sx={{ marginRight: "5px" }}/> Reset Changes
                 </Button>
             </div>
-            { resetPasswordStep > 0 ?         
-                <Modal 
-                    topContent={determineChangePasswordModalContent().topContent}
-                    centerContent={determineChangePasswordModalContent().centerContent}
-                    bottomContent={determineChangePasswordModalContent().bottomContent}
-                /> : demoteSelfStep > 0 ? 
-                <Modal 
-                    topContent={determineDemoteSelfModalContent().topContent}
-                    centerContent={determineDemoteSelfModalContent().centerContent}
-                    bottomContent={determineDemoteSelfModalContent().bottomContent}
-                /> : 
-                <></> 
-            }
+            {renderModal}
         </div>
     )
 }
