@@ -83,6 +83,7 @@
     top: 0.75em;
 }
 
+/* Demote Self Modal Styles */
 .demote-self-head-wrapper {
     display: inline-flex;
     flex-direction: column;
@@ -104,6 +105,41 @@
     margin-top: calc(1em + 15px);
 }
 
+/* Cancel Membership Modal Styles */
+.confirm-cancel-membership-modal-close-btn {
+    margin-left: 5px !important;
+    margin-top: 15px !important;
+    height: 35px;
+}
+
+.confirm-cancel-membership-header {
+    text-align: center;
+    flex: 1;
+}
+
+.confirm-cancel-membership-paragraph {
+    text-align: center;
+    width: 100%;
+}
+
+.confirm-cancel-membership-button-suite {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    gap: 5px;
+}
+
+.confirm-cancel-membership-yes-btn, .confirm-cancel-membership-no-btn {
+    flex: 1;
+    height: 50px;
+    font-size: 16pt !important;
+    margin: 0 5px !important;
+    margin-top: 0.5em !important;
+    border-radius: 15px !important;
+}
+
+/* Styles for Mobile Phones */
 @media screen and (max-width: 750px) {
     .profile-bottom-btn-suite {
         width: calc(80% - 12px);

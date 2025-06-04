@@ -82,7 +82,7 @@ export default function ProfileSettings() {
     }
 
     const handleCancelMembership = () => {
-        // TODO change the seller account to a buyer account
+        dispatch(changeUserSettings({ user: {...user, role: 2 }, accessToken: user.accessToken }));
         setCancellingMembership(false);
     }
 
