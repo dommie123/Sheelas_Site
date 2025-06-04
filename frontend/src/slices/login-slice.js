@@ -138,6 +138,7 @@ const loginSlice = createSlice({
                 console.warn("WARNING: No user was found in local session!");
                 return {
                     ...state,
+                    loggedInUser: {},
                     checkedLocalSessionForUser: true
                 }
             }
@@ -209,10 +210,13 @@ const loginSlice = createSlice({
                 };
             }
 
+            const userData = { ...action.payload, accessToken: state.loggedInUser.accessToken };
+            localStorage.setItem("user", JSON.stringify(userData));
+
             return {
                 ...state, 
                 userExists: Boolean(action.payload),
-                loggedInUser: {...action.payload, accessToken: state.loggedInUser.accessToken},
+                loggedInUser: userData,
                 error: false
             }
         });
@@ -224,10 +228,13 @@ const loginSlice = createSlice({
             }
         });
         builder.addCase(changeUserSettings.fulfilled, (state, action) => {
+            const newUserData = { ...action.payload, accessToken: state.loggedInUser.accessToken };
+            localStorage.setItem("user", JSON.stringify(newUserData));
+
             return {
                 ...state,
                 userExists: true,
-                loggedInUser: {...action.payload, accessToken: state.loggedInUser.accessToken},
+                loggedInUser: newUserData,
                 error: false
             }
         });
