@@ -102,7 +102,7 @@ export default function ProfileSettings() {
         }
 
         dispatch(fetchUser({ username: user.username, password: userSettings.password }));
-    }
+    } 
 
     const determineDemoteSelfModalContent = () => {
         switch(demoteSelfStep) {
@@ -123,10 +123,10 @@ export default function ProfileSettings() {
                             <TextField
                                 variant='outlined'
                                 label="Verification Code"
-                                onChange={(e) => setUserConfirmationCode(e.target.value)}
+                                onChange={(e) => { setUserConfirmationCode(e.target.value) }}
                                 className='demote-self-text-field'
                                 type='password'
-                                value={userConfirmationCode}
+                                // value={userConfirmationCode}
                             />
                             <br />
                             <Button variant='text' onClick={resendVerificationCode}>Didn't receive a code?</Button>
@@ -227,10 +227,10 @@ export default function ProfileSettings() {
                             <TextField
                                 variant='outlined'
                                 label="Verification Code"
-                                onChange={(e) => setUserConfirmationCode(e.target.value)}
+                                onChange={(e) => { setUserConfirmationCode(e.target.value) }}
                                 className='change-password-text-field'
                                 type='password'
-                                value={userConfirmationCode}
+                                // value={userConfirmationCode}
                             />
                             <br />
                             <Button variant='text' onClick={resendVerificationCode}>Didn't receive a code?</Button>
@@ -404,6 +404,10 @@ export default function ProfileSettings() {
         }
         // eslint-disable-next-line
     }, []);
+
+    useEffect(() => {
+        console.log({userConfirmationCode});
+    }, [userConfirmationCode])
 
     return (
         <div className='profile-settings-container'>
