@@ -27,9 +27,12 @@ import { objectIsEmpty } from '../../../utils/objects';
 // Style Imports
 import { primaryButtonExtraStyles } from "../../../styles/global-styles";
 import './profile-settings.css';
+import { PASS_REGEX } from '../../../lib/constants';
+import { alertUser } from '../../../utils/alert-helpers';
 
 export default function ProfileSettings() {
     const user = useSelector(state => state.login.loggedInUser);
+    const userExists = useSelector(state => state.login.userExists);
     const isMobile = useSelector(state => state.global.isMobile);
     const unverifiedUser = useSelector(state => state.login.unverifiedUser);    // Used to check if fetchUser is successful.
     const errorMessage = useSelector(state => state.login.error);
@@ -73,7 +76,12 @@ export default function ProfileSettings() {
             showError("The passwords don't match! Please try again.");
             return;
         }
+        if (!PASS_REGEX.test(userSettings.password)) {
+            showError("Your password should have at least one uppercase letter, one lowercase letter, one number, and one symbol!");
+            return;
+        }
 
+        dispatch(changeUserSettings({ user: {...user, password: userSettings.password }, accessToken: user.accessToken }));
         setPasswordStep(0);
     }
 
@@ -102,7 +110,7 @@ export default function ProfileSettings() {
         }
 
         dispatch(fetchUser({ username: user.username, password: userSettings.password }));
-    }
+    } 
 
     const determineDemoteSelfModalContent = () => {
         switch(demoteSelfStep) {
@@ -346,11 +354,18 @@ export default function ProfileSettings() {
         return modalContent ? <Modal {...modalContent} /> : <></>
 
         // eslint-disable-next-line
-    }, [resetPasswordStep, demoteSelfStep, isCancellingMembership]);
+    }, [
+        resetPasswordStep, 
+        demoteSelfStep, 
+        isCancellingMembership, 
+        userConfirmationCode, 
+        userSettings,
+        confirmPass
+    ]);
 
     const handleSaveChanges = () => {
         dispatch(changeUserSettings({ user: { ...user, ...userSettings }, accessToken: user.accessToken }));
-        dispatch(addToMessageQueue({ severity: "success", content: "Your changes have been saved!" }))
+        // dispatch(addToMessageQueue({ severity: "success", content: "Your changes have been saved!" }))
     }
 
     const handleResetChanges = () => {
@@ -394,6 +409,10 @@ export default function ProfileSettings() {
     useEffect(() => {
         if (userSettings.id === -1 && !objectIsEmpty(user)) {
             setUserSettings(user);
+        }
+
+        else if (!objectIsEmpty(user) && userExists) {
+            alertUser("Your changes have been saved!");
         }
         // eslint-disable-next-line
     }, [user]);

@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from 'axios';
 
 import { determineBackendURL } from "../AppConfig";
+import { PASS_REGEX } from "../lib/constants";
 import { alertUser } from "../utils/alert-helpers";
 import { showError } from "../utils/error";
 
@@ -75,10 +76,9 @@ const registerSlice = createSlice({
             }
         },
         validatePassword: (state, action) => {
-            const re = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$");
             return {
                 ...state,
-                passwordValid: re.test(action.payload)
+                passwordValid: PASS_REGEX.test(action.payload)
             }
         },
         resetVerificationCode: (state) => {
