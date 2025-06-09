@@ -154,7 +154,8 @@ export const LoginModal = () => {
                             className="login-text-field" 
                             variant="outlined" 
                             label="Username" 
-                            onChange={(e) => setUser({...user, username: e.target.value})} value={user.username} 
+                            onChange={(e) => setUser({...user, username: e.target.value})} 
+                            value={user.username} 
                             aria-label='Username'
                             role='textbox'
                         />
@@ -163,7 +164,9 @@ export const LoginModal = () => {
                             className="login-text-field" 
                             variant="outlined" 
                             label="Password" 
-                            onChange={(e) => setUser({...user, password: e.target.value})} type="password" value={user.password} 
+                            onChange={(e) => setUser({...user, password: e.target.value})} 
+                            type="password" 
+                            value={user.password} 
                             aria-label='Password'
                             role='textbox'
                         />
