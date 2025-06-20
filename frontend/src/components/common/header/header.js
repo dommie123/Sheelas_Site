@@ -19,10 +19,12 @@ import { objectIsEmpty } from "../../../utils/objects";
 
 import SimpleDrawer from "../drawer/simple-drawer";
 
+import headerLogo from "../../../assets/SheeBay_Logo_Draft_1.png";
+import mobileHeaderLogo from "../../../assets/SheeBay_Logo_Draft_2.png";
+
 import "./header.css";
 
 export function Header(props) {
-    const title = props.title;
     const isMobile = useSelector(state => state.global.isMobile);
     const loggedInUser = useSelector(state => state.login.loggedInUser);
     const navigate = useNavigate();
@@ -63,7 +65,9 @@ export function Header(props) {
     return (
         <header>
             <SimpleDrawer anchor="left" options={options} drawerIcon={<MenuIcon />} buttonAriaLabel="Main Menu" className='nav-menu' /> 
-            <h1 className="header-title-text"><Link className="header-title-link" to="/home">{title}</Link></h1>
+            <Link className="header-title-link" to="/home">
+                <img className="header-title-image" src={ isMobile ? mobileHeaderLogo : headerLogo } alt="SheeBay Logo" />
+            </Link>
             {props.children}
         </header>
     )

@@ -33,6 +33,11 @@ header > h1 {
     margin-bottom: 15px;
 }
 
+.header-title-image {
+    width: 200px;
+    height: 65px;
+}
+
 .header-button-suite {
     display: flex;
     flex-direction: row;
@@ -60,6 +65,11 @@ header > h1 {
         box-shadow: 3px 0.5px 5px lightgray;
         background-color: white;
         height: 83px;
+    }
+
+    .header-title-image {
+        width: 75px;
+        margin-left: 15px;
     }
 }
 
