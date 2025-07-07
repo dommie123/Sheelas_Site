@@ -36,6 +36,21 @@ const sellerSlice = createSlice({
     initialState: {
         error: false,
         sellers: [],
+        selectedPlan: null
+    },
+    reducers: {
+        setSellerPlan: (state, action) => {
+            return {
+                ...state,
+                selectedPlan: action.payload
+            }
+        },
+        clearSellerPlan: (state) => {
+            return {
+                ...state,
+                selectedPlan: null
+            }
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(getSellers.fulfilled, (state, action) => {
@@ -70,4 +85,5 @@ const sellerSlice = createSlice({
     }
 })
 
+export const { setSellerPlan, clearSellerPlan } = sellerSlice.actions;
 export default sellerSlice.reducer;

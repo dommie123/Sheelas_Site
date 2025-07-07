@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Button from '@mui/material/Button';
 
 import { setUserCheckedOut } from '../../../../slices/login-slice';
+import { addItem } from '../../../../slices/cart-slice';
 
 import ItemCard from '../../../common/item-card/item-card';
 
@@ -19,8 +20,18 @@ export default function ThankYouPage() {
 
     useEffect(() => {
         return () => {
+            const savedCartItems = JSON.parse(localStorage.getItem("cartItems"))
+
+            if (savedCartItems) {
+                savedCartItems.forEach(item => {
+                    dispatch(addItem(item));
+                });
+            }
+
+            localStorage.setItem("cartItems", null);
             dispatch(setUserCheckedOut(false));
         }
+        // eslint-disable-next-line
     }, [])
 
     return (

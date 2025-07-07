@@ -1,5 +1,13 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux';
 import { useCheckout, PaymentElement } from "@stripe/react-stripe-js";
+
+import { showError } from "../../../../utils/error";
+
+import { addToMessageQueue } from "../../../../slices/global-slice";
+import { checkoutItems } from '../../../../slices/cart-slice';
+import { registerNewSeller } from "../../../../slices/seller-slice";
 
 import { Button } from "@mui/material";
 
@@ -7,6 +15,12 @@ import './checkout-form.css';
 
 const CheckoutForm = () => {
     const checkout = useCheckout();
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const items = useSelector(state => state.cart.items);
+    const user = useSelector(state => state.login.loggedInUser);
+    const currentPlan = useSelector(state => state.seller.selectedPlan);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -14,19 +28,41 @@ const CheckoutForm = () => {
         const result = await checkout.confirm();
 
         if (result.type === 'error') {
-            // Show error to your customer (for example, payment details incomplete)
-            console.log(result.error.message);
+            showError(result.error.message);
         } else {
-            // Your customer will be redirected to your `return_url`. For some payment
-            // methods like iDEAL, your customer will be redirected to an intermediate
-            // site first to authorize the payment, then redirected to the `return_url`.
+            try {
+                if (currentPlan) {
+                    handleCompleteSubscriptionTransaction();
+                } else {
+                    handleCompleteCartTransaction();
+                }
+            } catch (err) {
+                showError(err.message);
+            }
         }
     };
 
+    const handleCompleteCartTransaction = () => {
+        dispatch(checkoutItems({ items, user, accessToken: user.accessToken }));
+        navigate('/thank-you');
+    }
+
+    const handleCompleteSubscriptionTransaction = () => {
+        const newUserInfo = { ...user, role: 3, seller_plan: currentPlan }
+        dispatch(registerNewSeller({ 
+            username: newUserInfo.username, 
+            userData: newUserInfo, 
+            userToken: newUserInfo.accessToken 
+        }));
+
+        dispatch(addToMessageQueue({severity: "success", content: "User has successfully been promoted to seller!"}));
+        navigate("/thank-you");
+    }
+
     return (
         <form onSubmit={handleSubmit}>
-            <PaymentElement />
-            <Button variant="filled" color="primary">Submit</Button>
+            <PaymentElement options={{ layout: 'accordion' }} />
+            <Button variant="filled" color="primary" type="submit">Submit</Button>
         </form>
     );
 };

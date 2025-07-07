@@ -2,6 +2,7 @@ import os
 import json
 import logging
 import datetime
+import stripe
 
 from flask import Flask, request, jsonify
 from flask_restful import Api
@@ -40,6 +41,8 @@ jwt = JWTManager(app) # creates /auth endpoint
 image_bucket = ImageBucket(configs) 
 s3_client = image_bucket.get_s3_client()
 
+stripe.api_key=configs['stripe_secret_key']
+
 api.add_resource(UserRegister, "/register")
 api.add_resource(RUser, "/user/<string:username>")
 api.add_resource(UserList, "/users")
@@ -66,32 +69,85 @@ def send_verification_code():
         return { 'code': verification_code }, 200
     except Exception as e:
         return { 'message': f"An error occurred while sending out the verification code! Error: {str(e)}"}, 500
-    
-@app.route('/checkout', methods=['POST'])
+
+@app.route('/create-checkout-session', methods=['POST'])
 @cross_origin(origins=CORS_ALLOWED_ORIGINS)
 @jwt_required()
-def checkout_items():
+def checkout():
     try:
         items = request.json.get('items')
         user = request.json.get('user')
+        print(user)
+        frontend_url = request.headers.get('Origin')
         db_items = [Item.find_by_id(item['id']) for item in items]
-        
+        line_items = []
+
+        for item in items:
+            line_items.append(                
+                {
+                    "price_data": {
+                        "currency": "usd",
+                        "product_data": {"name": item['name']},
+                        "unit_amount": item['price'],
+                    },
+                    "quantity": item['quantity'],
+                },
+            )
+
+        session = stripe.checkout.Session.create(
+            line_items=line_items,
+            mode="payment",
+            ui_mode="custom",
+            # The URL of your payment completion page
+            return_url=f"{frontend_url}/thank-you",
+        )
+
         for index in range(len(items)):
             subtract_item_quantity = float(items[index]['quantity'])
 
             db_items[index].quantity -= subtract_item_quantity
             db_items[index].save_item()
 
-        send_email(user['email'], "SheBay Order Confirmation", generate_receipt(items, user), is_html=True)
+        send_email(user['email'], "SheeBay Order Confirmation", generate_receipt(items, user), is_html=True)
 
         with open("sales.log", 'a') as file:
             file.write(f"[{datetime.datetime.now()}] - Sale of {db_items} made to {user['first_name']} {user['last_name']}")
             file.close()
 
-        return { 'message': "Thank you!" }, 200
-
+        return jsonify({
+            'checkoutSessionClientSecret': session['client_secret']
+        })
     except Exception as e:
-        return { 'message': f"An error occurred while processing your checkout! Error: {str(e)}"}, 500
+        return jsonify(error=str(e)), 403
+    
+@app.route('/create-subscription-checkout-session', methods=['POST'])
+@cross_origin(origins=CORS_ALLOWED_ORIGINS)
+@jwt_required()
+def checkout_subcsription():
+    try:
+        user = request.json.get('user')
+        seller_plan = request.json.get('sellerPlan')
+        frontend_url = request.headers.get('Origin')
+
+        session = stripe.checkout.Session.create(
+            mode="subscription",
+            line_items=[{"price": seller_plan['price'], "quantity": 1}],
+            success_url=f"{frontend_url}/thank-you",
+            cancel_url=f"{frontend_url}/thank-you",
+            payment_method_collection="if_required",
+        )
+
+        send_email(user['email'], "SheeBay Order Confirmation", generate_receipt(seller_plan, user), is_html=True)
+
+        with open("sales.log", 'a') as file:
+            file.write(f"[{datetime.datetime.now()}] - Subscription {seller_plan['name']} purchased by {user['first_name']} {user['last_name']}")
+            file.close()
+
+        return jsonify({
+            'checkoutSessionClientSecret': session['client_secret']
+        })
+    except Exception as e:
+        return jsonify(error=str(e)), 403
     
 @app.route("/auth", methods=['POST'])
 @cross_origin(origins=CORS_ALLOWED_ORIGINS)

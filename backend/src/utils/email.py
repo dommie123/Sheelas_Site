@@ -33,7 +33,7 @@ def send_email(recipient_email, subject, content, is_html=False):
     server.quit()
 
 def generate_receipt(cart_items, user_info):
-    cart_items_html = [f'<tr><td>{item["name"]}</td><td>{item["quantity"]}</td><td>{float(item["price"][1:]) * int(item["quantity"])}</td></tr>' for item in cart_items]
+    cart_items_html = [f'<tr><td>{item["name"]}</td><td>{item["quantity"]}</td><td>{float(item["price"] / 100) * int(item["quantity"])}</td></tr>' for item in cart_items]
     cart_items_string = '\n'.join(cart_items_html)
     css_styles = """
         html {
@@ -93,7 +93,7 @@ def generate_receipt(cart_items, user_info):
     """
     total = 0
     for item in cart_items:
-        total += float(item["price"][1:]) * int(item['quantity'])
+        total += float(item["price"] / 100) * int(item['quantity'])
 
     total_as_string = "{:.2f}".format(total)
 

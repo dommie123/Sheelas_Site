@@ -4,8 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { Button } from '@mui/material';
 
-import { registerNewSeller } from '../../../slices/seller-slice';
-import { addToMessageQueue } from '../../../slices/global-slice';
+import { setSellerPlan } from '../../../slices/seller-slice';
 import { showError } from '../../../utils/error';
 
 import { SellerPlanRadioGroup } from './seller-plan-radio-group/seller-plan-radio-group';
@@ -44,16 +43,19 @@ export default function SellerAppPage() {
             return;
         }
 
-        const newUserInfo = { ...loggedInUser, role: 3, seller_plan: currentPlan }
-        dispatch(registerNewSeller({ 
-            username: newUserInfo.username, 
-            userData: newUserInfo, 
-            userToken: newUserInfo.accessToken 
-        }));
+        dispatch(setSellerPlan(currentPlan));
+        navigate('/checkout');
 
-        // TODO navigate to thank you page
-        dispatch(addToMessageQueue({severity: "success", content: "User has successfully been promoted to seller!"}));
-        navigate("/home");
+        // const newUserInfo = { ...loggedInUser, role: 3, seller_plan: currentPlan }
+        // dispatch(registerNewSeller({ 
+        //     username: newUserInfo.username, 
+        //     userData: newUserInfo, 
+        //     userToken: newUserInfo.accessToken 
+        // }));
+
+        // // TODO navigate to thank you page
+        // dispatch(addToMessageQueue({severity: "success", content: "User has successfully been promoted to seller!"}));
+        // navigate("/home");
     }
 
     useEffect(() => {

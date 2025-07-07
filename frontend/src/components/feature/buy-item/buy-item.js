@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Button } from "@mui/material";
 
 // Slice Imports
-import { checkoutItems } from "../../../slices/cart-slice";
+import { clearItems } from "../../../slices/cart-slice";
 import { addItem } from "../../../slices/cart-slice";
 import { addToMessageQueue } from "../../../slices/global-slice";
 
@@ -22,7 +22,6 @@ import './buy-item.css';
 
 export default function BuyItemPage() {
     const selectedItem = useSelector(state => state.items.selectedItem);
-    const user = useSelector(state => state.login.loggedInUser);
     const cartItems = useSelector(state => state.cart.items);
     const [itemInCart, setItemInCart] = useState(false);
     const [quantitySelected, setQuantitySelected] = useState('1');
@@ -32,9 +31,20 @@ export default function BuyItemPage() {
     const isAddToCartDisabled = !Boolean(selectedItem.quantity > 0 && !itemInCart);
 
     const handleBuyNow = () => {
-        // TODO payment gateway stuff
-        dispatch(checkoutItems({ items: [{ ...selectedItem, quantity: quantitySelected }], user: user, accessToken: user.accessToken }));
-        navigate("/thank-you");
+        // Save cart items to local storage
+        localStorage.setItem("cartItems", JSON.stringify(cartItems));
+
+        // Clear cart items
+        dispatch(clearItems());
+
+        // Add selected item to cart
+        dispatch(addItem({
+            ...selectedItem,
+            quantity: quantitySelected
+        }));
+
+        // Navigate to checkout page
+        navigate('/checkout');
     }
 
     const handleAddToCart = useCallback(() => {
@@ -46,6 +56,7 @@ export default function BuyItemPage() {
             dispatch(addToMessageQueue({ severity: "success", content: "Item added to cart!" }));
             navigate("/home");
         }
+        // eslint-disable-next-line
     }, [itemInCart, quantitySelected])
 
     useEffect(() => {
