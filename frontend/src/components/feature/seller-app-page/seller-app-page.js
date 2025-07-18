@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 
 import { Button } from '@mui/material';
 
+import { SELLER_PLAN_OPTIONS } from '../../../lib/constants';
+
 import { setSellerPlan } from '../../../slices/seller-slice';
 import { showError } from '../../../utils/error';
 
@@ -17,20 +19,20 @@ export default function SellerAppPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const planOptions = [
-        {id: 1, name: "Individual", price: "5%", rateType: "item", details: [
-            "Limit of 100 item listings",
-            "Limit of $5,000 per listing",
-            "Charged 5% of an item's price per item sold",
-            "Inactive account is reverted after 1 year"
-        ]},
-        {id: 2, name: "Business", price: "$29.99", rateType: "mo", details: [
-            "Limit of 200 item listings",
-            "Limit of $10,000 per listing",
-            "Fixed rate of $29.99 per month",
-            "Account remains active until cancelled or deleted"
-        ]}, // mo = month  
-    ];
+    // const planOptions = [
+    //     {id: 1, name: "Individual", price: "$4.99", rateType: "mo", details: [
+    //         "Limit of 100 item listings",
+    //         "Limit of $5,000 per listing",
+    //         "Fixed rate of $4.99 per month",
+    //         "Inactive account is reverted after 1 year"
+    //     ]},
+    //     {id: 2, name: "Business", price: "$29.99", rateType: "mo", details: [
+    //         "Limit of 200 item listings",
+    //         "Limit of $10,000 per listing",
+    //         "Fixed rate of $29.99 per month",
+    //         "Account remains active until cancelled or deleted"
+    //     ]}, // mo = month  
+    // ];
 
     const handlePlanChange = (newPlan) => {
         setCurrentPlan(newPlan);
@@ -70,7 +72,7 @@ export default function SellerAppPage() {
         <div className='seller-app-page-container'>
             <h2 className='seller-application-heading'>Choose your seller plan</h2>
             <SellerPlanRadioGroup
-                options={planOptions}
+                options={SELLER_PLAN_OPTIONS}
                 onChange={handlePlanChange}
             />
             <div className='seller-application-captcha-placeholder'>Captcha goes here</div> {/* TODO put actual captcha here */}

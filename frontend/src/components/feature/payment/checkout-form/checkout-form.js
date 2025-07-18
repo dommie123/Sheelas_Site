@@ -59,10 +59,17 @@ const CheckoutForm = () => {
         navigate("/thank-you");
     }
 
+    const handleCancelTransaction = () => {
+        navigate("/home");
+    }
+
     return (
-        <form onSubmit={handleSubmit}>
+        <form className="checkout-form" onSubmit={handleSubmit}>
             <PaymentElement options={{ layout: 'accordion' }} />
-            <Button variant="filled" color="primary" type="submit">Submit</Button>
+            <div className="checkout-button-suite">
+                <Button className="checkout-submit-btn" variant="contained" color="primary" type="submit">Submit</Button>
+                <Button className="checkout-cancel-btn" variant="outlined" color="error" onClick={handleCancelTransaction}>Cancel</Button>
+            </div>
         </form>
     );
 };

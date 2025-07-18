@@ -76,10 +76,7 @@ def send_verification_code():
 def checkout():
     try:
         items = request.json.get('items')
-        user = request.json.get('user')
-        print(user)
         frontend_url = request.headers.get('Origin')
-        db_items = [Item.find_by_id(item['id']) for item in items]
         line_items = []
 
         for item in items:
@@ -102,17 +99,17 @@ def checkout():
             return_url=f"{frontend_url}/thank-you",
         )
 
-        for index in range(len(items)):
-            subtract_item_quantity = float(items[index]['quantity'])
+        # for index in range(len(items)):
+        #     subtract_item_quantity = float(items[index]['quantity'])
 
-            db_items[index].quantity -= subtract_item_quantity
-            db_items[index].save_item()
+        #     db_items[index].quantity -= subtract_item_quantity
+        #     db_items[index].save_item()
 
-        send_email(user['email'], "SheeBay Order Confirmation", generate_receipt(items, user), is_html=True)
+        # send_email(user['email'], "SheeBay Order Confirmation", generate_receipt(items, user), is_html=True)
 
-        with open("sales.log", 'a') as file:
-            file.write(f"[{datetime.datetime.now()}] - Sale of {db_items} made to {user['first_name']} {user['last_name']}")
-            file.close()
+        # with open("sales.log", 'a') as file:
+        #     file.write(f"[{datetime.datetime.now()}] - Sale of {db_items} made to {user['first_name']} {user['last_name']}")
+        #     file.close()
 
         return jsonify({
             'checkoutSessionClientSecret': session['client_secret']
@@ -120,31 +117,69 @@ def checkout():
     except Exception as e:
         return jsonify(error=str(e)), 403
     
+@app.route('/checkout-success', methods=['POST'])
+@cross_origin(origins=CORS_ALLOWED_ORIGINS)
+@jwt_required
+def checkout_success():
+    try:
+        items = request.json.get('items')
+        user = request.json.get('user')
+    
+        for index in range(len(items)):
+            subtract_item_quantity = float(items[index]['quantity'])
+
+            items[index].quantity -= subtract_item_quantity
+            items[index].save_item()
+
+        send_email(user['email'], "SheeBay Order Confirmation", generate_receipt(items, user), is_html=True)
+
+        with open("sales.log", 'a') as file:
+            file.write(f"[{datetime.datetime.now()}] - Sale of {items} made to {user['first_name']} {user['last_name']}\n")
+            file.close()
+    except Exception as err:
+        return { 'message': f'An error occurred while processing your checkout! Error: {str(err)}' }, 500
+
+    
 @app.route('/create-subscription-checkout-session', methods=['POST'])
 @cross_origin(origins=CORS_ALLOWED_ORIGINS)
 @jwt_required()
-def checkout_subcsription():
+def checkout_subscription():
     try:
         user = request.json.get('user')
         seller_plan = request.json.get('sellerPlan')
         frontend_url = request.headers.get('Origin')
 
+        stripe_seller_plan = stripe.Product.retrieve(seller_plan['stripe_id'])
+
+        # Retrieve the price ID from the seller plan product
+        price_id = stripe_seller_plan['default_price'] if 'default_price' in stripe_seller_plan else None
+        if not price_id:
+            raise Exception("No default price found for the selected seller plan.")
+
         session = stripe.checkout.Session.create(
             mode="subscription",
-            line_items=[{"price": seller_plan['price'], "quantity": 1}],
+            line_items=[
+                {
+                    "price": price_id,
+                    "quantity": 1
+                }
+            ],
+            subscription_data={
+                "description": "\n".join(seller_plan['details']),
+            },
             success_url=f"{frontend_url}/thank-you",
-            cancel_url=f"{frontend_url}/thank-you",
-            payment_method_collection="if_required",
+            # cancel_url=f"{frontend_url}/thank-you",
+            # payment_method_collection="if_required",
         )
 
-        send_email(user['email'], "SheeBay Order Confirmation", generate_receipt(seller_plan, user), is_html=True)
+        send_email(user['email'], "SheeBay Order Confirmation", generate_receipt(seller_plan, user, True), is_html=True)
 
         with open("sales.log", 'a') as file:
-            file.write(f"[{datetime.datetime.now()}] - Subscription {seller_plan['name']} purchased by {user['first_name']} {user['last_name']}")
+            file.write(f"[{datetime.datetime.now()}] - Subscription {seller_plan['name']} purchased by {user['first_name']} {user['last_name']}\n")
             file.close()
 
         return jsonify({
-            'checkoutSessionClientSecret': session['client_secret']
+            'checkoutSessionUrl': session.url
         })
     except Exception as e:
         return jsonify(error=str(e)), 403
