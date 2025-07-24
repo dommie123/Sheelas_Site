@@ -4,8 +4,11 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import Button from '@mui/material/Button';
 
-import { setUserCheckedOut } from '../../../../slices/login-slice';
+import { getUserFromSession, setUserCheckedOut } from '../../../../slices/login-slice';
+import { changeUserSettings } from '../../../../slices/login-slice';
 import { addItem } from '../../../../slices/cart-slice';
+
+import { objectIsEmpty } from '../../../../utils/objects';
 
 import ItemCard from '../../../common/item-card/item-card';
 
@@ -15,12 +18,30 @@ import './thank-you.css';
 export default function ThankYouPage() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const user = useSelector(state => state.login.loggedInUser);
     const selectedItem = useSelector(state => state.items.selectedItem);
     const userCheckedOut = useSelector(state => state.login.userHasCheckedOut);
 
-    useEffect(() => {
-        return () => {
-            const savedCartItems = JSON.parse(localStorage.getItem("cartItems"))
+    const handlePaymentSuccess = () => {
+        // Check to see if user has purchased a seller plan before making them a seller
+        const hasSellerPlan = Boolean(localStorage.getItem("sellerPlan"));
+        let selectedSellerPlan;
+
+        if (hasSellerPlan) {
+            selectedSellerPlan = Number.parseInt(localStorage.getItem("sellerPlan"));
+
+            dispatch(changeUserSettings({ 
+                user: { 
+                    ...user, 
+                    role: 3, 
+                    seller_plan: selectedSellerPlan
+                }, 
+                accessToken: user.accessToken
+            }));
+
+            localStorage.setItem("sellerPlan", null);
+        } else {
+            const savedCartItems = JSON.parse(localStorage.getItem("cartItems"));
 
             if (savedCartItems) {
                 savedCartItems.forEach(item => {
@@ -29,10 +50,25 @@ export default function ThankYouPage() {
             }
 
             localStorage.setItem("cartItems", null);
-            dispatch(setUserCheckedOut(false));
+        }
+
+        dispatch(setUserCheckedOut(false));
+        // eslint-disable-next-line
+    }
+
+    useEffect(() => {
+        const hasSellerPlan = Boolean(localStorage.getItem("sellerPlan"))
+
+        if (hasSellerPlan) {
+            dispatch(getUserFromSession());
         }
         // eslint-disable-next-line
     }, [])
+
+    useEffect(() => {
+        return objectIsEmpty(user) ? () => {} : handlePaymentSuccess();
+        // eslint-disable-next-line
+    }, [user])
 
     return (
         <div className='thank-you-container'>

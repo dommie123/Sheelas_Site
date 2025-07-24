@@ -3,14 +3,14 @@ import { useSelector } from "react-redux";
 
 import { LinearProgress } from "@mui/material";
 
+import { CheckoutProvider } from '@stripe/react-stripe-js';
+import { loadStripe } from "@stripe/stripe-js";
+
 import { SELLER_PLAN_OPTIONS } from "../../../lib/constants";
 
 import { authPostRequest } from '../../../utils/axios-helpers';
 import { showError } from '../../../utils/error';
 import { fromCurrencyFormat } from "../../../utils/strings";
-
-import { CheckoutProvider } from '@stripe/react-stripe-js';
-import { loadStripe } from "@stripe/stripe-js";
 
 import CheckoutForm from "./checkout-form/checkout-form";
 
@@ -28,6 +28,7 @@ export default function PaymentGateway() {
     const [isLoading, setLoading] = useState(true);
 
     const hasSellerPlan = Boolean(selectedSellerPlan);
+    localStorage.setItem("sellerPlan", `${selectedSellerPlan}`);
 
     const fetchClientSecret = async () => {
         const modifiedItems = items.map(item => { return {...item, price: fromCurrencyFormat(item.price) * 100} }); // Convert price from cents to dollars
