@@ -16,6 +16,7 @@ import BasicSelect from "../../common/select/select";
 
 // Custom Imports
 import { areItemsEqual } from "../../../utils/objects";
+import { fromCurrencyFormat } from "../../../utils/strings";
 
 // Style Imports
 import './buy-item.css';
@@ -31,18 +32,34 @@ export default function BuyItemPage() {
     const isAddToCartDisabled = !Boolean(selectedItem.quantity > 0 && !itemInCart);
 
     const handleBuyNow = () => {
-        // Save cart items to local storage
-        localStorage.setItem("cartItems", JSON.stringify(cartItems));
-
         // Clear cart items
         dispatch(clearItems());
 
         // Add selected item to cart
         dispatch(addItem({
             ...selectedItem,
-            quantity: quantitySelected
+            quantity: quantitySelected,
+            price: fromCurrencyFormat(selectedItem.price)
         }));
 
+        // Save cart items to local storage
+        localStorage.setItem("cartItems", JSON.stringify([
+            { 
+                ...selectedItem, 
+                quantity: quantitySelected,
+                price: fromCurrencyFormat(selectedItem.price)
+            }
+        ]));
+
+
+
+        // // Store selected item in local storage to carry it over to thank you page
+        // localStorage.setItem("selectedItem", JSON.stringify({
+        //     ...selectedItem,
+        //     quantity: quantitySelected
+        // }));
+
+        
         // Navigate to checkout page
         navigate('/checkout');
     }
@@ -51,7 +68,8 @@ export default function BuyItemPage() {
         if (!itemInCart) {
             dispatch(addItem({
                 ...selectedItem,
-                quantity: quantitySelected
+                quantity: quantitySelected,
+                price: fromCurrencyFormat(selectedItem.price)
             }));
             dispatch(addToMessageQueue({ severity: "success", content: "Item added to cart!" }));
             navigate("/home");

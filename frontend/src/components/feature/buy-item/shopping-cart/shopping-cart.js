@@ -16,7 +16,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SmallItemCard from '../../../common/item-card/small-item-card';
 
 import { setUserCheckedOut } from '../../../../slices/login-slice';
-import { toCurrencyFormat, fromCurrencyFormat } from '../../../../utils/strings';
+import { toCurrencyFormat } from '../../../../utils/strings';
 
 import { primaryButtonExtraStyles } from '../../../../styles/global-styles';
 import "./shopping-cart.css";
@@ -34,6 +34,8 @@ export default function ShoppingCartDrawer(props) {
         setOpen(false);
         dispatch(setUserCheckedOut(true));
 
+        localStorage.setItem("cartItems", JSON.stringify(items));
+
         navigate('/checkout');
     }
 
@@ -41,7 +43,7 @@ export default function ShoppingCartDrawer(props) {
         let newTotal = 0;
 
         items.forEach(item => {
-            newTotal += fromCurrencyFormat(item.price) * item.quantity;
+            newTotal += item.price * item.quantity;
         });
 
         setCartTotal(newTotal);

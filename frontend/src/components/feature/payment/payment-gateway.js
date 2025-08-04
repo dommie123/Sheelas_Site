@@ -20,7 +20,6 @@ import './payment-gateway.css';
 
 const stripePromise = loadStripe(configs.stripe_publishable_key);
 
-
 export default function PaymentGateway() {
     const items = useSelector(state => state.cart.items);
     const user = useSelector(state => state.login.loggedInUser);
@@ -31,7 +30,7 @@ export default function PaymentGateway() {
     localStorage.setItem("sellerPlan", `${selectedSellerPlan}`);
 
     const fetchClientSecret = async () => {
-        const modifiedItems = items.map(item => { return {...item, price: fromCurrencyFormat(item.price) * 100} }); // Convert price from cents to dollars
+        const modifiedItems = items.map(item => { return {...item, price: item.price * 100} }); // Convert price from cents to dollars
 
         try {
             let res;

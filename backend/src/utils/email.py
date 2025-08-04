@@ -6,6 +6,8 @@ from email.message import EmailMessage
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
+from utils.strings import to_currency_format
+
 def send_email(recipient_email, subject, content, is_html=False):
     msg = EmailMessage() if not is_html else MIMEMultipart("alternative")
 
@@ -36,10 +38,10 @@ def generate_receipt(cart_items, user_info, is_subscription=False):
     cart_items_html, cart_items_string = '', '' # cart_items may be used for subscription purchase if necessary.
 
     if is_subscription:
-        cart_items_html = f'<tr><td>{cart_items["name"]}</td><td>1</td><td>{float(cart_items["price"] / 100)}</td></tr>'
+        cart_items_html = f'<tr><td>Seller Plan ({cart_items["name"]})</td><td>1</td><td>{to_currency_format(float(cart_items["price"]))}/mo</td></tr>'
         cart_items_string = cart_items_html
     else:
-        cart_items_html = [f'<tr><td>{item["name"]}</td><td>{item["quantity"]}</td><td>{float(item["price"] / 100) * int(item["quantity"])}</td></tr>' for item in cart_items]
+        cart_items_html = [f'<tr><td>{item["name"]}</td><td>{item["quantity"]}</td><td>{to_currency_format(float(item["price"]) * int(item["quantity"]))}</td></tr>' for item in cart_items]
         cart_items_string = '\n'.join(cart_items_html)
 
     css_styles = """
@@ -98,13 +100,16 @@ def generate_receipt(cart_items, user_info, is_subscription=False):
         }
 
     """
-    total = 0 if not is_subscription else float(cart_items["price"] / 100)
+    total = 0 if not is_subscription else float(cart_items["price"])
 
     if not is_subscription:
         for item in cart_items:
-            total += float(item["price"] / 100) * int(item['quantity'])
+            total += float(item["price"]) * int(item['quantity'])
 
     total_as_string = "{:.2f}".format(total)
+
+    if is_subscription:
+        total_as_string += "/mo"
 
     return f"""<!DOCTYPE html>
     <html>

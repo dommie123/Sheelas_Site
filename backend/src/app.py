@@ -119,23 +119,26 @@ def checkout():
     
 @app.route('/checkout-success', methods=['POST'])
 @cross_origin(origins=CORS_ALLOWED_ORIGINS)
-@jwt_required
+@jwt_required()
 def checkout_success():
     try:
         items = request.json.get('items')
         user = request.json.get('user')
     
-        for index in range(len(items)):
-            subtract_item_quantity = float(items[index]['quantity'])
+        for item in items:
+            db_item = Item.find_by_id(int(item['id']))
+            subtract_item_quantity = int(item['quantity'])
 
-            items[index].quantity -= subtract_item_quantity
-            items[index].save_item()
+            db_item.quantity -= subtract_item_quantity
+            db_item.save_item()
 
         send_email(user['email'], "SheeBay Order Confirmation", generate_receipt(items, user), is_html=True)
 
         with open("sales.log", 'a') as file:
             file.write(f"[{datetime.datetime.now()}] - Sale of {items} made to {user['first_name']} {user['last_name']}\n")
             file.close()
+
+        return { 'message': 'Transaction complete!' }, 200
     except Exception as err:
         return { 'message': f'An error occurred while processing your checkout! Error: {str(err)}' }, 500
 
