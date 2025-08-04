@@ -1,0 +1,16 @@
+.checkout-form {
+    margin: 0px 15px;
+}
+
+.checkout-button-suite {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    gap: 0.5em;
+    margin-top: 25px;
+}
+
+.checkout-submit-btn, .checkout-cancel-btn {
+    flex: 1 !important;
+}

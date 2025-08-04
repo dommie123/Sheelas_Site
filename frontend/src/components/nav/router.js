@@ -19,6 +19,7 @@ import EditItemPage from "../feature/edit-item/edit-item";
 import WelcomePage from "../feature/register/welcome/welcome";
 import AdminAppPage from "../feature/admin-app-page/admin-app-page";
 import AdminLayout from "../feature/admin/admin-layout";
+import PaymentGateway from "../feature/payment/payment-gateway";
 
 const router = createBrowserRouter([
     {
@@ -89,6 +90,15 @@ const router = createBrowserRouter([
             <>
                 <Navbar />
                 <BuyItemPage />
+            </>
+        )
+    },
+    {
+        path: '/checkout',
+        element: (
+            <>
+                <Navbar />
+                <PaymentGateway />
             </>
         )
     },

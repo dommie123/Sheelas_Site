@@ -16,8 +16,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SmallItemCard from '../../../common/item-card/small-item-card';
 
 import { setUserCheckedOut } from '../../../../slices/login-slice';
-import { checkoutItems } from '../../../../slices/cart-slice';
-import { toCurrencyFormat, fromCurrencyFormat } from '../../../../utils/strings';
+import { toCurrencyFormat } from '../../../../utils/strings';
 
 import { primaryButtonExtraStyles } from '../../../../styles/global-styles';
 import "./shopping-cart.css";
@@ -27,23 +26,24 @@ export default function ShoppingCartDrawer(props) {
     const [open, setOpen] = useState(false);
     const [cartTotal, setCartTotal] = useState(0);
     const items = useSelector(state => state.cart.items);
-    const user = useSelector(state => state.login.loggedInUser);
     const isMobile = useSelector(state => state.global.isMobile);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const handleCheckout = () => {
         setOpen(false);
-        dispatch(checkoutItems({ items, user: user, accessToken: user.accessToken }));
         dispatch(setUserCheckedOut(true));
-        navigate('/thank-you')
+
+        localStorage.setItem("cartItems", JSON.stringify(items));
+
+        navigate('/checkout');
     }
 
     const calculateTotal = () => {
         let newTotal = 0;
 
         items.forEach(item => {
-            newTotal += fromCurrencyFormat(item.price) * item.quantity;
+            newTotal += item.price * item.quantity;
         });
 
         setCartTotal(newTotal);

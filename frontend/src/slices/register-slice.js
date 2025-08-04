@@ -62,6 +62,7 @@ const registerSlice = createSlice({
             }
         },
         validateEmail: (state, action) => {
+            // eslint-disable-next-line
             const re = new RegExp("^[\\w\\-\\.]+@([\\w\\-]+\.)+[\\w\\-]{2,4}$");
             return {
                 ...state, 

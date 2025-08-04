@@ -4,17 +4,17 @@ import { useDispatch } from 'react-redux';
 import { Card, IconButton, Typography } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
-import { toCurrencyFormat, fromCurrencyFormat } from '../../../utils/strings';
+import { removeItem } from '../../../slices/cart-slice';
+
+import { toCurrencyFormat } from '../../../utils/strings';
 
 import './item-card.css';
-import { removeItem } from '../../../slices/cart-slice';
 
 export default function SmallItemCard(props) {
     const { itemId, name, price, quantity, productImageUrl } = props;
     const dispatch = useDispatch();
-    // TODO have custom images for each item (but save for later, since I struggle with custom image display)
     const imageUrl = Boolean(productImageUrl) ? productImageUrl : `https://www.russorizio.com/wp-content/uploads/2016/07/ef3-placeholder-image.jpg`;
-    const displayPrice = toCurrencyFormat(fromCurrencyFormat(price) * quantity);
+    const displayPrice = toCurrencyFormat(price * quantity);
 
     const handleRemoveItem = (event) => {
         event.preventDefault();

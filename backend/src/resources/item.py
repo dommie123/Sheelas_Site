@@ -1,8 +1,16 @@
+import stripe
+import os
+import json
+
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from models.item import Item
 
+config_file = open(f'{os.getcwd()}\\backend\\src\\configs.json')
+configs = json.load(config_file)
+
+stripe.api_key = configs['stripe_secret_key']
 class RItem(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('description', 
@@ -55,8 +63,19 @@ class RItem(Resource):
 
         try:
             item.save_item()
-        except:
-            return {"message": "An error occurred while creating this item"}, 500
+            stripe.Product.create(
+                id=item.id,
+                name=item.name, 
+                active=True,
+                description=item.description,
+                default_price_data={
+                    "currency": "usd",
+                    "unit_amount": int(item.price * 100)               
+                },
+                shippable=True
+            )
+        except Exception as err:
+            return {"message": f"An error occurred while creating this item! Error: {str(err)}"}, 500
         
         return item.json(), 201
     
@@ -80,6 +99,16 @@ class RItem(Resource):
             status_code = 200
         
         item.save_item()
+        stripe.Product.modify(
+            item.id,
+            active=True,
+            description=item.description,
+            default_price={
+                "currency": "usd",
+                "unit_amount": int(item.price * 100)               
+            },
+            shippable=True
+        )
         return item.json(), status_code
     
     @jwt_required()
@@ -91,6 +120,7 @@ class RItem(Resource):
         item = Item.find_by_name(name)
 
         if item:
+            stripe.Product.delete(item.id)
             item.delete_item()
 
         return {"message": "Success"}, 410
