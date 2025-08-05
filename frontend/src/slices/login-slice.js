@@ -10,7 +10,7 @@ export const logInUser = createAsyncThunk(
         try {
             const url = determineBackendURL();
             const userData = await axios.get(`${url}/user/${data.username}`);
-            const accessToken = await axios.post(`${url}/auth`, { username: data.username, password: data.password });
+            const accessToken = await axios.post(`${url}/authentication/auth`, { username: data.username, password: data.password });
 
             const user = {...userData.data, accessToken: accessToken.data};
             return user;
@@ -69,7 +69,7 @@ export const fetchUser = createAsyncThunk(
     async (data, thunkApi) => {
         try {
             const url = determineBackendURL();
-            const user = await axios.post(`${url}/soft_auth`, data);
+            const user = await axios.post(`${url}/authentication/soft_auth`, data);
 
             return user.data;
         } catch (e) {

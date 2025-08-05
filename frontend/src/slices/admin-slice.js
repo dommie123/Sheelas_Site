@@ -7,7 +7,7 @@ export const submitApplication = createAsyncThunk(
     "admin/submit-app",
     async ({data, accessToken}, thunkApi) => {
         try {
-            const res = await authPostRequest('/admin_app', {
+            const res = await authPostRequest('/admin/admin_app', {
                 status: "Submitted",
                 message: JSON.stringify(data)
             }, accessToken);
@@ -23,7 +23,7 @@ export const getTotalSiteVisits = createAsyncThunk(
     async (_, thunkApi) => {
         try {
             const url = determineBackendURL();
-            const res = await axios.get(`${url}/visits`);
+            const res = await axios.get(`${url}/admin/visits`);
 
             return res.data.visits;
         } catch (e) {
@@ -37,7 +37,7 @@ export const getTotalSales = createAsyncThunk(
     async (_, thunkApi) => {
         try {
             const url = determineBackendURL();
-            const res = await axios.get(`${url}/sales`);
+            const res = await axios.get(`${url}/admin/sales`);
 
             return res.data.sales;
         } catch (e) {
