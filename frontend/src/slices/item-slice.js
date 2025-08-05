@@ -189,12 +189,6 @@ const itemSlice = createSlice({
                 error: action.error
             };
         });
-        // builder.addCase(removeItem.fulfilled, (state) => {
-        //     return {
-        //         ...state,
-        //         error: false
-        //     }
-        // });
         builder.addCase(removeItem.rejected, (state, action) => {
             const statusCode = action.payload.response.status;
             if (statusCode === 410) {

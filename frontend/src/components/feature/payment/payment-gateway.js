@@ -37,7 +37,7 @@ export default function PaymentGateway() {
 
             if (hasSellerPlan) {
                 const currentSellerPlan = SELLER_PLAN_OPTIONS[selectedSellerPlan - 1];
-                res = await authPostRequest('create-subscription-checkout-session', { 
+                res = await authPostRequest('checkout/create-subscription-checkout-session', { 
                     user, 
                     sellerPlan: {
                         ...currentSellerPlan,
@@ -45,7 +45,7 @@ export default function PaymentGateway() {
                     }}, 
                 user.accessToken);
             } else {
-                res = await authPostRequest(`create-checkout-session`, { 
+                res = await authPostRequest(`checkout/create-checkout-session`, { 
                     items: modifiedItems,
                     user 
                 }, 

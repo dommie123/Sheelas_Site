@@ -10,7 +10,7 @@ export const retrieveVerificationCode = createAsyncThunk(
     'register/verify',
     async (email, thunkAPI) => {
         try {
-            const response = await axios.post(`${determineBackendURL()}/verify`, email, { headers: { "Content-Type": "application/json" } });
+            const response = await axios.post(`${determineBackendURL()}/authentication/verify`, email, { headers: { "Content-Type": "application/json" } });
             return response.data;
         } catch(e) {
             return thunkAPI.rejectWithValue(e);

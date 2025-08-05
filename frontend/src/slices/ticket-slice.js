@@ -25,7 +25,7 @@ export const postSupportTicket = createAsyncThunk(
     "tickets/post",
     async (data, thunkApi) => {
         try {
-            const res = await authPostRequest("tickets", data.ticketData, data.accessToken);
+            const res = await authPostRequest("ticket", data.ticketData, data.accessToken);
             return res.data;
         } catch (e) {
             return thunkApi.rejectWithValue(e);
